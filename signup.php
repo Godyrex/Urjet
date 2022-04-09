@@ -1,3 +1,36 @@
+<?php
+require_once "config.php";
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+$sql = "SELECT id FROM user WHERE username = ?";
+
+if ($stmt = mysqli_prepare($con, $sql)) {
+
+    mysqli_stmt_bind_param($stmt, "s", $param_username);
+
+    $param_username = trim($_POST["username"]);
+
+    if (mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_store_result($stmt);
+
+        if (mysqli_stmt_num_rows($stmt) == 1) {
+            echo "This username is already taken.";
+            
+        } else {
+            $username = trim($_POST["username"]);
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']);
+            $passwordhash = password_hash($password, PASSWORD_DEFAULT);
+            $sqll = "INSERT INTO `user` (`username`, `email`, `password`) VALUES ('$username', '$email', '$passwordhash')";
+            $rs = mysqli_query($con, $sqll);
+            if ($rs) {
+                echo "Accounted Created";
+            }
+        }
+    }
+}
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,9 +57,9 @@
     <div class="card-body">
       <p class="login-box-msg">Register a new Account</p>
 
-      <form name="signup" action="index.html" method="post">
+      <form name="signup" action="signup.php" method="post">
         <div class="input-group mb-3">
-          <input onblur="verifsignup()" onkeyup="verifsignup()" id="username" type="text" class="form-control" placeholder="Username">
+          <input onblur="verifsignup()" onkeyup="verifsignup()"name="username" id="username" type="text" class="form-control" placeholder="Username">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -35,7 +68,7 @@
         </div>
         <p class="card bg-danger" id="errorusername"></p>
         <div class="input-group mb-3">
-          <input onblur="verifsignup()" onkeyup="verifsignup()" id="email" type="email" class="form-control" placeholder="Email">
+          <input onblur="verifsignup()" onkeyup="verifsignup()" name="email" id="email" type="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -44,7 +77,7 @@
         </div>
         <p class="card bg-danger" id="erroremail"></p>
         <div class="input-group mb-3">
-          <input onblur="verifsignup()" onkeyup="verifsignup()" id="password" type="password" class="form-control" placeholder="Password">
+          <input onblur="verifsignup()" onkeyup="verifsignup()" name="password" id="password" type="password" class="form-control" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -71,7 +104,7 @@
       </form>
 
 
-      <a href="login.html" class="text-center float-right">I already have an account</a>
+      <a href="login.php" class="text-center float-right">I already have an account</a>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->

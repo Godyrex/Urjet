@@ -1,3 +1,74 @@
+<?php
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] && !isset($_SESSION["Admin"]) || $_SESSION["Admin"] !== true) {
+  header("location: index.html");
+  exit;
+}
+require_once "config.php";
+if (isset($_POST["submitad"])){
+ // if($_SERVER["REQUEST_METHOD"] == "POST"){
+  $sql = "UPDATE user SET type = ? WHERE id = ?";
+        $type="Admin";
+  if($stmt = mysqli_prepare($con, $sql)){
+
+      mysqli_stmt_bind_param($stmt, "si", $param_type, $param_id);
+      
+
+      $param_type = $type;
+      $param_id = $_POST["ida"];
+      
+
+      if(mysqli_stmt_execute($stmt)){
+        echo "<meta http-equiv='refresh' content='0'>";
+
+      } else{
+          echo "Oops! Something went wrong. Please try again later.";
+      }
+}
+}
+if (isset($_POST["submitc"])){
+  // if($_SERVER["REQUEST_METHOD"] == "POST"){
+   $sql = "UPDATE user SET type = ? WHERE id = ?";
+         $type="User";
+   if($stmt = mysqli_prepare($con, $sql)){
+ 
+       mysqli_stmt_bind_param($stmt, "si", $param_type, $param_id);
+       
+ 
+       $param_type = $type;
+       $param_id = $_POST["idc"];
+       
+ 
+       if(mysqli_stmt_execute($stmt)){
+         echo "<meta http-equiv='refresh' content='0'>";
+ 
+       } else{
+           echo "Oops! Something went wrong. Please try again later.";
+       }
+ }
+ }
+ if (isset($_POST["submitb"])){
+  // if($_SERVER["REQUEST_METHOD"] == "POST"){
+   $sql = "DELETE FROM `user` WHERE `id` = ?";
+   if($stmt = mysqli_prepare($con, $sql)){
+ 
+       mysqli_stmt_bind_param($stmt, "i", $param_id);
+       
+ 
+       $param_id = $_POST["idb"];
+       
+ 
+       if(mysqli_stmt_execute($stmt)){
+         echo "<meta http-equiv='refresh' content='0'>";
+ 
+       } else{
+           echo "Oops! Something went wrong. Please try again later.";
+       }
+ }
+ }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,8 +78,7 @@
   <title>Admin Panel</title>
   <script src="script.js"></script>
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
@@ -45,10 +115,10 @@
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="AdminPanel.html" class="nav-link">Home</a>
+          <a href="AdminPanel.php" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Contact</a>
+          <a href="logout.php" class="nav-link">Logout</a>
         </li>
       </ul>
 
@@ -83,7 +153,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-      <a href="index3.html" class="brand-link">
+      <a href="index.html" class="brand-link">
         <img src="img/urjet.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">UrJet</span>
       </a>
@@ -93,10 +163,10 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <img src="img/<?php echo htmlspecialchars($_SESSION["image"]); ?>" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block">Oussema Ouakad</a>
+            <a href="#" class="d-block"><?php echo htmlspecialchars($_SESSION["username"]); ?></a>
           </div>
         </div>
 
@@ -127,19 +197,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="AdminPanel.html" class="nav-link active">
+                  <a href="AdminPanel.php" class="nav-link active">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Add/Modify User</p>
+                    <p>Modify/Ban User</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="Ban.html" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Ban User</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="Settings.html" class="nav-link">
+                  <a href="Settings.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Settings</p>
                   </a>
@@ -203,61 +267,36 @@
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>User</th>
+                      <th>Username</th>
                       <th>Email address</th>
-                      <th>Type</th>
-                      <th>Image Name</th>
+                      <th>Account Type</th>
+                      <th>Name</th>
+                      <th>Lastname</th>
+                      <th>Description</th>
+                      <th>Image</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>183</td>
-                      <td>John Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-success">Approved</span></td>
-                    </tr>
-                    <tr>
-                      <td>219</td>
-                      <td>Alexander Pierce</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-warning">Pending</span></td>
-                    </tr>
-                    <tr>
-                      <td>657</td>
-                      <td>Bob Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-primary">Approved</span></td>
-                    </tr>
-                    <tr>
-                      <td>175</td>
-                      <td>Mike Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-danger">Denied</span></td>
-                    </tr>
-                    <tr>
-                      <td>134</td>
-                      <td>Jim Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-success">Approved</span></td>
-                    </tr>
-                    <tr>
-                      <td>494</td>
-                      <td>Victoria Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-warning">Pending</span></td>
-                    </tr>
-                    <tr>
-                      <td>832</td>
-                      <td>Michael Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-primary">Approved</span></td>
-                    </tr>
-                    <tr>
-                      <td>982</td>
-                      <td>Rocky Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-danger">Denied</span></td>
-                    </tr>
+                    <?php
+                    require_once "config.php";
+                    $results = mysqli_query($con,"SELECT * FROM user LIMIT 10");
+                    while ($row = mysqli_fetch_array($results)) {
+                    ?>
+                      <tr>
+                        <td><?php echo $row['id'] ?></td>
+                        <td><?php echo $row['username'] ?></td>
+                        <td><?php echo $row['email'] ?></td>
+                        <td><?php echo $row['type'] ?></td>
+                        <td><?php echo $row['name'] ?></td>
+                        <td><?php echo $row['lastname'] ?></td>
+                        <td><?php echo $row['description'];
+                        echo "...";  ?></td>
+                        <td><?php echo $row['image'] ?></td>
+                      </tr>
+
+                    <?php
+                    }
+                    ?>
                   </tbody>
                 </table>
               </div>
@@ -268,106 +307,18 @@
         </div>
         <div class="container-fluid ">
           <div class="row">
-            <!-- left column -->
-            <div class="col-md-5">
-              <!-- general form elements -->
-
-              <div class="card card-primary ">
-                <div class="card-header">
-                  <h3 class="card-title">Add User</h3>
-                </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-                <form name="AddUser">
-                  <div class="card-body">
-                    <div class="form-group">
-                      <label for="Inputidl">ID</label>
-                      <input onblur="verif()" onkeyup="verif()" type="number" class="form-control" id="Inputid"
-                        placeholder="Enter ID">
-                      <p id="errorid" class="card bg-danger"></p>
-                    </div>
-                    <div class="form-group">
-                      <label for="InputUserl">Username</label>
-                      <input onblur="verif()" onkeyup="verif()" type="text" class="form-control" id="InputUser"
-                        placeholder="Enter Username">
-                      <p id="errorUN" class="card bg-danger"></p>
-                    </div>
-                    <div class="form-group">
-                      <label for="InputEmaill">Email address</label>
-                      <input onblur="verif()" onkeyup="verif()" type="email" class="form-control" id="InputEmail"
-                        placeholder="Enter email">
-                      <p id="errorEA" class="card bg-danger"></p>
-                    </div>
-                    <div class="form-group">
-                      <label for="InputPasswordl">Password</label>
-                      <input onblur="verif()" onkeyup="verif()" type="password" class="form-control" id="InputPassword"
-                        placeholder="Password">
-                      <p id="errorP" class="card bg-danger"></p>
-                    </div>
-                    <div class="form-group">
-                      <label for="InputConfirmPasswordl">Confirm Password</label>
-                      <input onblur="verif()" onkeyup="verif()" type="password" class="form-control"
-                        id="InputConfirmPassword" placeholder="Password">
-                      <p id="errorCP" class="card bg-danger"></p>
-                    </div>
-                    <div class="form-group">
-                      <label for="InputFilel">Image</label>
-                      <div class="input-group">
-                        <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="InputFile">
-                          <label class="custom-file-label" for="InputFile">Choose file</label>
-                        </div>
-                        <div class="input-group-append">
-                          <span class="input-group-text">Upload</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- /.card-body -->
-
-                  <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Add</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div class="col-md-5">
-              <!-- general form elements -->
-              <div class="card card-primary">
-                <div class="card-header">
-                  <h3 class="card-title">Set User to admin</h3>
-                </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-                <form name="idform">
-                  <div class="card-body">
-                    <div class="form-group">
-                      <label for="InputIDrl">ID</label>
-                      <input onblur="verifid()" onkeyup="verifid()" type="number" class="form-control" id="Inputidr"
-                        placeholder="Enter ID">
-                      <p id="erroridr" class="card bg-danger"></p>
-                    </div>
-
-                  </div>
-                  <!-- /.card-body -->
-
-                  <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Ban</button>
-                  </div>
-                </form>
-              </div>
-              <div class="card card-primary">
+          <div class="col-md-4">
+          <div class="card card-primary">
                 <div class="card-header">
                   <h3 class="card-title">Set User to Client</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form name="idform">
+                <form name="idform" method="post">
                   <div class="card-body">
                     <div class="form-group">
                       <label for="InputIDrl">ID</label>
-                      <input onblur="verifid()" onkeyup="verifid()" type="number" class="form-control" id="Inputidr1"
-                        placeholder="Enter ID">
+                      <input name="idc" onblur="verifid()" onkeyup="verifid()" type="number" class="form-control" id="Inputidr1" placeholder="Enter ID">
                       <p id="erroridr1" class="card bg-danger"></p>
                     </div>
 
@@ -375,14 +326,65 @@
                   <!-- /.card-body -->
 
                   <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Ban</button>
+                    <button name="submitc" type="submit" class="btn btn-primary">Set</button>
                   </div>
                 </form>
               </div>
+          </div>
+            <div class="col-md-4">
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Set User to admin</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form name="idform" method="post">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="InputIDrl">ID</label>
+                      <input name="ida"  onblur="verifid()" onkeyup="verifid()" type="number" class="form-control" id="Inputidr" placeholder="Enter ID">
+                      <p id="erroridr" class="card bg-danger"></p>
+                    </div>
+
+                  </div>
+                  <!-- /.card-body -->
+
+                  <div class="card-footer">
+                    <button name="submitad" type="submit" class="btn btn-primary">Set</button>
+                  </div>
+                </form>
+              </div>
+              
             </div>
-            
+            <div class="col-md-4">
+          <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Ban User</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                <form name="idform" method="post">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="InputIDrl">ID</label>
+                                            <input name="idb" onblur="verifid()" onkeyup="verifid()" type="number"
+                                                class="form-control" id="Inputidr" placeholder="Enter ID">
+                                            <p id="erroridr" class="card bg-danger"></p>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+
+                                    <div class="card-footer ">
+                                        <button name="submitb" type="submit" class="btn btn-primary">Ban</button>
+                                    </div>
+                                </form>
+                            </div>
+          </div>
             <!-- /.card-body -->
           </div>
+
           <!-- /.card -->
           <!-- right col -->
         </div>
