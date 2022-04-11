@@ -7,35 +7,38 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 }
 require_once "config.php";
 // Check if image file is a actual image or fake image
-if(isset($_POST["upload"])) {
+if (isset($_POST["upload"])) {
     $target_dir = "img/";
-$target_file = $target_dir . basename($_FILES["image"]["name"]);
-$uploadOk = 1;
-$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-  $check = getimagesize($_FILES["image"]["tmp_name"]);
-  if($check !== false) {
-    echo "File is an image - " . $check["mime"] . ".";
+    $target_file = $target_dir . basename($_FILES["image"]["name"]);
     $uploadOk = 1;
-  } else {
-    echo "File is not an image.";
-    $uploadOk = 0;
-  }
-  if ($uploadOk == 0) {
-    echo "Sorry, your file was not uploaded.";
-  // if everything is ok, try to upload file
-  } else {
-    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-      echo "The file ". htmlspecialchars( basename( $_FILES["image"]["name"])). " has been uploaded.";
-      $image = $_FILES["image"]["name"];
-      $id = $_SESSION["id"];
-    $stmt = $con->prepare("UPDATE `user` SET image = ? WHERE `id` = ?");
-    $stmt->bind_param("si", $image, $id);
-    $stmt->execute();
-    $_SESSION["image"] = $image;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $check = getimagesize($_FILES["image"]["tmp_name"]);
+    if ($check !== false) {
+        echo "File is an image - " . $check["mime"] . ".";
+        $uploadOk = 1;
     } else {
-      echo "Sorry, there was an error uploading your file.";
+        echo "File is not an image.";
+        $uploadOk = 0;
     }
-  }
+    if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+        // if everything is ok, try to upload file
+    } else if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+        echo "Sorry, only JPG, JPEG & PNG files are allowed.";
+        $uploadOk = 0;
+    } else {
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            echo "The file " . htmlspecialchars(basename($_FILES["image"]["name"])) . " has been uploaded.";
+            $image = $_FILES["image"]["name"];
+            $id = $_SESSION["id"];
+            $stmt = $con->prepare("UPDATE `user` SET image = ? WHERE `id` = ?");
+            $stmt->bind_param("si", $image, $id);
+            $stmt->execute();
+            $_SESSION["image"] = $image;
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+        }
+    }
 }
 
 if (isset($_POST["submit"])) {
@@ -65,14 +68,9 @@ if (isset($_POST["submit"])) {
     } else {
         $description = trim($_POST['description']);
     }
-    if (empty($image = trim($_POST['image']))) {
-        $image = $_SESSION["image"];
-    } else {
-        $image = trim($_POST['image']);
-    }
     $id = $_SESSION["id"];
     $stmt = $con->prepare("UPDATE `user` SET name = ?, lastname = ? ,email = ?,password = ?,description= ? WHERE `id` = ?");
-    $stmt->bind_param("sssssi", $name, $lastname, $email, $passwordhash,$description, $id);
+    $stmt->bind_param("sssssi", $name, $lastname, $email, $passwordhash, $description, $id);
     $stmt->execute();
     $_SESSION["email"] = $email;
     $_SESSION["hpassword"] = $passwordhash;
@@ -95,7 +93,7 @@ if (isset($_POST["submit"])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Settings</title>
-    <script src="script.js"></script>
+    <script src="settings.js"></script>
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -215,12 +213,14 @@ if (isset($_POST["submit"])) {
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="AdminPanel.php" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Modify/Ban User</p>
-                                    </a>
-                                </li>
+                                <?php if (isset($_SESSION["Admin"]) && $_SESSION["Admin"] == true) { ?>
+                                    <li class="nav-item">
+                                        <a href="AdminPanel.php" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Modify/Ban User</p>
+                                        </a>
+                                    </li>
+                                <?php } ?>
                                 <li class="nav-item">
                                     <a href="Settings.php" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
@@ -266,7 +266,7 @@ if (isset($_POST["submit"])) {
                 <div class="container-fluid  ">
                     <div class="row">
                         <!-- left column -->
-                        
+
                         <div class="col-md-6">
                             <!-- general form elements -->
 
@@ -276,47 +276,47 @@ if (isset($_POST["submit"])) {
                                 </div>
                                 <!-- /.card-header -->
                                 <!-- form start -->
-                                <form method="post" name="UpdateUser">
+                                <form method="post" onsubmit="return validateForm(event)" name="UpdateUser">
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="Inputnamel">Name</label>
-                                            <input name="name" type="text" class="form-control" id="Inputname" placeholder="Enter Name">
+                                            <input name="name" onblur="verifchange()" onkeyup="verifchange()" type="text" class="form-control" id="name" placeholder="Enter Name">
                                             <p id="errorname" class="card bg-danger"></p>
                                         </div>
                                         <div class="form-group">
                                             <label for="Inputlastnamel">LastName</label>
-                                            <input name="lastname" type="text" class="form-control" id="Inputlastname" placeholder="Enter LastName">
+                                            <input name="lastname" onblur="verifchange()" onkeyup="verifchange()" type="text" class="form-control" id="lastname" placeholder="Enter LastName">
                                             <p id="errorlastname" class="card bg-danger"></p>
                                         </div>
                                         <div class="form-group">
                                             <label for="InputEmaill">Email address</label>
-                                            <input name="email" onblur="verif()" onkeyup="verif()" type="email" class="form-control" id="InputEmail" placeholder="Enter email">
-                                            <p id="errorEA" class="card bg-danger"></p>
+                                            <input name="email" onblur="verifchange()" onkeyup="verifchange()"" type=" email" class="form-control" id="Email" placeholder="Enter email">
+                                            <p id="erroremail" class="card bg-danger"></p>
                                         </div>
                                         <div class="form-group">
                                             <label for="InputPasswordl">Password</label>
-                                            <input name="password" onblur="verif()" onkeyup="verif()" type="password" class="form-control" id="InputPassword" placeholder="Password">
-                                            <p id="errorP" class="card bg-danger"></p>
+                                            <input name="password" onblur="verifchange()" onkeyup="verifchange()" type="password" class="form-control" id="password" placeholder="Password">
+                                            <p id="errorpassword" class="card bg-danger"></p>
                                         </div>
                                         <div class="form-group">
                                             <label for="InputConfirmPasswordl">Confirm Password</label>
-                                            <input onblur="verif()" onkeyup="verif()" type="password" class="form-control" id="InputConfirmPassword" placeholder="Password">
-                                            <p id="errorCP" class="card bg-danger"></p>
+                                            <input onblur="verifchange()" onkeyup="verifchange()" type="password" class="form-control" id="passwordc" placeholder="Password">
+                                            <p id="errorpasswordc" class="card bg-danger"></p>
                                         </div>
                                         <div class="form-group">
                                             <label for="Inputdescription">Description</label>
-                                            <input name="description" type="text" class="form-control " id="Inputdescription" placeholder="Description">
+                                            <input onblur="verifchange()" onkeyup="verifchange()" name="description" type="text" class="form-control " id="description" placeholder="Description">
                                             <p id="errordescription" class="card bg-danger"></p>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
 
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <button name="submit" type="submit" class="btn btn-primary">Update</button>
                                     </div>
                                 </form>
                             </div>
-                            
+
                         </div>
                         <div class="col-md-4">
                             <!-- general form elements -->
@@ -327,16 +327,18 @@ if (isset($_POST["submit"])) {
                                 </div>
                                 <!-- /.card-header -->
                                 <!-- form start -->
-                                <form method="post" enctype="multipart/form-data">
+                                <form name="upload" onsubmit="return validateFormimage(event)" method="post" enctype="multipart/form-data">
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="InputFilel">Image</label>
                                             <div class="input-group">
                                                 <div class="custom-file">
-                                                    <input name="image" type="file" class="custom-file-input"  id="image">
-                                                    <label class="custom-file-label" for="InputFile">Choose image</label>
+                                                    <input onblur="verifimage()" onchange="verifimage()" id="image" name="image" type="file" class="custom-file-input">
+                                                    
+                                                    <label id="imagelabel" class="custom-file-label" for="InputFile">Choose an image</label>
                                                 </div>
                                             </div>
+                                            <p id="errorimage" class="card bg-danger"></p>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
@@ -346,11 +348,11 @@ if (isset($_POST["submit"])) {
                                     </div>
                                 </form>
                             </div>
-                            
+
                         </div>
                         <!-- /.card-body -->
                     </div>
-                    
+
                     <!-- /.card -->
                     <!-- right col -->
                 </div>
@@ -374,6 +376,7 @@ if (isset($_POST["submit"])) {
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
+
 
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>

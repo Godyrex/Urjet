@@ -108,7 +108,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>URJET | Log In</title>
-  <script src="script.js"></script>
+  <script src="login.js"></script>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -129,16 +129,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form name="login" method="post">
+      <form name="login" onsubmit="return validateForm(event)" method="post">
         <div class="input-group mb-3">
-          <input onblur="veriflogin()" onkeyup="veriflogin()" name="username" id="email" type="text" class="form-control" placeholder="Username">
+          <input onblur="veriflogin()" onkeyup="veriflogin()" name="username" id="username" type="text" class="form-control" placeholder="Username">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
             </div>
           </div>
         </div>
-        <p class="card bg-danger" id="erroremail"></p>
+        <p class="card bg-danger" id="errorusername"></p>
         <div class="input-group mb-3">
           <input onblur="veriflogin()" onkeyup="veriflogin()" name="password" id="password" type="password" class="form-control" placeholder="Password">
           <div class="input-group-append">

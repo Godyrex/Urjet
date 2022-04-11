@@ -76,7 +76,7 @@ if (isset($_POST["submitc"])){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Panel</title>
-  <script src="script.js"></script>
+  <script src="adminpanel.js"></script>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -314,12 +314,12 @@ if (isset($_POST["submitc"])){
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form name="idform" method="post">
+                <form name="clientform"  onsubmit="return validateFormclient(event)"method="post">
                   <div class="card-body">
                     <div class="form-group">
                       <label for="InputIDrl">ID</label>
-                      <input name="idc" onblur="verifid()" onkeyup="verifid()" type="number" class="form-control" id="Inputidr1" placeholder="Enter ID">
-                      <p id="erroridr1" class="card bg-danger"></p>
+                      <input name="idc" id="idc" onblur="verifclient()" onkeyup="verifclient()" type="number" class="form-control" id="Inputidr1" placeholder="Enter ID">
+                      <p id="erroridc" class="card bg-danger"></p>
                     </div>
 
                   </div>
@@ -339,12 +339,12 @@ if (isset($_POST["submitc"])){
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form name="idform" method="post">
+                <form name="adminform" onsubmit="return validateFormadmin(event)" method="post">
                   <div class="card-body">
                     <div class="form-group">
                       <label for="InputIDrl">ID</label>
-                      <input name="ida"  onblur="verifid()" onkeyup="verifid()" type="number" class="form-control" id="Inputidr" placeholder="Enter ID">
-                      <p id="erroridr" class="card bg-danger"></p>
+                      <input name="ida" id="ida" onblur="verifadmin()" onkeyup="verifadmin()" type="number" class="form-control" id="Inputidr" placeholder="Enter ID">
+                      <p id="errorida" class="card bg-danger"></p>
                     </div>
 
                   </div>
@@ -364,13 +364,13 @@ if (isset($_POST["submitc"])){
                                 </div>
                                 <!-- /.card-header -->
                                 <!-- form start -->
-                                <form name="idform" method="post">
+                                <form name="banform" onsubmit="return validateFormban(event)" method="post">
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="InputIDrl">ID</label>
-                                            <input name="idb" onblur="verifid()" onkeyup="verifid()" type="number"
+                                            <input name="idb"id="idb" onblur="verifban()" onkeyup="verifban()" type="number"
                                                 class="form-control" id="Inputidr" placeholder="Enter ID">
-                                            <p id="erroridr" class="card bg-danger"></p>
+                                            <p id="erroridb" class="card bg-danger"></p>
                                         </div>
 
                                     </div>

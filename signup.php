@@ -37,7 +37,7 @@ if ($stmt = mysqli_prepare($con, $sql)) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>URJET | Sign Up</title>
-  <script src="script.js"></script>
+  <script src="signup.js"></script>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -57,7 +57,7 @@ if ($stmt = mysqli_prepare($con, $sql)) {
     <div class="card-body">
       <p class="login-box-msg">Register a new Account</p>
 
-      <form name="signup" action="signup.php" method="post">
+      <form name="signup" onsubmit="return validateForm(event)" method="post">
         <div class="input-group mb-3">
           <input onblur="verifsignup()" onkeyup="verifsignup()"name="username" id="username" type="text" class="form-control" placeholder="Username">
           <div class="input-group-append">

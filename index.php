@@ -1,12 +1,12 @@
+<?php
+session_start();
+
+?>
 <!DOCTYPE HTML>
-<!--
-	Spectral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+
 <html>
 	<head>
-		<title>Spectral by HTML5 UP</title>
+		<title>Home</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -19,7 +19,7 @@
 
 				<!-- Header -->
 					<header id="header" class="alt">
-						<h1><a href="index.html">Transport company</a></h1>
+						<h1><a href="index.html">URJET</a></h1>
 						<nav id="nav">
 							<ul>
 								<li class="special">
@@ -31,7 +31,9 @@
 											<li><a href="#">Elements</a></li>
 											<li><a href="signup.php">Sign Up</a></li>
 											<li><a href="login.php">Log In</a></li>
+                                            <?php if (isset($_SESSION["Loggedin"]) && $_SESSION["Loggedin"] == true) { ?>
 											<li><a href="logout.php">Log out</a></li>
+                                            <?php }?>
 										</ul>
 									</div>
 								</li>
