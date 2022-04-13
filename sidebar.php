@@ -77,20 +77,20 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
-                if($currentpage=="add.php" ){
+              <li class="nav-item">
+                <a href="add.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="add.php"  ){
                 echo "active"; 
                 }?>">
-                <a href="add.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add</p>
                 </a>
               </li>
-              <li class="nav-item <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+              <li class="nav-item">
+                <a href="update.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
                 if( $currentpage=="update.php" ){
                 echo "active"; 
                 }?>">
-                <a href="update.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Update</p>
                 </a>
@@ -111,20 +111,20 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+              <li class="nav-item">
+                <a href="voyage.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
                 if($currentpage=="voyage.php" ){
                 echo "active"; 
                 }?>">
-                <a href="voyage.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Travel</p>
                 </a>
               </li>
-              <li class="nav-item <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+              <li class="nav-item">
+                <a href="aeroport.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
                 if( $currentpage=="aeroport.php" ){
                 echo "active"; 
                 }?>">
-                <a href="aeroport.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Airport</p>
                 </a>
@@ -133,11 +133,11 @@
               
             </ul>
           </li>
-          <li class="nav-item <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+          <li class="nav-item">
+            <a href="#" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
                 if($currentpage=="reservation.php"){
                 echo "active"; 
                 }?>">
-            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
               <p>
               Reservation Management
@@ -146,11 +146,11 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+              <li class="nav-item">
+                <a href="reservation.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
                 if($currentpage=="reservation.php"){
                 echo "active"; 
                 }?>">
-                <a href="reservation.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>reservation</p>
                 </a>
@@ -171,11 +171,11 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+              <li class="nav-item">
+                <a href="maintenance.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
                 if( $currentpage=="maintenance.php" ){
                 echo "active"; 
                 }?>">
-                <a href="maintenance.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Maintenance</p>
                 </a>
@@ -185,11 +185,11 @@
           </li>
           <?php } ?>
 
-          <li class="nav-item <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+          <li class="nav-item">
+            <a href="#" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
                 if($currentpage=="reclamation.php" || $currentpage=="reponse.php" ){
                 echo "active"; 
                 }?>">
-            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>
               Reclamation Management
@@ -197,21 +197,21 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+              <li class="nav-item">
+                <a href="reclamation.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
                 if($currentpage=="reclamation.php" ){
                 echo "active"; 
                 }?>">
-                <a href="reclamation.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Reclamation</p>
                 </a>
               </li>
               <?php if (isset($_SESSION["Admin"]) && $_SESSION["Admin"] == true) { ?>
-              <li class="nav-item <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+              <li class="nav-item">
+                <a href="reponse.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
                 if($currentpage=="reponse.php" ){
                 echo "active"; 
                 }?>">
-                <a href="reponse.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Answer</p>
                 </a>
