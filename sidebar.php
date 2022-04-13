@@ -28,81 +28,105 @@
                with font-awesome or any other icon font library -->
           
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
+            <a href="#" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="AdminPanel.php" || $currentpage=="settings.php" ){
+                echo "active"; 
+                }?>">
+              <i class="nav-icon fas fa-user"></i>
               <p>
-                Gestion d'Utilisateur
+                
+                User Panel
                 <i class="fas fa-angle-left right"></i>
                 
               </p>
             </a>
             <ul class="nav nav-treeview">
+            <?php if (isset($_SESSION["Admin"]) && $_SESSION["Admin"] == true) { ?>
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="AdminPanel.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="AdminPanel.php"){
+                echo "active"; 
+                }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation</p>
+                  <p>Admin Panel</p>
                 </a>
               </li>
+              <?php } ?>
               <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                <a href="settings.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="settings.php"){
+                echo "active"; 
+                }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation + Sidebar</p>
+                  <p>Settings</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Boxed</p>
-                </a>
-              </li>
-             
-             
-        
+
             </ul>
           </li>
+          <?php if (isset($_SESSION["Admin"]) && $_SESSION["Admin"] == true) { ?>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
+            <a href="#" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="add.php" || $currentpage=="update.php" ){
+                echo "active"; 
+                }?>">
+              <i class="nav-icon fas fa-plane"></i>
               <p>
-                Gestion des Avions
+              Airplanes Management
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
+                <a href="add.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="add.php"  ){
+                echo "active"; 
+                }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>ChartJS</p>
+                  <p>Add</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
+                <a href="update.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if( $currentpage=="update.php" ){
+                echo "active"; 
+                }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Flot</p>
+                  <p>Update</p>
                 </a>
               </li>
              
             </ul>
           </li>
+          <?php } ?>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="voyage.php" || $currentpage=="aeroport.php" ){
+                echo "active"; 
+                }?>">
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                Gestion des Voyages
+              Travel Management
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
+                <a href="voyage.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="voyage.php" ){
+                echo "active"; 
+                }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>General</p>
+                  <p>Travel</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/UI/icons.html" class="nav-link">
+                <a href="aeroport.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if( $currentpage=="aeroport.php" ){
+                echo "active"; 
+                }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Icons</p>
+                  <p>Airport</p>
                 </a>
               </li>
               
@@ -110,76 +134,89 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="reservation.php"){
+                echo "active"; 
+                }?>">
               <i class="nav-icon fas fa-edit"></i>
               <p>
-                Gestion des Reservations
+              Reservation Management
 
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/forms/general.html" class="nav-link">
+                <a href="reservation.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="reservation.php"){
+                echo "active"; 
+                }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>General Elements</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/forms/advanced.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Advanced Elements</p>
+                  <p>reservation</p>
                 </a>
               </li>
               
             </ul>
           </li>
+          <?php if (isset($_SESSION["Admin"]) && $_SESSION["Admin"] == true) { ?>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if( $currentpage=="maintenance.php" ){
+                echo "active"; 
+                }?>">
               <i class="nav-icon fas fa-table"></i>
               <p>
-                Gestion de Maintenance
+              maintenance management
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
+                <a href="maintenance.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if( $currentpage=="maintenance.php" ){
+                echo "active"; 
+                }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Simple Tables</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>DataTables</p>
+                  <p>Maintenance</p>
                 </a>
               </li>
               
             </ul>
           </li>
+          <?php } ?>
 
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="reclamation.php" || $currentpage=="reponse.php" ){
+                echo "active"; 
+                }?>">
               <i class="nav-icon fas fa-table"></i>
               <p>
-                Gestion de Reclamation
+              Reclamation Management
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/tables/reclamation.php" class="nav-link">
+                <a href="reclamation.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="reclamation.php" ){
+                echo "active"; 
+                }?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Reclamation</p>
                 </a>
               </li>
+              <?php if (isset($_SESSION["Admin"]) && $_SESSION["Admin"] == true) { ?>
               <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
+                <a href="reponse.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="reponse.php" ){
+                echo "active"; 
+                }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Reponse</p>
+                  <p>Answer</p>
                 </a>
               </li>
+              <?php } ?>
               
             </ul>
           </li>

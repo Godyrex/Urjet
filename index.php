@@ -3,10 +3,14 @@ session_start();
 
 ?>
 <!DOCTYPE HTML>
-
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <html>
 	<head>
-		<title>Home</title>
+		<title>URJET</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -26,12 +30,22 @@ session_start();
 									<a href="#menu" class="menuToggle"><span>Menu</span></a>
 									<div id="menu">
 										<ul>
-											<li><a href="index.php">Home</a></li>
+											<li><a href="index.php">Accueil (airplanes catalog)</a></li>
+											<li><a href="cata.php">Airplanes catalog</a></li>
+											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
+											<li><a href="add.php">Avion</a></li>
+											<?php }?>
+											<li><a href="Resersation.php"></a>Réservation</li>
+											<li><a href="Reclamation.php">Réclamation</a></li>
+											<li><a href="Reponse.php">Réponse</a></li>
+											<li><a href="Maintenance.php"></a>Maitenance</li>
+											<li><a href="Demande.php">Demande de maitenance</a></li>
+											<li><a href="Voyage.php">Voyage</a></li>
                                             <?php if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) { ?>
                                             <li><a href="signup.php">Sign Up</a></li>
 											<li><a href="login.php">Log In</a></li>
                                             <?php }?>
-                                            <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
+											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
                                                 <li><a href="AdminPanel.php">Admin Panel</a></li>
                                                 <?php }?>
                                             <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) { ?>
