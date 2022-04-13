@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+  header("location: index.php");
+  exit;
+}
 require_once "config.php";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -21,10 +26,16 @@ if ($stmt = mysqli_prepare($con, $sql)) {
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
             $passwordhash = password_hash($password, PASSWORD_DEFAULT);
-            $sqll = "INSERT INTO `user` (`username`, `email`, `password`) VALUES ('$username', '$email', '$passwordhash')";
+            $last_id = 0;
+            $sqlo ="INSERT INTO `usero` (`type`, `description`) VALUES ('User', 'Description')";
+            $rso = mysqli_query($con, $sqlo);
+            if($rso){
+            $last_id = $con->insert_id;
+            $sqll = "INSERT INTO `user` (`username`, `email`, `password`,id_o) VALUES ('$username', '$email', '$passwordhash','$last_id')";
             $rs = mysqli_query($con, $sqll);
             if ($rs) {
-                echo "Accounted Created";
+              echo "Accounted Created";
+          }
             }
         }
     }
@@ -52,7 +63,7 @@ if ($stmt = mysqli_prepare($con, $sql)) {
 <div class="register-box">
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="index.html" class="h1"><b>UR</b>JET</a>
+      <a href="index.php" class="h1"><b>UR</b>JET</a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Register a new Account</p>

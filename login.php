@@ -3,10 +3,10 @@
 session_start();
  
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true){
-    header("location: AdminPanel.php");
+    header("location: index.php");
     exit;
 }elseif(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["User"]) && $_SESSION["User"] === true){
-    header("location: index.html");
+    header("location: index.php");
     exit;
 }
 
@@ -36,7 +36,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT id, username, email, password, type, name, lastname, description, image FROM user WHERE username = ?";
+        $sql = "SELECT id, username, email, password, name, lastname, image ,id_o FROM user WHERE username = ?";
         
         if($stmt = mysqli_prepare($con, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -53,12 +53,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Check if username exists, if yes then verify password
                 if(mysqli_stmt_num_rows($stmt) == 1){                    
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username,$email, $hashed_password, $type, $name, $lastname, $description, $image);
+                    mysqli_stmt_bind_result($stmt, $id, $username,$email, $hashed_password,  $name, $lastname, $image,$id_o);
                     if(mysqli_stmt_fetch($stmt)){
                         if(password_verify($password, $hashed_password)){
                             // Password is correct, so start a new session
+                            $sqlo = "SELECT type , description FROM usero WHERE id = ?";
+                            $stmto = mysqli_prepare($con, $sqlo);
+                            mysqli_stmt_bind_param($stmto, "i", $id_o);
+                            if(mysqli_stmt_execute($stmto)){
+                            mysqli_stmt_store_result($stmto);
+                            mysqli_stmt_bind_result($stmto, $type, $description);
+                            mysqli_stmt_fetch($stmto);
+                            }
                             session_start();
-                            
+
                             // Store data in session variables
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
@@ -67,8 +75,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["hpassword"] = $hashed_password;
                             $_SESSION["name"] = $name;
                             $_SESSION["lastname"] = $lastname;
-                            $_SESSION["description"] = $description;
+                            $_SESSION["id_o"] = $id_o;
                             $_SESSION["image"] = $image;
+                            $_SESSION["type"] = $type;
+                            $_SESSION["description"] = $description;
                             if($type==$admin){
                                 $_SESSION["Admin"] = true;
                                 $_SESSION["User"] = false;
@@ -76,7 +86,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             }else{
                                 $_SESSION["User"] = true;
                                 $_SESSION["Admin"] = false;
-                                header("location: index.html");
+                                header("location: index.php");
                             };                             
                             
                             // Redirect user to welcome page
@@ -124,7 +134,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="index.html" class="h1"><b>UR</b>JET</a>
+      <a href="index.php" class="h1"><b>UR</b>JET</a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>

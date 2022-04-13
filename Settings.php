@@ -7,6 +7,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 }
 require_once "config.php";
 // Check if image file is a actual image or fake image
+ $output ="";
+ $change="";
 if (isset($_POST["upload"])) {
     $target_dir = "img/";
     $target_file = $target_dir . basename($_FILES["image"]["name"]);
@@ -14,21 +16,18 @@ if (isset($_POST["upload"])) {
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
     $check = getimagesize($_FILES["image"]["tmp_name"]);
     if ($check !== false) {
-        echo "File is an image - " . $check["mime"] . ".";
         $uploadOk = 1;
     } else {
-        echo "File is not an image.";
         $uploadOk = 0;
     }
     if ($uploadOk == 0) {
-        echo "Sorry, your file was not uploaded.";
         // if everything is ok, try to upload file
     } else if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-        echo "Sorry, only JPG, JPEG & PNG files are allowed.";
+         $output ="Sorry, only JPG, JPEG & PNG files are allowed.";
         $uploadOk = 0;
     } else {
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            echo "The file " . htmlspecialchars(basename($_FILES["image"]["name"])) . " has been uploaded.";
+            $output = "Image " . htmlspecialchars(basename($_FILES["image"]["name"])) . " has been uploaded.";
             $image = $_FILES["image"]["name"];
             $id = $_SESSION["id"];
             $stmt = $con->prepare("UPDATE `user` SET image = ? WHERE `id` = ?");
@@ -36,7 +35,7 @@ if (isset($_POST["upload"])) {
             $stmt->execute();
             $_SESSION["image"] = $image;
         } else {
-            echo "Sorry, there was an error uploading your file.";
+            $output = "Sorry, there was an error uploading your file.";
         }
     }
 }
@@ -69,9 +68,16 @@ if (isset($_POST["submit"])) {
         $description = trim($_POST['description']);
     }
     $id = $_SESSION["id"];
-    $stmt = $con->prepare("UPDATE `user` SET name = ?, lastname = ? ,email = ?,password = ?,description= ? WHERE `id` = ?");
-    $stmt->bind_param("sssssi", $name, $lastname, $email, $passwordhash, $description, $id);
+    $id_o = $_SESSION["id_o"];
+    $stmt = $con->prepare("UPDATE `user` SET name = ?, lastname = ? ,email = ?,password = ? WHERE `id` = ?");
+    $stmt->bind_param("ssssi", $name, $lastname, $email, $passwordhash, $id);
     $stmt->execute();
+    $stmt->close();
+
+    $stmt = $con->prepare("UPDATE `usero` SET description= ? WHERE `id` = ?");
+    $stmt->bind_param("si", $description, $id_o);
+    $stmt->execute();
+    $change="Information changed!";
     $_SESSION["email"] = $email;
     $_SESSION["hpassword"] = $passwordhash;
     $_SESSION["name"] = $name;
@@ -132,7 +138,7 @@ if (isset($_POST["submit"])) {
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="AdminPanel.php" class="nav-link">Home</a>
+                    <a href="index.php" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="logout.php" class="nav-link">Logout</a>
@@ -170,7 +176,7 @@ if (isset($_POST["submit"])) {
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="index.html" class="brand-link">
+            <a href="index.php" class="brand-link">
                 <img src="img/urjet.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">UrJet</span>
             </a>
@@ -265,6 +271,7 @@ if (isset($_POST["submit"])) {
 
                 <div class="container-fluid  ">
                     <div class="row">
+
                         <!-- left column -->
 
                         <div class="col-md-6">
@@ -308,6 +315,7 @@ if (isset($_POST["submit"])) {
                                             <input onblur="verifchange()" onkeyup="verifchange()" name="description" type="text" class="form-control " id="description" placeholder="Description">
                                             <p id="errordescription" class="card bg-danger"></p>
                                         </div>
+                                        <p  class="card bg-success"><?php echo $change ?></p>
                                     </div>
                                     <!-- /.card-body -->
 
@@ -318,7 +326,7 @@ if (isset($_POST["submit"])) {
                             </div>
 
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <!-- general form elements -->
 
                             <div class="card card-primary ">
@@ -334,10 +342,12 @@ if (isset($_POST["submit"])) {
                                             <div class="input-group">
                                                 <div class="custom-file">
                                                     <input onblur="verifimage()" onchange="verifimage()" id="image" name="image" type="file" class="custom-file-input">
-                                                    
+
                                                     <label id="imagelabel" class="custom-file-label" for="InputFile">Choose an image</label>
                                                 </div>
                                             </div>
+                                            <br>
+                                            <p id="errorimagephp" class="card bg-success"><?php echo $output ?></p>
                                             <p id="errorimage" class="card bg-danger"></p>
                                         </div>
                                     </div>
@@ -348,8 +358,39 @@ if (isset($_POST["submit"])) {
                                     </div>
                                 </form>
                             </div>
+                            <!-- Profile Image -->
+                            <div class="card card-primary card-outline">
+                                <div class="card-body box-profile">
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle" src="img/<?php echo htmlspecialchars($_SESSION["image"]); ?>" alt="User profile picture">
+                                    </div>
+
+                                    <h3 class="profile-username text-center"><?php echo htmlspecialchars($_SESSION["username"]); ?></h3>
+
+                                    <p class="text-muted text-center"><?php echo htmlspecialchars($_SESSION["type"]); ?></p>
+
+                                    <ul class="list-group list-group-unbordered mb-3">
+                                        <li class="list-group-item">
+                                            <b>Name</b> <a class="float-right"><?php echo htmlspecialchars($_SESSION["name"]);?></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Lastname</b> <a class="float-right"><?php echo htmlspecialchars($_SESSION["lastname"]);?></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Email</b> <a class="float-right"><?php echo htmlspecialchars($_SESSION["email"]);?></a>
+                                        </li>
+                                        <strong><i></i>Description</strong>
+
+                                    <p class="text-muted"><?php echo htmlspecialchars($_SESSION["description"]);?></p>
+                                    </ul>
+
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
 
                         </div>
+                        <!-- /.card -->
+                            <!-- About Me Box -->
                         <!-- /.card-body -->
                     </div>
 

@@ -19,19 +19,23 @@ session_start();
 
 				<!-- Header -->
 					<header id="header" class="alt">
-						<h1><a href="index.html">URJET</a></h1>
+						<h1><a href="index.php">URJET</a></h1>
 						<nav id="nav">
 							<ul>
 								<li class="special">
 									<a href="#menu" class="menuToggle"><span>Menu</span></a>
 									<div id="menu">
 										<ul>
-											<li><a href="index.html">Home</a></li>
-											<li><a href="#">Generic</a></li>
-											<li><a href="#">Elements</a></li>
-											<li><a href="signup.php">Sign Up</a></li>
+											<li><a href="index.php">Home</a></li>
+                                            <?php if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) { ?>
+                                            <li><a href="signup.php">Sign Up</a></li>
 											<li><a href="login.php">Log In</a></li>
-                                            <?php if (isset($_SESSION["Loggedin"]) && $_SESSION["Loggedin"] == true) { ?>
+                                            <?php }?>
+                                            <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
+                                                <li><a href="AdminPanel.php">Admin Panel</a></li>
+                                                <?php }?>
+                                            <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) { ?>
+                                            <li><a href="settings.php">Settings</a></li>
 											<li><a href="logout.php">Log out</a></li>
                                             <?php }?>
 										</ul>
@@ -44,7 +48,7 @@ session_start();
 				<!-- Banner -->
 					<section id="banner">
 						<div class="inner">
-							<h2>Transport company</h2>
+							<h2>URJET</h2>
 							<p>Just a test<br />
 							site template<br /></p>
 							<ul class="actions special">
