@@ -37,7 +37,7 @@ session_start();
                                 <li><a href="index.php">Accueil (airplanes catalog)</a></li>
                                 <li><a href="cata.php">Airplanes catalog</a></li>
                                 <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
-                                    <li><a href="add.php">Avion</a></li>
+                                    <li><a href="avion.php">Avion</a></li>
                                 <?php } ?>
                                 <li><a href="Resersation.php"></a>Réservation</li>
                                 <li><a href="Reclamation.php">Réclamation</a></li>
@@ -82,21 +82,25 @@ session_start();
         <section id="two" class="wrapper alt style2">
             <?php
             require_once "config.php";
-            $result = mysqli_query($con, "SELECT * FROM avion");
-
-            while ($row = mysqli_fetch_array($result)) {
+            $result = $con->prepare("SELECT avion.nom,avion.prix,avion.photo,avion.idtype,typeavion.categorie 
+            From avion 
+            INNER JOIN typeavion 
+            ON avion.idtype = typeavion.id");
+            $result->execute();
+            while ($row= $result->fetch()) {
                 //echo $row['FirstName'] . " " . $row['LastName']; //these are the fields that you have stored in your database table employee
                 echo "<br />";
                 ?>
                 <section class="spotlight">
-                <div class="image"><img src="imgair/<?php echo $row['photo'] ?>" alt="" /></div>
+                <div class="image "><img  style="width:500px;height:300px;" src="imgair/<?php echo $row['photo'] ?>" alt="" /></div>
                 <div class="content">
-                    <h2><?php echo $row['nom'] ?><br />
+                    <h2>Name: <?php echo $row['nom'] ?><br />
                     </h2>
-                    <h2><?php echo $row['type'] ?><br />
+                    <h2>Type: <?php echo $row['categorie'] ?><br />
                     </h2>
-                    <h2><?php echo $row['prix'] ?>DT<br />
+                    <h2>Price: <?php echo $row['prix'] ?>DT<br />
                     </h2>
+                    <a href="reservation.php" class="button primary">Reserve</a>
                 </div>
             </section>
             <?php

@@ -67,7 +67,7 @@
           <?php if (isset($_SESSION["Admin"]) && $_SESSION["Admin"] == true) { ?>
           <li class="nav-item">
             <a href="#" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
-                if($currentpage=="add.php" || $currentpage=="update.php" ){
+                if($currentpage=="avion.php"){
                 echo "active"; 
                 }?>">
               <i class="nav-icon fas fa-plane"></i>
@@ -78,21 +78,12 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="add.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
-                if($currentpage=="add.php"  ){
+                <a href="avion.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="avion.php"  ){
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="update.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
-                if( $currentpage=="update.php" ){
-                echo "active"; 
-                }?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Update</p>
+                  <p>Add/Update</p>
                 </a>
               </li>
              

@@ -31,7 +31,8 @@ if (isset($_POST["upload"])) {
             $image = $_FILES["image"]["name"];
             $id = $_SESSION["id"];
             $stmt = $con->prepare("UPDATE `user` SET image = ? WHERE `id` = ?");
-            $stmt->bind_param("si", $image, $id);
+            $stmt->bindParam(1, $image, PDO::PARAM_STR);
+            $stmt->bindParam(2, $id, PDO::PARAM_INT);
             $stmt->execute();
             $_SESSION["image"] = $image;
         } else {
@@ -70,12 +71,17 @@ if (isset($_POST["submit"])) {
     $id = $_SESSION["id"];
     $id_o = $_SESSION["id_o"];
     $stmt = $con->prepare("UPDATE `user` SET name = ?, lastname = ? ,email = ?,password = ? WHERE `id` = ?");
-    $stmt->bind_param("ssssi", $name, $lastname, $email, $passwordhash, $id);
+    $stmt->bindParam(1, $name, PDO::PARAM_STR);
+    $stmt->bindParam(2, $lastname, PDO::PARAM_STR);
+    $stmt->bindParam(3, $email, PDO::PARAM_STR);
+    $stmt->bindParam(4, $passwordhash, PDO::PARAM_STR);
+    $stmt->bindParam(5, $id, PDO::PARAM_INT);
+
     $stmt->execute();
-    $stmt->close();
 
     $stmt = $con->prepare("UPDATE `usero` SET description= ? WHERE `id` = ?");
-    $stmt->bind_param("si", $description, $id_o);
+    $stmt->bindParam(1, $description, PDO::PARAM_STR);
+    $stmt->bindParam(2, $id_o, PDO::PARAM_INT);
     $stmt->execute();
     $change="Information changed!";
     $_SESSION["email"] = $email;
@@ -397,6 +403,11 @@ if (isset($_POST["submit"])) {
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
+    <script>
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+</script>
 </body>
 
 </html>

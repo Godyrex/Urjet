@@ -9,16 +9,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 $sql = "SELECT id FROM user WHERE username = ?";
 
-if ($stmt = mysqli_prepare($con, $sql)) {
+if ($stmt = $con->prepare($sql)) {
 
-    mysqli_stmt_bind_param($stmt, "s", $param_username);
+  $stmt->bindParam(1, $param_username, PDO::PARAM_STR);
 
     $param_username = trim($_POST["username"]);
 
-    if (mysqli_stmt_execute($stmt)) {
-        mysqli_stmt_store_result($stmt);
+    if ($stmt->execute()) {
+      $stmt->fetch();
 
-        if (mysqli_stmt_num_rows($stmt) == 1) {
+        if ($stmt->rowCount() == 1) {
             echo "This username is already taken.";
             
         } else {
@@ -28,12 +28,12 @@ if ($stmt = mysqli_prepare($con, $sql)) {
             $passwordhash = password_hash($password, PASSWORD_DEFAULT);
             $last_id = 0;
             $sqlo ="INSERT INTO `usero` (`type`, `description`) VALUES ('User', 'Description')";
-            $rso = mysqli_query($con, $sqlo);
-            if($rso){
-            $last_id = $con->insert_id;
+            $rso = $con->prepare($sqlo);
+            if($rso->execute()){
+            $last_id = $con->lastInsertId();
             $sqll = "INSERT INTO `user` (`username`, `email`, `password`,id_o) VALUES ('$username', '$email', '$passwordhash','$last_id')";
-            $rs = mysqli_query($con, $sqll);
-            if ($rs) {
+            $rs = $con->prepare($sqll);
+            if ($rs->execute()) {
               echo "Accounted Created";
           }
             }
@@ -128,5 +128,10 @@ if ($stmt = mysqli_prepare($con, $sql)) {
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
+<script>
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+</script>
 </body>
 </html>

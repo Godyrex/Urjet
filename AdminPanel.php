@@ -12,32 +12,22 @@ $user3 = "";
 $id_o = 0;
 if (isset($_POST["submitad"])) {
   // if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $param_id1 = $_POST["ida"];
+  $param_id1 = $_POST["submitad"];
   $stmto = $con->prepare("SELECT id_o FROM user WHERE id=?");
-  mysqli_stmt_bind_param($stmto, "i",  $param_id1);
+  $stmto->bindParam(1, $param_id1, PDO::PARAM_INT);
   if ($stmto->execute()) {
-    $stmto->bind_result($id_o);
-    if ($stmto->fetch()) {
-      $param_id = $id_o;
-      $stmto->close();
+    while ($row = $stmto->fetch()) {
+      $param_id = $row['id_o'];
     }
   }
   $sql = "UPDATE usero SET type = ? WHERE id = ?";
   $type = "Admin";
-  if ($stmt = mysqli_prepare($con, $sql)) {
-
-    mysqli_stmt_bind_param($stmt, "si", $param_type, $param_id);
-
+  if ($stmt = $con->prepare($sql)) {
+    $stmt->bindParam(1, $param_type, PDO::PARAM_STR);
+    $stmt->bindParam(2, $param_id, PDO::PARAM_INT);
     $param_type = $type;
-
-
-
-
-
-
-    if (mysqli_stmt_execute($stmt)) {
-      $user1 = "User changed!";
-      echo "<meta http-equiv='refresh' content='2'>";
+    if ($stmt->execute()) {
+      // echo "<meta http-equiv='refresh' content='2'>";
     } else {
       echo "Oops! Something went wrong. Please try again later.";
     }
@@ -45,30 +35,23 @@ if (isset($_POST["submitad"])) {
 }
 if (isset($_POST["submitc"])) {
   // if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $param_id1 = $_POST["idc"];
+  $param_id1 = $_POST["submitc"];
   $stmto = $con->prepare("SELECT id_o FROM user WHERE id=?");
-  mysqli_stmt_bind_param($stmto, "i",  $param_id1);
+  $stmto->bindParam(1, $param_id1, PDO::PARAM_INT);
   if ($stmto->execute()) {
-    $stmto->bind_result($id_o);
-    if ($stmto->fetch()) {
-      $param_id = $id_o;
-      $stmto->close();
+    if ($row = $stmto->fetch()) {
+      $param_id = $row['id_o'];;
     }
   }
   $sql = "UPDATE usero SET type = ? WHERE id = ?";
   $type = "User";
-  if ($stmt = mysqli_prepare($con, $sql)) {
-
-    mysqli_stmt_bind_param($stmt, "si", $param_type, $param_id);
-
-
+  if ($stmt = $con->prepare($sql)) {
+    $stmt->bindParam(1, $param_type, PDO::PARAM_STR);
+    $stmt->bindParam(2, $param_id, PDO::PARAM_INT);
     $param_type = $type;
-
-
-    if (mysqli_stmt_execute($stmt)) {
-      $user2 = "user changed!";
+    if ($stmt->execute()) {
       // sleep(2);
-      echo "<meta http-equiv='refresh' content='2'>";
+      //  echo "<meta http-equiv='refresh' content='2'>";
     } else {
       echo "Oops! Something went wrong. Please try again later.";
     }
@@ -76,33 +59,100 @@ if (isset($_POST["submitc"])) {
 }
 if (isset($_POST["submitb"])) {
   // if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $param_id1 = $_POST["idb"];
+  $param_id1 = $_POST["submitb"];
   $stmto = $con->prepare("SELECT id_o FROM user WHERE id=?");
-  mysqli_stmt_bind_param($stmto, "i",  $param_id1);
+  $stmto->bindParam(1, $param_id1, PDO::PARAM_INT);
   if ($stmto->execute()) {
-    $stmto->bind_result($id_o);
-    if ($stmto->fetch()) {
-      $param_id = $id_o;
-      $stmto->close();
+    if ($row = $stmto->fetch()) {
+      $param_id = $row['id_o'];;
     }
   }
-  $sql = "DELETE FROM `usero` WHERE `id` = ?";
-  if ($stmt = mysqli_prepare($con, $sql)) {
-
-    mysqli_stmt_bind_param($stmt, "i", $param_id);
-
-
-
+  $sql = "UPDATE `usero` SET ban = ? WHERE `id` = ?";
+  if ($stmt = $con->prepare($sql)) {
+    $ban = "Yes";
+    $stmt->bindParam(1, $ban, PDO::PARAM_STR);
+    $stmt->bindParam(2, $param_id, PDO::PARAM_INT);
 
 
-    if (mysqli_stmt_execute($stmt)) {
-      $user3 = "User Banned!";
+
+
+
+    if ($stmt->execute()) {
       // sleep(2);
-      echo "<meta http-equiv='refresh' content='2'>";
+      //echo "<meta http-equiv='refresh' content='2'>";
     } else {
       echo "Oops! Something went wrong. Please try again later.";
     }
   }
+}
+if (isset($_POST["submitub"])) {
+  // if($_SERVER["REQUEST_METHOD"] == "POST"){
+  $param_id1 = $_POST["submitub"];
+  $stmto = $con->prepare("SELECT id_o FROM user WHERE id=?");
+  $stmto->bindParam(1, $param_id1, PDO::PARAM_INT);
+  if ($stmto->execute()) {
+    if ($row = $stmto->fetch()) {
+      $param_id = $row['id_o'];;
+    }
+  }
+  $sql = "UPDATE `usero` SET ban = ? WHERE `id` = ?";
+  if ($stmt = $con->prepare($sql)) {
+    $ban = "No";
+    $stmt->bindParam(1, $ban, PDO::PARAM_STR);
+    $stmt->bindParam(2, $param_id, PDO::PARAM_INT);
+
+
+
+
+
+    if ($stmt->execute()) {
+      // sleep(2);
+      //echo "<meta http-equiv='refresh' content='2'>";
+    } else {
+      echo "Oops! Something went wrong. Please try again later.";
+    }
+  }
+}
+if(isset($_POST['submit']))
+{
+  $fileName = "User_list".date('d-m-Y').".csv"; 
+ @header("Content-Disposition: attachment; filename=".$fileName);
+ @header("Content-Type: application/csv");  
+ @header("Pragma: no-cache"); 
+@header("Expires: 0"); 
+
+ $select ="SELECT user.username,user.name,user.lastname,user.id, user.email, user.image,usero.type,usero.description,usero.ban 
+ From user 
+ INNER JOIN usero 
+ ON user.id_o = usero.id";
+ $stmt=$con->prepare($select);
+ $stmt->execute();
+ $data="";
+ $data.="ID".",";
+ $data.="Username".",";
+ $data.="Email Address".",";
+ $data.="Name".",";
+ $data.="Lastname".",";
+ $data.="Image".",";
+ $data.="Account Type".",";
+ $data.="Description".",";
+ $data.="Banned"."\n";
+ 
+ while($row=$stmt->fetch())
+ {
+  $data.=$row['id'].",";
+  $data.=$row['username'].",";
+  $data.=$row['email'].",";
+  $data.=$row['name'].",";
+  $data.=$row['lastname'].",";
+  $data.=$row['image'].",";
+  $data.=$row['type'].",";
+  $data.=$row['description'].",";
+  $data.=$row['ban']."\n";
+ }
+
+ echo $data;
+ exit();
 }
 
 ?>
@@ -111,9 +161,8 @@ if (isset($_POST["submitb"])) {
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" http-equiv="Content-Type" content="width=device-width, initial-scale=1">
   <title>Admin Panel</title>
-  <script src="adminpanel.js"></script>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -191,7 +240,7 @@ if (isset($_POST["submitb"])) {
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="index.php" class="brand-link">
-        <img src="img/urjet.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="img/urjet.png" alt="URJET Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">UrJet</span>
       </a>
 
@@ -229,11 +278,11 @@ if (isset($_POST["submitb"])) {
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List</h3>
 
+                <h3 class="card-title">List</h3>
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                    <input type="text" id="myInput" onkeyup="myFunction()" class="form-control float-right" placeholder="Search">
 
                     <div class="input-group-append">
                       <button type="submit" class="btn btn-default">
@@ -245,7 +294,7 @@ if (isset($_POST["submitb"])) {
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0" style="height: 300px;">
-                <table class="table table-head-fixed text-nowrap">
+                <table id="myTable" class="table table-head-fixed text-nowrap">
                   <thead>
                     <tr>
                       <th>ID</th>
@@ -256,125 +305,67 @@ if (isset($_POST["submitb"])) {
                       <th>Image</th>
                       <th>Account Type</th>
                       <th>Description</th>
+                      <th>Banned</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
-                    require_once "config.php";
-                    $sql = "SELECT user.username,user.name,user.lastname,user.id, user.email, user.image,usero.type,usero.description 
+                    //require_once "config.php";
+                    $sql = "SELECT user.username,user.name,user.lastname,user.id, user.email, user.image,usero.type,usero.description,usero.ban 
                     From user 
                     INNER JOIN usero 
                     ON user.id_o = usero.id";
-                    $results = mysqli_query($con, $sql);
-
-                    while ($row = mysqli_fetch_array($results)) {
+                    $stmt = $con->prepare($sql);
+                    $stmt->execute();
+                    while ($row = $stmt->fetch()) {
                     ?>
                       <tr>
-                        <td><?php echo $row['id'] ?></td>
-                        <td><?php echo $row['username'] ?></td>
-                        <td><?php echo $row['email'] ?></td>
-                        <td><?php echo $row['name'] ?></td>
-                        <td><?php echo $row['lastname'] ?></td>
-                        <td><?php echo $row['image'] ?></td>
-                        <td><?php echo $row['type'] ?></td>
-                        <td><?php echo $row['description'] ?></td>
-                        </tr>
-                      <?php
+                        <td><?php echo htmlspecialchars($row['id']) ?></td>
+                        <td><?php echo htmlspecialchars($row['username']) ?></td>
+                        <td><?php echo htmlspecialchars($row['email']) ?></td>
+                        <td><?php echo htmlspecialchars($row['name']) ?></td>
+                        <td><?php echo htmlspecialchars($row['lastname']) ?></td>
+                        <td><?php echo htmlspecialchars($row['image']) ?></td>
+                        <td><?php echo htmlspecialchars($row['type']) ?></td>
+                        <td><?php echo htmlspecialchars($row['description']) ?></td>
+                        <td badge bg-danger ><?php echo htmlspecialchars($row['ban']) ?></td>
+                        <?php if ($row['type'] == "User") { ?>
+                          <td>
+                            <form method="post"><button name="submitad" value="<?php echo $row['id'] ?>" type="submit" class="btn btn-primary">Admin</button></form>
+                          </td>
+                        <?php } else { ?>
+                          <td>
+                            <form method="post"><button name="submitc" value="<?php echo $row['id'] ?>" type="submit" class="btn btn-primary">User</button></form>
+                          </td>
+                        <?php } ?>
+                        <?php if ($row['ban'] == "No") { ?>
+                          <td>
+                            <form method="post"><button name="submitb" value="<?php echo $row['id'] ?>" type="submit" class="btn btn-primary">Ban</button></form>
+                          </td>
+                        <?php } else { ?>
+                          <td>
+                            <form method="post"><button name="submitub" value="<?php echo $row['id'] ?>" type="submit" class="btn btn-primary">Unban</button></form>
+                          </td>
+                        <?php } ?>
+                      </tr>
+                    <?php
                     }
-                      ?>
+                    ?>
 
                   </tbody>
+
                 </table>
+
+              </div>
+              <div class="card-footer">
+                <form method="post">
+                   <input  class="btn btn-primary" type="submit" name="submit" value="Export" />
+                </form>
               </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
           </div>
-        </div>
-        <div class="container-fluid ">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="card card-primary">
-                <div class="card-header">
-                  <h3 class="card-title">Set User to Client</h3>
-                </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-                <form name="clientform" onsubmit="return validateFormclient(event)" method="post">
-                  <div class="card-body">
-                    <div class="form-group">
-                      <label for="InputIDrl">ID</label>
-                      <input name="idc" id="idc" onblur="verifclient()" onkeyup="verifclient()" type="number" class="form-control" id="Inputidr1" placeholder="Enter ID">
-                      <p id="erroridc" class="card bg-danger"></p>
-                      <p id="errorimagephp" class="card bg-success"><?php echo $user2 ?></p>
-                    </div>
-
-                  </div>
-                  <!-- /.card-body -->
-
-                  <div class="card-footer">
-                    <button name="submitc" type="submit" class="btn btn-primary">Set</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <!-- general form elements -->
-              <div class="card card-primary">
-                <div class="card-header">
-                  <h3 class="card-title">Set User to admin</h3>
-                </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-                <form name="adminform" onsubmit="return validateFormadmin(event)" method="post">
-                  <div class="card-body">
-                    <div class="form-group">
-                      <label for="InputIDrl">ID</label>
-                      <input name="ida" id="ida" onblur="verifadmin()" onkeyup="verifadmin()" type="number" class="form-control" id="Inputidr" placeholder="Enter ID">
-                      <p id="errorida" class="card bg-danger"></p>
-                      <p id="errorimagephp" class="card bg-success"><?php echo $user1 ?></p>
-                    </div>
-
-                  </div>
-                  <!-- /.card-body -->
-
-                  <div class="card-footer">
-                    <button name="submitad" type="submit" class="btn btn-primary">Set</button>
-                  </div>
-                </form>
-              </div>
-
-            </div>
-            <div class="col-md-4">
-              <div class="card card-primary">
-                <div class="card-header">
-                  <h3 class="card-title">Ban User</h3>
-                </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-                <form name="banform" onsubmit="return validateFormban(event)" method="post">
-                  <div class="card-body">
-                    <div class="form-group">
-                      <label for="InputIDrl">ID</label>
-                      <input name="idb" id="idb" onblur="verifban()" onkeyup="verifban()" type="number" class="form-control" id="Inputidr" placeholder="Enter ID">
-                      <p id="erroridb" class="card bg-danger"></p>
-                      <p id="errorimagephp" class="card bg-success"><?php echo $user3 ?></p>
-                    </div>
-
-                  </div>
-                  <!-- /.card-body -->
-
-                  <div class="card-footer ">
-                    <button name="submitb" type="submit" class="btn btn-primary">Ban</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <!-- /.card-body -->
-          </div>
-
-          <!-- /.card -->
-          <!-- right col -->
         </div>
     </div>
     <!-- /.container-fluid -->
@@ -426,6 +417,11 @@ if (isset($_POST["submitb"])) {
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
+    <script>
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+</script>
 </body>
 
 </html>

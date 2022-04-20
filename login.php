@@ -36,35 +36,43 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT id, username, email, password, name, lastname, image ,id_o FROM user WHERE username = ?";
+        $sql = "SELECT id, username, email, password, name, lastname, image ,id_o FROM user WHERE username = :username";
         
-        if($stmt = mysqli_prepare($con, $sql)){
+        if($stmt = $con->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-            
-            // Set parameters
             $param_username = $username;
+            $stmt->bindParam(':username', $param_username);
+            // Set parameters
             
             // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
+            if($stmt->execute()){
                 // Store result
-                mysqli_stmt_store_result($stmt);
+                while($row=$stmt->fetch()){
+                  $id=$row['id'];
+                  $username=$row['username'];
+                  $email=$row['email'];
+                  $hashed_password=$row['password'];
+                  $name=$row['name'];
+                  $lastname=$row['lastname'];
+                  $image=$row['image'];
+                  $id_o=$row['id_o'];
+                }
                 
                 // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username,$email, $hashed_password,  $name, $lastname, $image,$id_o);
-                    if(mysqli_stmt_fetch($stmt)){
+                if($stmt->rowCount() == 1){   
                         if(password_verify($password, $hashed_password)){
                             // Password is correct, so start a new session
-                            $sqlo = "SELECT type , description FROM usero WHERE id = ?";
-                            $stmto = mysqli_prepare($con, $sqlo);
-                            mysqli_stmt_bind_param($stmto, "i", $id_o);
-                            if(mysqli_stmt_execute($stmto)){
-                            mysqli_stmt_store_result($stmto);
-                            mysqli_stmt_bind_result($stmto, $type, $description);
-                            mysqli_stmt_fetch($stmto);
+                            $sqlo = "SELECT type , description , ban FROM usero WHERE id = ?";
+                            $stmto=$con->prepare( $sqlo);
+                            $stmto->bindParam(1, $id_o, PDO::PARAM_INT);
+                            if($stmto->execute()){
+                              while($row=$stmto->fetch()){
+                                $type=$row['type'];
+                                $description=$row['description'];
+                                $ban=$row['ban'];
+                              }
                             }
+                            if($ban!="Yes"){
                             session_start();
 
                             // Store data in session variables
@@ -79,22 +87,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["image"] = $image;
                             $_SESSION["type"] = $type;
                             $_SESSION["description"] = $description;
+                            $_SESSION["ban"] = $ban;
                             if($type==$admin){
+                              echo "admin";
                                 $_SESSION["Admin"] = true;
                                 $_SESSION["User"] = false;
                                 header("location: AdminPanel.php");
                             }else{
+                              echo "user";
                                 $_SESSION["User"] = true;
                                 $_SESSION["Admin"] = false;
                                 header("location: index.php");
-                            };                             
+                            }; 
+                          }else{
+                            echo "Your account is banned!";
+                          }                            
                             
                             // Redirect user to welcome page
                         } else{
                             // Password is not valid, display a generic error message
                             echo "Invalid username or password.";
                         }
-                    }
+                    
                 } else{
                     // Username doesn't exist, display a generic error message
                     echo "Invalid username or password.";
@@ -104,12 +118,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
 
             // Close statement
-            mysqli_stmt_close($stmt);
         }
     }
     
     // Close connection
-    mysqli_close($con);
 }
 ?>
 <!DOCTYPE html>
@@ -181,5 +193,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
+<script>
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+</script>
 </body>
 </html>
