@@ -275,6 +275,61 @@ if(isset($_POST['submit']))
 
       <section class="content">
         <div class="row">
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <?php $sql="SELECT * FROM usero"; 
+                $stmt= $con->prepare($sql);
+                $stmt->execute();
+                $stmt->fetch();
+                ?>
+                <span class="info-box-text">Users</span>
+                <span class="info-box-number"><?php echo $stmt->rowCount(); ?></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-info elevation-1"><i class="fas  fa-user"></i></span>
+
+              <div class="info-box-content">
+                <?php $sql="SELECT * FROM usero WHERE type=?"; 
+                $stmt= $con->prepare($sql);
+                $ban="Admin";
+                $stmt->bindParam(1, $ban, PDO::PARAM_STR);
+                $stmt->execute();
+                $stmt->fetch();
+                ?>
+                <span class="info-box-text">Admins</span>
+                <span class="info-box-number"><?php echo $stmt->rowCount(); ?></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-danger elevation-1"><i class="fas  fa-ban"></i></span>
+
+              <div class="info-box-content">
+                <?php $sql="SELECT * FROM usero WHERE ban=?"; 
+                $stmt= $con->prepare($sql);
+                $ban="Yes";
+                $stmt->bindParam(1, $ban, PDO::PARAM_STR);
+                $stmt->execute();
+                $stmt->fetch();
+                ?>
+                <span class="info-box-text">Bans</span>
+                <span class="info-box-number"><?php echo $stmt->rowCount(); ?></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
           <div class="col-12">
             <div class="card">
               <div class="card-header">
@@ -282,7 +337,7 @@ if(isset($_POST['submit']))
                 <h3 class="card-title">List</h3>
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                    <input type="text" id="myInput" onkeyup="myFunction()" class="form-control float-right" placeholder="Search">
 
                     <div class="input-group-append">
                       <button type="submit" class="btn btn-default">
@@ -294,7 +349,7 @@ if(isset($_POST['submit']))
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0" style="height: 300px;">
-                <table class="table table-head-fixed text-nowrap">
+                <table id="myTable" class="table table-head-fixed text-nowrap">
                   <thead>
                     <tr>
                       <th>ID</th>
@@ -417,6 +472,11 @@ if(isset($_POST['submit']))
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
+    <script>
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+</script>
 </body>
 
 </html>

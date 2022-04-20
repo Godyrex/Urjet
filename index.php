@@ -33,7 +33,7 @@ session_start();
 											<li><a href="index.php">Accueil (airplanes catalog)</a></li>
 											<li><a href="cata.php">Airplanes catalog</a></li>
 											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
-											<li><a href="add.php">Avion</a></li>
+											<li><a href="avion.php">Avion</a></li>
 											<?php }?>
 											<li><a href="Resersation.php"></a>Réservation</li>
 											<li><a href="Reclamation.php">Réclamation</a></li>
