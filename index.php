@@ -38,8 +38,8 @@ session_start();
 											<li><a href="Resersation.php"></a>Réservation</li>
 											<li><a href="Reclamation.php">Réclamation</a></li>
 											<li><a href="Reponse.php">Réponse</a></li>
-											<li><a href="Maintenance.php"></a>Maintenance</li>
-											<li><a href="Demande.php">Demande de maintenance</a></li>
+											<li><a href="afficherListeDemandes.php"></a>Afficher la liste des demandes</li>
+											<li><a href="ajouterdemande.php">Demande de maintenance</a></li>
 											<li><a href="Voyage.php">Voyage</a></li>
                                             <?php if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) { ?>
                                             <li><a href="signup.php">Sign Up</a></li>
@@ -63,9 +63,7 @@ session_start();
 					<section id="banner">
 						<div class="inner">
 							<h2>URJET</h2>
-							
 							<ul class="actions special">
-								<li><a href="#" class="button primary">Activate</a></li>
 							</ul>
 						</div>
 						<a href="#one" class="more scrolly">savoir plus</a>
