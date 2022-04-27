@@ -1,11 +1,13 @@
 <?php
 session_start();
-
+include '../Controller/userc.php';
+	$userc=new userc();
+    $userc->check();
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
-require_once "config.php";
+require_once "../config.php";
 // Check if image file is a actual image or fake image
  $output ="";
  $change="";
@@ -70,33 +72,25 @@ if (isset($_POST["submit"])) {
     }
     $id = $_SESSION["id"];
     $id_o = $_SESSION["id_o"];
-    $stmt = $con->prepare("UPDATE `user` SET name = ?, lastname = ? ,email = ?,password = ? WHERE `id` = ?");
-    $stmt->bindParam(1, $name, PDO::PARAM_STR);
-    $stmt->bindParam(2, $lastname, PDO::PARAM_STR);
-    $stmt->bindParam(3, $email, PDO::PARAM_STR);
-    $stmt->bindParam(4, $passwordhash, PDO::PARAM_STR);
-    $stmt->bindParam(5, $id, PDO::PARAM_INT);
-
-    $stmt->execute();
-
-    $stmt = $con->prepare("UPDATE `usero` SET description= ? WHERE `id` = ?");
-    $stmt->bindParam(1, $description, PDO::PARAM_STR);
-    $stmt->bindParam(2, $id_o, PDO::PARAM_INT);
-    $stmt->execute();
+   $userc->updateuser($name,$lastname,$email,$passwordhash,$id,$description,$id_o);
     $change="Information changed!";
-    $_SESSION["email"] = $email;
-    $_SESSION["hpassword"] = $passwordhash;
-    $_SESSION["name"] = $name;
-    $_SESSION["lastname"] = $lastname;
-    $_SESSION["description"] = $description;
     /*  $rs = mysqli_query($con, $sql);
     if ($rs) {
         echo "Name Updated";
   
 }*/
 }
-
-
+$msg="";
+$msge="";
+if(isset($_POST['verify']))
+{
+    $verify=$_POST['verify'];
+if($userc-> verification($verify)==1){
+$msg= "Check Your Email box and Click on the email verification link.";
+}else{
+$msge= "Sorry, failed while sending mail!";
+}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -321,15 +315,20 @@ if (isset($_POST["submit"])) {
 
                                     <ul class="list-group list-group-unbordered mb-3">
                                         <li class="list-group-item">
-                                            <b>Name</b> <a class="float-right"><?php echo htmlspecialchars($_SESSION["name"]);?></a>
+                                            <b>Name : </b> <a class=""><?php echo htmlspecialchars($_SESSION["name"]);?></a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Lastname</b> <a class="float-right"><?php echo htmlspecialchars($_SESSION["lastname"]);?></a>
+                                            <b>Lastname : </b> <a class=""><?php echo htmlspecialchars($_SESSION["lastname"]);?></a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Email</b> <a class="float-right"><?php echo htmlspecialchars($_SESSION["email"]);?></a>
+                                            <b>Email : </b> <a class=""><?php echo htmlspecialchars($_SESSION["email"]);?></a>
+                                            <?php if($_SESSION["verified"] == 0){?>
+                                                <form class="float-right" method="post"><button name="verify" value="<?php echo $_SESSION["email"] ?>"  type="submit" class=" btn btn-primary btn-sm">Verify</button></form>
+                                                <p class="card bg-danger"><?php echo $msge ?></p>
+                                                <p class="card bg-success"><?php echo $msg ?></p>
+                                            <?php } ?>
                                         </li>
-                                        <strong><i></i>Description</strong>
+                                        <strong><i></i>Description : </strong>
 
                                     <p class="text-muted"><?php echo htmlspecialchars($_SESSION["description"]);?></p>
                                     </ul>

@@ -1,45 +1,21 @@
 <?php
 session_start();
+include '../Controller/userc.php';
+$userc=new userc();
+ if( isset($_COOKIE['rememberme'] )){
+$userc->checklogin();
+}
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
   header("location: index.php");
   exit;
 }
-require_once "config.php";
+require_once "../config.php";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-$sql = "SELECT id FROM user WHERE username = ?";
-
-if ($stmt = $con->prepare($sql)) {
-
-  $stmt->bindParam(1, $param_username, PDO::PARAM_STR);
-
-    $param_username = trim($_POST["username"]);
-
-    if ($stmt->execute()) {
-      $stmt->fetch();
-
-        if ($stmt->rowCount() == 1) {
-            echo "This username is already taken.";
-            
-        } else {
-            $username = trim($_POST["username"]);
-            $email = trim($_POST['email']);
-            $password = trim($_POST['password']);
-            $passwordhash = password_hash($password, PASSWORD_DEFAULT);
-            $last_id = 0;
-            $sqlo ="INSERT INTO `usero` (`type`, `description`) VALUES ('User', 'Description')";
-            $rso = $con->prepare($sqlo);
-            if($rso->execute()){
-            $last_id = $con->lastInsertId();
-            $sqll = "INSERT INTO `user` (`username`, `email`, `password`,id_o) VALUES ('$username', '$email', '$passwordhash','$last_id')";
-            $rs = $con->prepare($sqll);
-            if ($rs->execute()) {
-              echo "Accounted Created";
-          }
-            }
-        }
-    }
-}
+  $param_username = trim($_POST["username"]);
+  $username = trim($_POST["username"]);
+  $email = trim($_POST['email']);
+  $password = trim($_POST['password']);
+$userc->signup($param_username,$username,$email,$password);
 }
 ?>
 <!DOCTYPE html>

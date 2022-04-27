@@ -1,11 +1,12 @@
 <?php
 session_start();
-
+include '../Controller/userc.php';
+	$userc=new userc();
+    $userc->check();
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] && !isset($_SESSION["Admin"]) || $_SESSION["Admin"] !== true) {
   header("location: index.php");
   exit;
 }
-require_once "config.php";
 $user1 = "";
 $user2 = "";
 $user3 = "";
@@ -13,148 +14,34 @@ $id_o = 0;
 if (isset($_POST["submitad"])) {
   // if($_SERVER["REQUEST_METHOD"] == "POST"){
   $param_id1 = $_POST["submitad"];
-  $stmto = $con->prepare("SELECT id_o FROM user WHERE id=?");
-  $stmto->bindParam(1, $param_id1, PDO::PARAM_INT);
-  if ($stmto->execute()) {
-    while ($row = $stmto->fetch()) {
-      $param_id = $row['id_o'];
-    }
-  }
-  $sql = "UPDATE usero SET type = ? WHERE id = ?";
-  $type = "Admin";
-  if ($stmt = $con->prepare($sql)) {
-    $stmt->bindParam(1, $param_type, PDO::PARAM_STR);
-    $stmt->bindParam(2, $param_id, PDO::PARAM_INT);
-    $param_type = $type;
-    if ($stmt->execute()) {
-      // echo "<meta http-equiv='refresh' content='2'>";
-    } else {
-      echo "Oops! Something went wrong. Please try again later.";
-    }
-  }
+$param_type = "Admin";
+$userc->updatetype($param_id1, $param_type);
+//header("Refresh:0");
 }
 if (isset($_POST["submitc"])) {
   // if($_SERVER["REQUEST_METHOD"] == "POST"){
   $param_id1 = $_POST["submitc"];
-  $stmto = $con->prepare("SELECT id_o FROM user WHERE id=?");
-  $stmto->bindParam(1, $param_id1, PDO::PARAM_INT);
-  if ($stmto->execute()) {
-    if ($row = $stmto->fetch()) {
-      $param_id = $row['id_o'];;
-    }
-  }
-  $sql = "UPDATE usero SET type = ? WHERE id = ?";
-  $type = "User";
-  if ($stmt = $con->prepare($sql)) {
-    $stmt->bindParam(1, $param_type, PDO::PARAM_STR);
-    $stmt->bindParam(2, $param_id, PDO::PARAM_INT);
-    $param_type = $type;
-    if ($stmt->execute()) {
-      // sleep(2);
-      //  echo "<meta http-equiv='refresh' content='2'>";
-    } else {
-      echo "Oops! Something went wrong. Please try again later.";
-    }
-  }
+  $param_type = "User";
+  $userc->updatetype($param_id1, $param_type);
+ // header("Refresh:0");
 }
 if (isset($_POST["submitb"])) {
   // if($_SERVER["REQUEST_METHOD"] == "POST"){
   $param_id1 = $_POST["submitb"];
-  $stmto = $con->prepare("SELECT id_o FROM user WHERE id=?");
-  $stmto->bindParam(1, $param_id1, PDO::PARAM_INT);
-  if ($stmto->execute()) {
-    if ($row = $stmto->fetch()) {
-      $param_id = $row['id_o'];;
-    }
-  }
-  $sql = "UPDATE `usero` SET ban = ? WHERE `id` = ?";
-  if ($stmt = $con->prepare($sql)) {
-    $ban = "Yes";
-    $stmt->bindParam(1, $ban, PDO::PARAM_STR);
-    $stmt->bindParam(2, $param_id, PDO::PARAM_INT);
-
-
-
-
-
-    if ($stmt->execute()) {
-      // sleep(2);
-      //echo "<meta http-equiv='refresh' content='2'>";
-    } else {
-      echo "Oops! Something went wrong. Please try again later.";
-    }
-  }
+  $ban="Yes";
+$userc->userban($param_id1,$ban);
+//header("Refresh:0");
 }
 if (isset($_POST["submitub"])) {
   // if($_SERVER["REQUEST_METHOD"] == "POST"){
   $param_id1 = $_POST["submitub"];
-  $stmto = $con->prepare("SELECT id_o FROM user WHERE id=?");
-  $stmto->bindParam(1, $param_id1, PDO::PARAM_INT);
-  if ($stmto->execute()) {
-    if ($row = $stmto->fetch()) {
-      $param_id = $row['id_o'];;
-    }
-  }
-  $sql = "UPDATE `usero` SET ban = ? WHERE `id` = ?";
-  if ($stmt = $con->prepare($sql)) {
-    $ban = "No";
-    $stmt->bindParam(1, $ban, PDO::PARAM_STR);
-    $stmt->bindParam(2, $param_id, PDO::PARAM_INT);
-
-
-
-
-
-    if ($stmt->execute()) {
-      // sleep(2);
-      //echo "<meta http-equiv='refresh' content='2'>";
-    } else {
-      echo "Oops! Something went wrong. Please try again later.";
-    }
-  }
+  $ban="No";
+$userc->userban($param_id1,$ban);
+//header("Refresh:0");
 }
-if(isset($_POST['submit']))
-{
-  $fileName = "User_list".date('d-m-Y').".csv"; 
- @header("Content-Disposition: attachment; filename=".$fileName);
- @header("Content-Type: application/csv");  
- @header("Pragma: no-cache"); 
-@header("Expires: 0"); 
-
- $select ="SELECT user.username,user.name,user.lastname,user.id, user.email, user.image,usero.type,usero.description,usero.ban 
- From user 
- INNER JOIN usero 
- ON user.id_o = usero.id";
- $stmt=$con->prepare($select);
- $stmt->execute();
- $data="";
- $data.="ID".",";
- $data.="Username".",";
- $data.="Email Address".",";
- $data.="Name".",";
- $data.="Lastname".",";
- $data.="Image".",";
- $data.="Account Type".",";
- $data.="Description".",";
- $data.="Banned"."\n";
- 
- while($row=$stmt->fetch())
- {
-  $data.=$row['id'].",";
-  $data.=$row['username'].",";
-  $data.=$row['email'].",";
-  $data.=$row['name'].",";
-  $data.=$row['lastname'].",";
-  $data.=$row['image'].",";
-  $data.=$row['type'].",";
-  $data.=$row['description'].",";
-  $data.=$row['ban']."\n";
- }
-
- echo $data;
- exit();
+if (isset($_POST['submit'])) {
+  $userc->excel();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -275,18 +162,13 @@ if(isset($_POST['submit']))
 
       <section class="content">
         <div class="row">
-        <div class="col-12 col-sm-6 col-md-3">
+          <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
               <span class="info-box-icon bg-success elevation-1"><i class="fas fa-users"></i></span>
 
               <div class="info-box-content">
-                <?php $sql="SELECT * FROM usero"; 
-                $stmt= $con->prepare($sql);
-                $stmt->execute();
-                $stmt->fetch();
-                ?>
                 <span class="info-box-text">Users</span>
-                <span class="info-box-number"><?php echo $stmt->rowCount(); ?></span>
+                <span class="info-box-number"><?php echo $userc->usercount(); ?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -297,15 +179,8 @@ if(isset($_POST['submit']))
               <span class="info-box-icon bg-info elevation-1"><i class="fas  fa-user"></i></span>
 
               <div class="info-box-content">
-                <?php $sql="SELECT * FROM usero WHERE type=?"; 
-                $stmt= $con->prepare($sql);
-                $ban="Admin";
-                $stmt->bindParam(1, $ban, PDO::PARAM_STR);
-                $stmt->execute();
-                $stmt->fetch();
-                ?>
                 <span class="info-box-text">Admins</span>
-                <span class="info-box-number"><?php echo $stmt->rowCount(); ?></span>
+                <span class="info-box-number"><?php echo $userc->admincount(); ?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -316,15 +191,8 @@ if(isset($_POST['submit']))
               <span class="info-box-icon bg-danger elevation-1"><i class="fas  fa-ban"></i></span>
 
               <div class="info-box-content">
-                <?php $sql="SELECT * FROM usero WHERE ban=?"; 
-                $stmt= $con->prepare($sql);
-                $ban="Yes";
-                $stmt->bindParam(1, $ban, PDO::PARAM_STR);
-                $stmt->execute();
-                $stmt->fetch();
-                ?>
                 <span class="info-box-text">Bans</span>
-                <span class="info-box-number"><?php echo $stmt->rowCount(); ?></span>
+                <span class="info-box-number"><?php echo $userc->bancount(); ?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -348,7 +216,7 @@ if(isset($_POST['submit']))
                 </div>
               </div>
               <!-- /.card-header -->
-              <div class="card-body table-responsive p-0" style="height: 300px;">
+              <div class="card-body table-responsive p-0" style="height: 300px ">
                 <table id="myTable" class="table table-head-fixed text-nowrap">
                   <thead>
                     <tr>
@@ -361,50 +229,13 @@ if(isset($_POST['submit']))
                       <th>Account Type</th>
                       <th>Description</th>
                       <th>Banned</th>
+                      <th>Set</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
-                    //require_once "config.php";
-                    $sql = "SELECT user.username,user.name,user.lastname,user.id, user.email, user.image,usero.type,usero.description,usero.ban 
-                    From user 
-                    INNER JOIN usero 
-                    ON user.id_o = usero.id";
-                    $stmt = $con->prepare($sql);
-                    $stmt->execute();
-                    while ($row = $stmt->fetch()) {
-                    ?>
-                      <tr>
-                        <td><?php echo htmlspecialchars($row['id']) ?></td>
-                        <td><?php echo htmlspecialchars($row['username']) ?></td>
-                        <td><?php echo htmlspecialchars($row['email']) ?></td>
-                        <td><?php echo htmlspecialchars($row['name']) ?></td>
-                        <td><?php echo htmlspecialchars($row['lastname']) ?></td>
-                        <td><?php echo htmlspecialchars($row['image']) ?></td>
-                        <td><?php echo htmlspecialchars($row['type']) ?></td>
-                        <td><?php echo htmlspecialchars($row['description']) ?></td>
-                        <td badge bg-danger ><?php echo htmlspecialchars($row['ban']) ?></td>
-                        <?php if ($row['type'] == "User") { ?>
-                          <td>
-                            <form method="post"><button name="submitad" value="<?php echo $row['id'] ?>" type="submit" class="btn btn-primary">Admin</button></form>
-                          </td>
-                        <?php } else { ?>
-                          <td>
-                            <form method="post"><button name="submitc" value="<?php echo $row['id'] ?>" type="submit" class="btn btn-primary">User</button></form>
-                          </td>
-                        <?php } ?>
-                        <?php if ($row['ban'] == "No") { ?>
-                          <td>
-                            <form method="post"><button name="submitb" value="<?php echo $row['id'] ?>" type="submit" class="btn btn-primary">Ban</button></form>
-                          </td>
-                        <?php } else { ?>
-                          <td>
-                            <form method="post"><button name="submitub" value="<?php echo $row['id'] ?>" type="submit" class="btn btn-primary">Unban</button></form>
-                          </td>
-                        <?php } ?>
-                      </tr>
-                    <?php
-                    }
+                    $userc->userslist();
                     ?>
 
                   </tbody>
@@ -414,7 +245,7 @@ if(isset($_POST['submit']))
               </div>
               <div class="card-footer">
                 <form method="post">
-                   <input  class="btn btn-primary" type="submit" name="submit" value="Export" />
+                  <input class="btn btn-primary" type="submit" name="submit" value="Export" />
                 </form>
               </div>
               <!-- /.card-body -->
@@ -473,10 +304,10 @@ if(isset($_POST['submit']))
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
     <script>
-if ( window.history.replaceState ) {
-  window.history.replaceState( null, null, window.location.href );
-}
-</script>
+      if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+      }
+    </script>
 </body>
 
 </html>
