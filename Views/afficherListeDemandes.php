@@ -1,84 +1,156 @@
-<?php
+
+ <?php
 	include '../Controller/DemandeC.php';
 	$demandeC=new DemandeC();
 	$listeDemandes=$demandeC->afficherdemandes(); 
+	if (isset($_POST['Export'])) {
+		$demandeC->excel();
+	  }
 ?>
-<!DOCTYPE HTML>
+<!DOCTYPE html>
+<html lang="en">
 
-<html>
-	<head>
-		<title>Demande de maintenance</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		<script src="finsert.js"></script>
-	</head>
-	<body class="is-preload">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" http-equiv="Content-Type" content="width=device-width, initial-scale=1">
+  <title>Admin Panel</title>
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+</head>
 
-		<!-- Page Wrapper -->
-			<div id="page-wrapper">
+<body class="hold-transition sidebar-mini layout-fixed">
+  <div class="wrapper">
 
-				<!-- Header -->
-					<header id="header">
-						<h1><a href="index.html">Urjet</a></h1>
-						<nav id="nav">
-							<ul>
-								<li class="special">
-									<a href="#menu" class="menuToggle"><span>Menu</span></a>
-									<div id="menu">
-										<ul>
-										<li><a href="index.php">Accueil (airplanes catalog)</a></li>
-											<li><a href="cata.php">Airplanes catalog</a></li>
-											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
-											<li><a href="add.php">Avion</a></li>
-											<?php }?>
-											<li><a href="Resersation.php"></a>Réservation</li>
-											<li><a href="Reclamation.php">Réclamation</a></li>
-											<li><a href="Reponse.php">Réponse</a></li>
-											<li><a href="afficherListeDemandes.php"></a>Afficher la liste des demandes</li>
-											<li><a href="ajouterdemande.php">Demande de maintenance</a></li>
-											<li><a href="Voyage.php">Voyage</a></li>
-                                            <?php if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) { ?>
-                                            <li><a href="signup.php">Sign Up</a></li>
-											<li><a href="login.php">Log In</a></li>
-                                            <?php }?>
-											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
-                                                <li><a href="AdminPanel.php">Admin Panel</a></li>
-                                                <?php }?>
-                                            <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) { ?>
-                                            <li><a href="settings.php">Settings</a></li>
-											<li><a href="logout.php">Log out</a></li>
-                                            <?php }?>
-										</ul>
-									</div>
-								</li>
-							</ul>
-						</nav>
-					</header>
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="img/urjet.png" alt="urjetLogo" height="60" width="60">
+    </div>
 
-				<!-- Main -->
-					<article id="main">
-						<header>
-							<h2>Demande de maintenance</h2>
-							<p>Liste des demandes</p>
-						</header>
-						<section class="wrapper style5">
-							<div class="inner">
-							<form action="rechercherdemande.php" method="post" >
-										<div class="row gtr-uniform"> 
-											<div class="col-6 col-12-xsmall"> 
-												<input type="text" name="key"  placeholder="Recherche.." />
-												<input type="submit" name="submit"  value="chercher" />
-												
-											</div>  
-										</div>
-							</form>
-								<section>
-							
-		<table border="1" align="center">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="index.php" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="logout.php" class="nav-link">Logout</a>
+        </li>
+      </ul>
+
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto">
+        <!-- Navbar Search -->
+        <li class="nav-item">
+          <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+            <i class="fas fa-search"></i>
+          </a>
+          <div class="navbar-search-block">
+            <form class="form-inline">
+              <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                  <button class="btn btn-navbar" type="submit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                  <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </li>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="index.php" class="brand-link">
+        <img src="img/urjet.png" alt="URJET Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">UrJet</span>
+      </a>
+
+      <?php require 'sidebar.php' ?>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">User Managments</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">User Managments</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+
+      <!-- Main content -->
+      <!-- /.row -->
+      <!-- Main row -->
+      <!-- Main content -->
+
+      <section class="content">
+     
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+
+                <h3 class="card-title">List</h3>
+                <div class="card-tools">
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" id="myInput" onkeyup="myFunction()" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <section>
+			  <div class="card-body table-responsive p-0" style="height: 300px ">				
+		<table id="myTable" class="table table-head-fixed text-nowrap ">
 			<tr>
-				<th>IDdemande</th>
+			   <th>IDdemande</th>
+				<th>nom d'avion</th>
+				<th>type d'avion</th>
 				<th>diagnostic</th>
 				<th>urgence</th>
 				<th>type</th>
@@ -90,7 +162,9 @@
 				foreach($listeDemandes as $demande){
 			?>
 			<tr>
-				<td><?php echo $demande['IDdemande']; ?></td>
+			<td><?php echo $demande['IDdemande']; ?></td>
+				<td><?php echo $demande['nom']; ?></td>
+				<td><?php echo $demande['type']; ?></td>
 				<td><?php echo $demande['diagnostic']; ?></td>
 				<td><?php echo $demande['urgence']; ?></td>
 				<td><?php echo $demande['type']; ?></td>
@@ -110,36 +184,73 @@
 				}
 			?>
 		</table>
-									
-								</section>
-							</div>
-						</section>
-					</article>
-
-				<!-- Footer -->
-					<footer id="footer">
-						<ul class="icons">
-							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-							<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-							<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
-						</ul>
-						<ul class="copyright">
-							<li>&copy; Untitled</li><li>Design: <a href="http://urjet.com">HTML5 UP</a></li>
-						</ul>
-					</footer>
-
 			</div>
+			<div class="card-footer">
+								<form method="POST" action="" >		
+						<input type="submit" name="Export" value="Export " class="btn btn-primary">
+					             </form>
+						
+						</section>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <!-- /.content -->
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+      <strong>Copyright &copy; 2021-2022 <a href="https://urjet.com">UrJet.com</a>.</strong>
+      All rights reserved.
+      <div class="float-right d-none d-sm-inline-block">
+        <b>Version</b> 3.2.0
+      </div>
+    </footer>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+    <!-- Control Sidebar -->
 
-	</body>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+      $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="plugins/moment/moment.min.js"></script>
+    <script src="plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="dist/js/adminlte.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="dist/js/demo.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="dist/js/pages/dashboard.js"></script>
+    <script>
+      if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+      }
+    </script>
+</body>
+
 </html>

@@ -3,7 +3,19 @@
 	include_once '../Model/Demande.php';
 	class DemandeC {
 		function afficherdemandes(){
-			$sql="SELECT * FROM demande";
+			$con = config::getConnexion();
+			$sql = "SELECT count(*) FROM `demande`";
+			$count = $con->query($sql)->fetchColumn();
+		
+			// Initialize a Data Pagination with previous count number
+			$pagination = new \yidas\data\Pagination([
+			  'totalCount' => $count,
+			]);
+			$sql="SELECT demande.IDdemande,avion.nom,avion.type,demande.diagnostic,demande.type,demande.descriptionpanne
+			From demande 
+			INNER JOIN avion
+			ON demande.IDdemande = avion.id_avion ORDER BY demande.IDdemande LIMIT {$pagination->offset}, {$pagination->limit}";
+			  
 			$db = config::getConnexion();
 			try{
 				$liste = $db->query($sql);
@@ -82,6 +94,51 @@
 				$e->getMessage();
 			}
 		}
+		function excel()
+  {
+    $con = config::getConnexion();
+    $fileName = "Demande_list" . date('d-m-Y') . ".csv";
+    @header("Content-Disposition: attachment; filename=" . $fileName);
+    @header("Content-Type: application/csv");
+    @header("Pragma: no-cache");
+    @header("Expires: 0");
+
+    $select = "SELECT * From demande";
+     
+    $stmt = $con->prepare($select);
+    $stmt->execute();
+    $data = "";
+    $data .= "IDdemande" . ",";
+    $data .= "diagnostic" . ",";
+    $data .= "urgence" . ",";
+    $data .= "type de panne" . ",";
+    $data .= "Description" . "\n";
+   
+   
+
+    while ($row = $stmt->fetch()) {
+      $data .= $row['IDdemande'] . ",";
+      $data .= $row['diagnostic'] . ",";
+      $data .= $row['urgence'] . ",";
+      $data .= $row['type'] . ",";
+      $data .= $row['descriptionpanne'] . "\n";
+
+    }
+
+    echo $data;
+    exit();
+  }
+  function facturation(){
+	$sql="SELECT * FROM user";
+	$db = config::getConnexion();
+	try{
+		$liste = $db->query($sql);
+		return $liste;
+	}
+	catch(Exception $e){
+		die('Erreur:'. $e->getMeesage());
+	}
+}
 
 	}
 ?>
