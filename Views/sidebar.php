@@ -29,7 +29,7 @@
           
           <li class="nav-item">
             <a href="#" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
-                if($currentpage=="AdminPanel.php" || $currentpage=="settings.php" ){
+                if($currentpage=="AdminPanel.php" || $currentpage=="settings.php" || $currentpage=="mailbox.php" || $currentpage=="find.php" ){
                 echo "active"; 
                 }?>">
               <i class="nav-icon fas fa-user"></i>
@@ -44,11 +44,22 @@
             <?php if (isset($_SESSION["Admin"]) && $_SESSION["Admin"] == true) { ?>
               <li class="nav-item">
                 <a href="AdminPanel.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
-                if($currentpage=="AdminPanel.php"){
+                if($currentpage=="AdminPanel.php" || $currentpage=="find.php"){
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admin Panel</p>
+                </a>
+              </li>
+              <?php } ?>
+              <?php if (isset($_SESSION["Admin"]) && $_SESSION["Admin"] == true) { ?>
+              <li class="nav-item">
+                <a href="mailbox.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if($currentpage=="mailbox.php"){
+                echo "active"; 
+                }?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>mailbox</p>
                 </a>
               </li>
               <?php } ?>

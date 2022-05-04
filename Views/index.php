@@ -2,9 +2,6 @@
 session_start();
 include '../Controller/userc.php';
 $userc=new userc();
- if( isset($_COOKIE['rememberme'] )){
-$userc->checklogin();
-}
     $userc->check();
 ?>
 <!DOCTYPE HTML>

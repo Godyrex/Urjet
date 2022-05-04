@@ -1,7 +1,7 @@
 <?php
 if(isset($_POST['password']) && $_POST['reset_link_token'] && $_POST['email'])
 {
-include "..config.php";
+include "../config.php";
 include '../Controller/userc.php';
 $userc=new userc();
 $emailId = $_POST['email'];

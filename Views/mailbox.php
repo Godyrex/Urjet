@@ -1,54 +1,12 @@
 <?php
 session_start();
 include '../Controller/userc.php';
-$userc = new userc();
-$userc->check();
+	$userc=new userc();
+    $userc->check();
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] && !isset($_SESSION["Admin"]) || $_SESSION["Admin"] !== true) {
   header("location: index.php");
   exit;
 }
-$user1 = "";
-$user2 = "";
-$user3 = "";
-$id_o = 0;
-if (isset($_POST["submitad"])) {
-  // if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $param_id1 = $_POST["submitad"];
-  $param_type = "Admin";
-  $userc->updatetype($param_id1, $param_type);
-  //header("Refresh:0");
-}
-if (isset($_POST["submitc"])) {
-  // if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $param_id1 = $_POST["submitc"];
-  $param_type = "User";
-  $userc->updatetype($param_id1, $param_type);
-  // header("Refresh:0");
-}
-if (isset($_POST["submitb"])) {
-  // if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $param_id1 = $_POST["submitb"];
-  $ban = "Yes";
-  $userc->userban($param_id1, $ban);
-  //header("Refresh:0");
-}
-if (isset($_POST["submitub"])) {
-  // if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $param_id1 = $_POST["submitub"];
-  $ban = "No";
-  $userc->userban($param_id1, $ban);
-  //header("Refresh:0");
-}
-if (isset($_POST["search"])) {
-  // if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $key = $_POST["search1"];
-  header('Location: find.php?search1='.$key);
-  //header("Refresh:0");
-}
-if (isset($_POST['submit'])) {
-  $userc->excel();
-}
-$reset = true;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,9 +41,7 @@ $reset = true;
   <div class="wrapper">
 
     <!-- Preloader -->
-    <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="img/urjet.png" alt="urjetLogo" height="60" width="60">
-    </div>
+
 
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -126,22 +82,6 @@ $reset = true;
           </div>
         </li>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="far fa-bell"></i>
-            <span class="badge badge-warning navbar-badge"><?php // echo $userc->notification() 
-                                                            ?></span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <span class="dropdown-item dropdown-header"><?php // echo $userc->notification() 
-                                                        ?> Notifications</span>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <i class="fas fa-envelope mr-2"></i><?php // echo $userc->notification() 
-                                                  ?> Unread emails
-            </a>
-          </div>
-        </li>
       </ul>
     </nav>
     <!-- /.navbar -->
@@ -165,12 +105,12 @@ $reset = true;
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">User Managments</h1>
+              <h1 class="m-0">Mail box</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">User Managments</li>
+                <li class="breadcrumb-item active">Mail box</li>
               </ol>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -184,105 +124,155 @@ $reset = true;
       <!-- Main content -->
 
       <section class="content">
-        <div class="row">
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-users"></i></span>
+      <div class="row">
+        <div class="col-md-3">
+          <a href="compose.html" class="btn btn-primary btn-block mb-3">Compose</a>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Users</span>
-                <span class="info-box-number"><?php echo $userc->usercount(); ?></span>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Folders</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
               </div>
-              <!-- /.info-box-content -->
             </div>
-            <!-- /.info-box -->
-          </div>
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas  fa-user"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Admins</span>
-                <span class="info-box-number"><?php echo $userc->admincount(); ?></span>
-              </div>
-              <!-- /.info-box-content -->
+            <div class="card-body p-0">
+                
+              <ul class="nav nav-pills flex-column">
+                <li class="nav-item active">
+                  <a href="#" class="nav-link">
+                    <i class="fas fa-inbox"></i> Inbox
+                    <span class="badge bg-primary float-right">12</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-envelope"></i> Sent
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-file-alt"></i> Drafts
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="fas fa-filter"></i> Junk
+                    <span class="badge bg-warning float-right">65</span>
+                  </a>
+                </li>
+                
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-trash-alt"></i> Trash
+                  </a>
+                </li>
+              </ul>
             </div>
-            <!-- /.info-box -->
+            <!-- /.card-body -->
           </div>
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas  fa-ban"></i></span>
+          <!-- /.card -->
 
-              <div class="info-box-content">
-                <span class="info-box-text">Bans</span>
-                <span class="info-box-number"><?php echo $userc->bancount(); ?></span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-
-                <h3 class="card-title">List</h3>
-                <div class="card-tools">
-                  <form name="searchform" method="post">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                      <input type="text" name="search1" id="search1" class="form-control float-right" placeholder="Search">
-                      <div class="input-group-append">
-                        <button type="submit" name="search" class="btn btn-default">
-                          <i class="fas fa-search"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-
-                </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body table-responsive p-0" style="height: 300px ">
-                <table id="myTable" class="table table-head-fixed text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Username</th>
-                      <th>Email address</th>
-                      <th>Name</th>
-                      <th>Lastname</th>
-                      <th>Image</th>
-                      <th>Account Type</th>
-                      <th>Description</th>
-                      <th>Banned</th>
-                      <th>Set</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                      $userc->pages();
-                    ?>
-                  </tbody>
-
-                </table>
-              </div>
-
-
-
-
-              <div class="card-footer">
-                <?php
-                $userc->numero();
-                ?>
-                <form method="post">
-                  <input class="btn btn-primary" type="submit" name="submit" value="Export" />
-                </form>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
+          <!-- /.card -->
         </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3 class="card-title">Inbox</h3>
+
+              <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <div class="mailbox-controls">
+                <!-- Check all button -->
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
+                </button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-sm">
+                    <i class="far fa-trash-alt"></i>
+                  </button>
+                  <button type="button" class="btn btn-default btn-sm">
+                    <i class="fas fa-reply"></i>
+                  </button>
+                  <button type="button" class="btn btn-default btn-sm">
+                    <i class="fas fa-share"></i>
+                  </button>
+                </div>
+                <!-- /.btn-group -->
+                <button type="button" class="btn btn-default btn-sm">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <div class="float-right">
+                  1-50/200
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-sm">
+                      <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm">
+                      <i class="fas fa-chevron-right"></i>
+                    </button>
+                  </div>
+                  <!-- /.btn-group -->
+                </div>
+                <!-- /.float-right -->
+              </div>
+              <div class="table-responsive mailbox-messages">
+                <table class="table table-hover table-striped">
+                  <tbody>
+                  <?php   $userc->inbox(); ?>
+                  
+                  </tbody>
+                </table>
+                <!-- /.table -->
+              </div>
+              <!-- /.mail-box-messages -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer p-0">
+              <div class="mailbox-controls">
+                <!-- Check all button -->
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                  <i class="far fa-square"></i>
+                </button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-sm">
+                    <i class="far fa-trash-alt"></i>
+                  </button>
+                  <button type="button" class="btn btn-default btn-sm">
+                    <i class="fas fa-reply"></i>
+                  </button>
+                  <button type="button" class="btn btn-default btn-sm">
+                    <i class="fas fa-share"></i>
+                  </button>
+                </div>
+                <!-- /.btn-group -->
+                <button type="button" class="btn btn-default btn-sm">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <div class="float-right">
+                  1-50/200
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-sm">
+                      <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm">
+                      <i class="fas fa-chevron-right"></i>
+                    </button>
+                  </div>
+                  <!-- /.btn-group -->
+                </div>
+                <!-- /.float-right -->
+              </div>
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
     </div>
     <!-- /.container-fluid -->
     <!-- /.content -->
