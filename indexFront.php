@@ -17,22 +17,25 @@
     $voyageC = new voyageC();
     if (
 		isset($_POST["date_depart"]) &&		
-        isset($_POST["date_arrivee"]) &&
-		isset($_POST["heure_depart"]) && 
-        isset($_POST["heure_arrivee"])
+        isset($_POST["date_arrivee"]) && 
+        isset($_POST["nbr_places"])&&
+        isset($_POST["id_aeroport"])&&
+        isset($_POST["prix"])
 		
    )
          { if (
 			!empty($_POST["date_depart"]) &&		
             !empty($_POST["date_arrivee"]) &&
-            !empty($_POST["heure_depart"]) && 
-            !empty($_POST["heure_arrivee"]) 
+            !empty($_POST["nbr_places"]) &&
+            !empty($_POST["id_aeroport"])&&
+            !empty($_POST["prix"])  
 	    )     {
             $voyage = new voyage(
 				$_POST["date_depart"] ,		
                 $_POST["date_arrivee"] ,
-                $_POST["heure_depart"] , 
-                $_POST["heure_arrivee"] 
+                $_POST["nbr_places"] ,
+                $_POST["prix"],
+                $_POST["id_aeroport"] 
 
             );
             $voyageC->ajouter_voyage($voyage); 
@@ -73,7 +76,6 @@
 											<li><a href="Maintenance.php"></a>Maitenance</li>
 											<li><a href="Demande.php">Demande de maitenance</a></li>
 											<li><a href="ajouter_voyage.php">Voyage</a></li>
-											<li><a href="ajouter_aeroport.php">Aeroport</a></li>
 											<li><a href="Signup.php">S'inscrire</a></li>
 											<li><a href="Login.php">Se Connecter</a></li>
 										</ul>

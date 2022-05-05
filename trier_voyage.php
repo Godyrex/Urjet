@@ -1,24 +1,3 @@
-<?php
-include "../Controller/voyageC.php";
-include_once '../Model/voyage.php';
-$voyage=new voyageC();
-
-//$listevoyage=$voyage->afficher_voyage();
-/*if (isset($_POST['id_voyage']))
-{
-	            $id_voyage=$_POST["id_voyage"];
-				//$promotion1C=new promotionC();
-				
-				
-
-*/
-if (isset($_POST['id_voyage']))
-{
-  $id_voyage= $_POST["id_voyage"];
-$listevoyage=$voyage->rechercher_voyage($id_voyage);
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -316,6 +295,10 @@ $listevoyage=$voyage->rechercher_voyage($id_voyage);
               <li class="breadcrumb-item active">voyages</li>
             </ol>
           </div><!-- /.col -->
+          <div class="col-lg-6 col-5 text-right">
+              <a href="#" class="btn btn-sm btn-neutral">New</a>
+              <a href="afficher_voyage.php" class="btn btn-sm btn-neutral">Retourner sans tri</a>
+            </div>
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
@@ -336,12 +319,12 @@ $listevoyage=$voyage->rechercher_voyage($id_voyage);
               <table class="table align-items-center table-flush">
                 <thead class="thead-light">
                   <tr>
-                    <th scope="col" class="sort" data-sort="name">id voyage</th>
-                    <th scope="col" class="sort" data-sort="budget">date de depart</th>
-                    <th scope="col" class="sort" data-sort="status">date d'arrivee</th>
-                    <th scope="col" class="sort" data-sort="completion">heure de depart</th>
-                    <th scope="col" class="sort" data-sort="completion">heure d'arrivee</th>
-                    <th scope="col" class="sort" data-sort="completion">id d'aeroport</th>
+                    <th scope="col" class="sort" data-sort="name">Id Voyage</th>
+                    <th scope="col" class="sort" data-sort="budget">Date Depart</th>
+                    <th scope="col" class="sort" data-sort="status">Date Arrivee</th>
+                    <th scope="col" class="sort" data-sort="completion">Nombre des Places</th>
+                    <th scope="col" class="sort" data-sort="completion">Id Aeroport</th>
+                    <th scope="col" class="sort" data-sort="completion">Prix</th>
                     <th scope="col"></th>
                   </tr>
                 </thead>
@@ -355,7 +338,7 @@ $listevoyage=$voyage->rechercher_voyage($id_voyage);
                            echo '
 <br />
 <tr>';
-                           
+foreach($resultat as $row) {                         
 echo'
 
 <td>' . $row['id_voyage'] . '</td>
@@ -372,16 +355,16 @@ echo'
         <p>';
             echo'
                             
-      <td>' . $row['heure_depart'] . '</td>
+      <td>' . $row['nbr_places'] . '</td>
        <p>';
 
         echo'
                             
-        <td>' . $row['heure_arrivee'] . '</td>
+        <td>' . $row['id_aeroport'] . '</td>
         <p> ';
 
         echo'
-        <td>' . $row['id_aeroport'] . '</td>
+        <td>' . $row['prix'] . '</td>
         <p> ';
 
 
@@ -395,25 +378,14 @@ echo'
        echo '</tr>
        <p>
           ';
+}
       
                                                     ?>  
 </tbody>
- <!-- /.card-footer -->
-            
-            <!-- /.card -->
 
-            <!-- Calendar -->
-            
-            <!-- /.card -->
-          
-          <!-- right col -->
-        
-        <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
-    
-    <!-- /.content -->
+        </div>
   </div>
-  <!-- /.content-wrapper -->
+ 
   
 
   <!-- Control Sidebar -->
@@ -424,37 +396,9 @@ echo'
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
 </body>
-</html>            
+</html>           
+
+
+

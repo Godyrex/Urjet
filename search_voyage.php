@@ -1,46 +1,15 @@
+<!DOCTYPE HTML>
 <?php
-    include_once '../Model/voyage.php';
-    include_once '../Controller/voyageC.php';
-
-    $error = "";
-
-    // create voyage
-    $voyage = null;
-
-    // create an instance of the controller
-    $voyageC = new voyageC();
-    if (
-       
-        isset($_POST["date_depart"]) &&		
-        isset($_POST["date_arrivee"]) && 
-        isset($_POST["nbr_places"])&& 
-        isset($_POST["id_aeroport"])&& 
-        isset($_POST["prix"]) 
-
-    ) {
-        if (
-            !empty($_POST["date_depart"]) &&		
-            !empty($_POST["date_arrivee"]) && 
-            !empty($_POST["nbr_places"])&& 
-            !empty($_POST["id_aeroport"]) && 
-            !empty($_POST["prix"]) 
-        ) {
-            $voyage = new voyage(
-                $_POST["date_depart"] ,		
-                $_POST["date_arrivee"] ,
-                $_POST["nbr_places"], 
-                $_POST["id_aeroport"] , 
-                $_POST["prix"]
-            );
-            $voyageC->modifier_voyage($voyage, $_POST["id_voyage"]);
-            header('Location:afficher_voyage.php');
-        }
-        else
-            $error = "Missing information";
-    }    
+require_once '../Controller/aeroportC.php';
+$aeroportC = new aeroportC();
+$aeroport = $aeroportC->afficher_aeroport();
+if (isset($_POST['aeroport'])&& isset($_POST['search'])){
+    $list = $aeroportC->afficher_aeroport($_POST['aeroport']);
+}
 ?>
 
-<!DOCTYPE html>
+
+
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -321,7 +290,7 @@
     </div>
     <!-- /.sidebar -->
   </aside>
-  <section class="col-6 col-lg-10 connectedSortable">
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -334,7 +303,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Aeroport</li>
+              <li class="breadcrumb-item active">Dashboard v1</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -349,7 +318,7 @@
           </section>
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-20 connectedSortable">
+          <section class="col-6 col-lg-10 connectedSortable">
              <!-- Header -->
     <div class="header bg-primary pb-6">
       <div class="container-fluid">
@@ -370,121 +339,173 @@
         </div>
       </div>
     </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <!-- Card header -->
+            <div class="card-header border-0">
+              <h3 class="mb-0">La liste des Voyages :</h3>
+            </div>
+            <!-- Light table -->
+            
+              <div class="card-body table-responsive p-0" style="height: 300px;">
+                <table class="table table-head-fixed text-nowrap">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Id Voyage</th>
+                    <th>Date Depart</th>
+                    <th>Date Arrivee</th>
+                    <th>Nombre des Places</th>
+                    <th>Id Aeroport </th>
+                   
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+<tbody>
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Display</title>
-   </head>
-    <body>
-        <button><a href="afficher_voyage.php">Retour à la liste des voyages</a></button>
-        <hr>
-        
-        <div id="error">
-            <?php echo $error; ?>
-        </div>
-       
-			
-		<?php
-			if (isset($_POST['id_voyage']))
-      {
-				$voyage = $voyageC->recuperer_voyage($_POST['id_voyage']);
-      }	
-		?>
-        
-        <form action="" method="POST">
-        <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                <tr class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="id_voyage">Id Voyage:
-                        </label>
-                    </td>
-                    <td><input type="number" name="id_voyage" id="id_voyage" value="<?php echo $voyage['id_voyage']; ?>" maxlength="20"></td>
-                </tr>
-			          	<tr class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="date_depart">Date Depart:
-                        </label>
-                    </td>
-                    <td><input type="date" name="date_depart" id="date_depart" value="<?php echo $voyage['date_depart']; ?>" maxlength="20"></td>
-                </tr>
-                <tr  class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="date_arrivee">Date Arrivee:
-                        </label>
-                    </td>
-                    <td><input type="date" name="date_arrivee" id="date_arrivee" value="<?php echo $voyage['date_arrivee']; ?>" maxlength="20"></td>
-                </tr>
-                <tr  class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="nbr_places">Nombre des Places:
-                        </label>
-                    </td>
-                    <td><input type="number" name="nbr_places" id="nbr_places" value="<?php echo $voyage['nbr_places']; ?>" maxlength="20"></td>
-                </tr>
 
-                <tr  class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="id_aeroport">Id Aeroport:
-                        </label>
-                    </td>
-                    <td><input type="number" name="id_aeroport" id="id_aeroport" value="<?php echo $voyage['id_aeroport']; ?>" maxlength="20"></td>
-                </tr>
+<div class="form-container">
+    <form action="" method ="POST">
+        <div class="row">
+            <div class="col-25">
+                <label>Search: </label>
+            </div>
+            <div class="col-75">
+                <select name="aeroport" id="aeroport">
+                    <?php
+                    foreach ($aeroport as $aeroport){
+                        ?>
+                    <option
+                        value="<?= $voyage['id_aeroport']?>"
+                        <?php } ?>
 
-                <tr  class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="prix">Prix Voyage:
-                        </label>
-                    </td>
-                    <td><input type="number" name="prix" id="prix" value="<?php echo $voyage['prix']; ?>" maxlength="20"></td>
-                </tr>
-                
-                         
-                <tr  class="col-lg-20 connectedSortable">
-                    <td></td>
-                    <td>
-                        <input type="submit" value="Modifier"> 
-                        <input type="reset" value="Annuler" >
-                    </td>
+                    >
+                    <?= $voyage['id_aeroport'] ?>
+                    </option>
+                    <?php
                     
-                </tr>
-                </table>
-                        </div>
-        </form>
+                    ?>
+
+                </select>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <input type="submit" value="Search" name= "search">
+        </div>
+    </form>
+</div>
 
 
+<?php //on inclut notre fichier de connection $pdo = Database::connect(); //on se connecte à la base $sql = 'SELECT * FROM user ORDER BY id DESC'; //on formule notre requete foreach ($pdo->query($sql) as $row) { //on cree les lignes du tableau avec chaque valeur retournée
+    include "../Controller/voyageC.php";
+      $voyage = new voyageC();
+    $resultat=$voyage->afficher_voyage();
+    
+   
+  echo '
+<br />
+<tr>';
+                           
+foreach($resultat as $row) {
+echo'
 
-                <div class="row">
-                <!-- left column -->
-                <div class="col-md-6">
-                  <!-- general form elements -->
-                  <div class="card card-primary">
-                    <div class="card-header">
-                      <h3 class="card-title">modifier voyage</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <form  method="post" name="voyage" onsubmit="return validateForm(event)"> 
-                      <div class="card-body">
-                        <div class="form-group">
-                          <label for="exampleInputnuml">id de voyage</label>
-                          <input onblur="ajout()" onkeyup="ajout()" type="number" class="form-control" id="id_voyage" name="id_voyage" 
-                            placeholder="Enter number">
-                          <p id="errorid" class="card bg-danger"></p>
+<td>' . $row['id_voyage'] . '</td>
+<p>
+';
+      echo'
+	  
+	  <td>' . $row['date_depart'] . '</td>
+	  <p>
+	  ';
+								  echo'
+                            
+    <td>' . $row['date_arrivee'] . '</td>
+        <p>';
+            echo'
+                            
+        <td>' . $row['nbr_places'] . '</td>
+        <p> ';
 
-                        </div>
-                        <!-- /.col (left) -->                         
-                            <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                          </div>
+        echo'
+        <td>' . $row['id_aeroport'] . '</td>
+        <p> ';
 
 
-                    </form>
-                  </div>
+          echo '<td>';
+         echo '<a class="btn btn-success" href="modifier_voyage.php?id_voyage=' . $row['id_voyage'] . '">Update</a>';// un autre td pour le bouton d'update
+       
+                      echo '<a class="btn btn-primary" href="Supprimer_voyage.php?id_voyage=' . $row['id_voyage'] . ' ">Delete</a>';// un autre td pour le bouton de suppression
+     
+         echo '</td>
+        <p>';
+       echo '</tr>
+       <p>
+          ';
+}     
+  ?>  
+</tbody>
+              
+              <!-- /.card-footer -->
+            
+            <!-- /.card -->
 
+            <!-- Calendar -->
+            
+            <!-- /.card -->
+          
+          <!-- right col -->
+        
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+    
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  
 
-           
-	
-    </body>
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="plugins/chart.js/Chart.min.js"></script>
+<!-- Sparkline -->
+<script src="plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="plugins/moment/moment.min.js"></script>
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard.js"></script>
+</body>
 </html>
+

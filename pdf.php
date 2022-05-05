@@ -1,51 +1,102 @@
 <?php
+if($_POST){
+    require('fpdf/fpdf.php');
+    
+    $date_depart = $_POST['date_depart'];
+    $date_arrivee = $_POST['date_arrivee'];
+    $nbr_places = $_POST['nbr_places'];
+    $id_aeroport = $_POST['id_aeroport'];
+    $prix = $_POST['prix'];
+    $title = 'Liste des voyages';
+
+    $pdf = new FPDF();
+    $pdf -> AddPage();
+    $pdf->SetTitle($title);
+    // Arial bold 15
+    $pdf->SetFont('Arial','B',15);
+    // Calculate width of title and position
+    $w = $pdf->GetStringWidth($title)+6;
+    $pdf->SetX((210-$w)/2);
+    // Colors of frame, background and text
+    $pdf->SetDrawColor(221,221,221,1);
+    $pdf->SetFillColor(10,158,0,1);
+    $pdf->SetTextColor(255,255,255,1);
+    // Thickness of frame (1 mm)
+    $pdf->SetLineWidth(1);
+    // Title
+    // Cell(width, height, content, border, nextline parametters, alignement[c - center], fill)
+    $pdf->Cell($w, 9, $title, 1, 1, 'C', true);
+    // Line break
+    $pdf->Ln(10);
+
+    $pdf->SetTextColor(0,0,0,1);
+    $w = $pdf->GetStringWidth($nbr_places)+100;
+    $pdf->SetX((170-$w)/2);
+    $pdf->Cell(40, 10, 'date_depart_Etudiant:', 1, 0, 'C');
+    $pdf->Cell($w, 10, $date_depart, 1, 1, 'C');
+
+    $pdf->SetX((170-$w)/2);
+    $pdf->Cell(40, 10, 'date_arrivee:', 1, 0, 'C');
+    $pdf->Cell($w, 10, $date_arrivee, 1, 1, 'C');
+
+    $pdf->SetX((170-$w)/2);
+    $pdf->Cell(40, 10, 'nbr_places:', 1, 0, 'C');
+    $pdf->Cell($w, 10, $nbr_places, 1, 1, 'C');
+
+    $pdf->SetX((170-$w)/2);
+    $pdf->Cell(40, 10, 'id_aeroport:', 1, 0, 'C');
+    $pdf->Cell($w, 10, $id_aeroport, 1, 1, 'C');
+
+    $pdf->SetX((170-$w)/2);
+    $pdf->Cell(40, 10, 'prix:', 1, 0, 'C');
+    $pdf->Cell($w, 10, $prix, 1, 1, 'C');
+    $pdf->Output();
+}
+?>
+
+
+<?php
     include_once '../Model/voyage.php';
     include_once '../Controller/voyageC.php';
 
     $error = "";
-
-    // create voyage
+    $success = 0;
+    // create user
     $voyage = null;
 
     // create an instance of the controller
     $voyageC = new voyageC();
-    if (
-       
-        isset($_POST["date_depart"]) &&		
-        isset($_POST["date_arrivee"]) && 
-        isset($_POST["nbr_places"])&& 
-        isset($_POST["id_aeroport"])&& 
-        isset($_POST["prix"]) 
-
-    ) {
-        if (
-            !empty($_POST["date_depart"]) &&		
-            !empty($_POST["date_arrivee"]) && 
-            !empty($_POST["nbr_places"])&& 
-            !empty($_POST["id_aeroport"]) && 
-            !empty($_POST["prix"]) 
-        ) {
+    if (isset($_POST["date_depart"])&& isset($_POST["date_arrivee"]) && isset($_POST["nbr_places"])&& isset($_POST["id_aeroport"]) && isset($_POST["prix"]))
+    
+    {
+        if (!empty($_POST["date_depart"])  && !empty($_POST["date_arrivee"])  && !empty($_POST["nbr_places"]) && !empty($_POST["id_aeroport"])  && !empty($_POST["prix"])  )
+         {
             $voyage = new voyage(
-                $_POST["date_depart"] ,		
-                $_POST["date_arrivee"] ,
-                $_POST["nbr_places"], 
-                $_POST["id_aeroport"] , 
-                $_POST["prix"]
+                $_POST['date_depart'],
+                $_POST['date_arrivee'],
+                $_POST['nbr_places'],
+                $_POST['id_aeroport'],
+                $_POST['prix'],
+
             );
-            $voyageC->modifier_voyage($voyage, $_POST["id_voyage"]);
-            header('Location:afficher_voyage.php');
-        }
-        else
+            $voyageC->ajouter_voyage($rendez_vous); 
+            $success = 1;
+        } else {
             $error = "Missing information";
-    }    
+        }
+    }
 ?>
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Liste des voyages</title>
+  <title>URJET | Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -113,7 +164,13 @@
       </li>
 
       <!-- Messages Dropdown Menu -->
-   
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="far fa-comments"></i>
+          <span class="badge badge-danger navbar-badge">3</span>
+        </a>
+       
+      </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -180,7 +237,18 @@
                   <p>Dashboard v1</p>
                 </a>
               </li>
-             
+              <li class="nav-item">
+                <a href="./index2.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v2</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index3.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v3</p>
+                </a>
+              </li>
             </ul>
           </li>
           
@@ -193,7 +261,29 @@
                 
               </p>
             </a>
-           
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="pages/layout/top-nav.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Top Navigation</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Top Navigation + Sidebar</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/layout/boxed.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Boxed</p>
+                </a>
+              </li>
+             
+             
+        
+            </ul>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -209,7 +299,13 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>ChartJS</p>
                 </a>
-             
+              </li>
+              <li class="nav-item">
+                <a href="pages/charts/flot.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Flot</p>
+                </a>
+              </li>
              
             </ul>
           </li>
@@ -223,7 +319,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="afficher_voyages" class="nav-link">
+                <a href="afficher_voyage.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Voyages</p>
                 </a>
@@ -321,7 +417,7 @@
     </div>
     <!-- /.sidebar -->
   </aside>
-  <section class="col-6 col-lg-10 connectedSortable">
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -334,7 +430,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Aeroport</li>
+              <li class="breadcrumb-item active">Dashboard v1</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -345,146 +441,63 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+     
+        </div>
         
           </section>
-          <!-- /.Left col -->
-          <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-20 connectedSortable">
-             <!-- Header -->
-    <div class="header bg-primary pb-6">
-      <div class="container-fluid">
-        <div class="header-body">
-          <div class="row align-items-center py-4">
-            <div class="col-lg-6 col-7">
-              <h6 class="h2 text-white d-inline-block mb-0">Les Voyages</h6>
-              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                  <li class="breadcrumb-item"><a href="#">Les  Voyages</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Liste</li>
-                </ol>
-              </nav>
-            </div>
-           
-          </div>
-        </div>
-      </div>
-    </div>
+          
+          <section class="col-lg-5 connectedSortable">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Display</title>
-   </head>
-    <body>
-        <button><a href="afficher_voyage.php">Retour à la liste des voyages</a></button>
-        <hr>
-        
-        <div id="error">
-            <?php echo $error; ?>
-        </div>
-       
-			
-		<?php
-			if (isset($_POST['id_voyage']))
-      {
-				$voyage = $voyageC->recuperer_voyage($_POST['id_voyage']);
-      }	
-		?>
-        
-        <form action="" method="POST">
-        <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                <tr class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="id_voyage">Id Voyage:
-                        </label>
-                    </td>
-                    <td><input type="number" name="id_voyage" id="id_voyage" value="<?php echo $voyage['id_voyage']; ?>" maxlength="20"></td>
-                </tr>
-			          	<tr class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="date_depart">Date Depart:
-                        </label>
-                    </td>
-                    <td><input type="date" name="date_depart" id="date_depart" value="<?php echo $voyage['date_depart']; ?>" maxlength="20"></td>
-                </tr>
-                <tr  class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="date_arrivee">Date Arrivee:
-                        </label>
-                    </td>
-                    <td><input type="date" name="date_arrivee" id="date_arrivee" value="<?php echo $voyage['date_arrivee']; ?>" maxlength="20"></td>
-                </tr>
-                <tr  class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="nbr_places">Nombre des Places:
-                        </label>
-                    </td>
-                    <td><input type="number" name="nbr_places" id="nbr_places" value="<?php echo $voyage['nbr_places']; ?>" maxlength="20"></td>
-                </tr>
+      </div><!-- /.container-fluid -->
+    
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  
 
-                <tr  class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="id_aeroport">Id Aeroport:
-                        </label>
-                    </td>
-                    <td><input type="number" name="id_aeroport" id="id_aeroport" value="<?php echo $voyage['id_aeroport']; ?>" maxlength="20"></td>
-                </tr>
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
 
-                <tr  class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="prix">Prix Voyage:
-                        </label>
-                    </td>
-                    <td><input type="number" name="prix" id="prix" value="<?php echo $voyage['prix']; ?>" maxlength="20"></td>
-                </tr>
-                
-                         
-                <tr  class="col-lg-20 connectedSortable">
-                    <td></td>
-                    <td>
-                        <input type="submit" value="Modifier"> 
-                        <input type="reset" value="Annuler" >
-                    </td>
-                    
-                </tr>
-                </table>
-                        </div>
-        </form>
-
-
-
-                <div class="row">
-                <!-- left column -->
-                <div class="col-md-6">
-                  <!-- general form elements -->
-                  <div class="card card-primary">
-                    <div class="card-header">
-                      <h3 class="card-title">modifier voyage</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <form  method="post" name="voyage" onsubmit="return validateForm(event)"> 
-                      <div class="card-body">
-                        <div class="form-group">
-                          <label for="exampleInputnuml">id de voyage</label>
-                          <input onblur="ajout()" onkeyup="ajout()" type="number" class="form-control" id="id_voyage" name="id_voyage" 
-                            placeholder="Enter number">
-                          <p id="errorid" class="card bg-danger"></p>
-
-                        </div>
-                        <!-- /.col (left) -->                         
-                            <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                          </div>
-
-
-                    </form>
-                  </div>
-
-
-           
-	
-    </body>
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="plugins/chart.js/Chart.min.js"></script>
+<!-- Sparkline -->
+<script src="plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="plugins/moment/moment.min.js"></script>
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard.js"></script>
+</body>
 </html>

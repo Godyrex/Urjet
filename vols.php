@@ -1,18 +1,51 @@
-<?php
-include_once "../Controller/voyageC.php";
-include_once '../Model/voyage.php';
-$voyage=new voyageC();
-
-
-
-if (isset($_POST['date_depart']))
-{
-  $date_depart= $_POST["date_depart"];
-$listevoyage=$voyage->rechercher_voyage($date_depart);
-
-?>
-
 <!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<?php
+    include_once '../Model/voyage.php';
+    include_once '../Controller/voyageC.php';
+
+    $error = "";
+    $success = 0;
+    // create user
+    $voyage = null;
+
+    // create an instance of the controller
+    $voyageC = new voyageC();
+    if (
+		isset($_POST["date_depart"]) &&		
+        isset($_POST["date_arrivee"]) && 
+        isset($_POST["nbr_places"])&&
+        isset($_POST["id_aeroport"])&&
+        isset($_POST["prix"])
+		
+   )
+         { if (
+			!empty($_POST["date_depart"]) &&		
+            !empty($_POST["date_arrivee"]) &&
+            !empty($_POST["nbr_places"]) &&
+            !empty($_POST["id_aeroport"])&&
+            !empty($_POST["prix"])  
+	    )     {
+            $voyage = new voyage(
+				$_POST["date_depart"] ,		
+                $_POST["date_arrivee"] ,
+                $_POST["nbr_places"] ,
+                $_POST["prix"],
+                $_POST["id_aeroport"] 
+
+            );
+            $voyageC->ajouter_voyage($voyage); 
+            $success = 1;
+         } else 
+		  {
+            $error = "Missing information";
+          }
+    }
+?>
 <html>
 	<head>
 		<title>URJET</title>
@@ -60,20 +93,6 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
 							<header class="major">
 								<h2>Choississez votre voyage</h2>
 							</header>
-
-               <!-- Recherche-->
-			  <div class="form-group">
-                            <div class="input-group input-group-lg">
-                                <input type="search" class="form-control form-control-lg" placeholder="entrer votre voyage" value="">
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-lg btn-default">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-
 							<ul class="spotlight" style="padding-right: 50px;height: 400px;">
 								<li class="icon fa-paper-plane">
                                 <tr>
@@ -102,7 +121,7 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
 								<li class="icon fa-paper-plane">
                                 <tr>
                     <td>
-                        <label for="date_depart">  date depart :
+                        <label for="date_depart">  date arrivee :
                         </label>
                     </td>
                     <td>
@@ -114,7 +133,7 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
 								<li class="icon fa-paper-plane">
                                 <tr>
                     <td>
-                        <label for="date_arrivee">  date arrivee :
+                        <label for="date_arrivee">  date depart :
                         </label>
                     </td>
                     <td>
@@ -122,7 +141,8 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
                     </td>
                 </tr>
 				
-								</li>
+								
+		                  </li>
 							</ul>
 							<a href="rechercher_voyage.php" class="btn btn-sm btn-neutral" style="padding-left: 200px;">rechercher </a>
 						
@@ -133,9 +153,6 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
 
 			
 			</div>
-<?php
-}
-?>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>

@@ -1,46 +1,45 @@
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <?php
     include_once '../Model/voyage.php';
     include_once '../Controller/voyageC.php';
 
     $error = "";
-
-    // create voyage
+    $success = 0;
+   
+    // create user
     $voyage = null;
 
-    // create an instance of the controller
-    $voyageC = new voyageC();
-    if (
-       
-        isset($_POST["date_depart"]) &&		
-        isset($_POST["date_arrivee"]) && 
-        isset($_POST["nbr_places"])&& 
-        isset($_POST["id_aeroport"])&& 
-        isset($_POST["prix"]) 
-
-    ) {
-        if (
-            !empty($_POST["date_depart"]) &&		
-            !empty($_POST["date_arrivee"]) && 
-            !empty($_POST["nbr_places"])&& 
-            !empty($_POST["id_aeroport"]) && 
-            !empty($_POST["prix"]) 
-        ) {
+   
+    // create an instance of the controller  $rendez_vousC = new Rendez_vousC();
+    $voyageC = new voyageC() ;
+    if ( isset($_POST["date_depart"]) && isset($_POST["date_arrivee"]) &&   isset($_POST["nbr_places"])  &&  isset($_POST["id_aeroport"]) &&  isset($_POST["prix"]) )
+    
+    {
+        if ( !empty($_POST["date_depart"]) && !empty($_POST["date_arrivee"])   && !empty($_POST["nbr_places"]) && !empty($_POST["id_aeroport"]) && !empty($_POST["prix"]))
+         {
             $voyage = new voyage(
-                $_POST["date_depart"] ,		
-                $_POST["date_arrivee"] ,
-                $_POST["nbr_places"], 
-                $_POST["id_aeroport"] , 
-                $_POST["prix"]
-            );
-            $voyageC->modifier_voyage($voyage, $_POST["id_voyage"]);
-            header('Location:afficher_voyage.php');
-        }
-        else
-            $error = "Missing information";
-    }    
-?>
+             
+                $_POST['date_depart'],
+                $_POST['date_arrivee'],
+				$_POST['nbr_places'],
+				$_POST['id_aeroport'],
+				$_POST['prix']
+               
+               
 
-<!DOCTYPE html>
+            );
+            $voyageC->ajouter_voyage($voyage); 
+            $success = 1;
+        } else {
+            $error = "Missing information";
+        }
+    }
+?>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -160,8 +159,8 @@
         </div>
       </div>
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
+       <!-- Sidebar Menu -->
+       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
@@ -180,7 +179,18 @@
                   <p>Dashboard v1</p>
                 </a>
               </li>
-             
+              <li class="nav-item">
+                <a href="./index2.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v2</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index3.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v3</p>
+                </a>
+              </li>
             </ul>
           </li>
           
@@ -193,7 +203,29 @@
                 
               </p>
             </a>
-           
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="pages/layout/top-nav.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Top Navigation</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Top Navigation + Sidebar</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/layout/boxed.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Boxed</p>
+                </a>
+              </li>
+             
+             
+        
+            </ul>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -209,7 +241,13 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>ChartJS</p>
                 </a>
-             
+              </li>
+              <li class="nav-item">
+                <a href="pages/charts/flot.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Flot</p>
+                </a>
+              </li>
              
             </ul>
           </li>
@@ -223,7 +261,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="afficher_voyages" class="nav-link">
+                <a href="afficher_voyage.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Voyages</p>
                 </a>
@@ -321,7 +359,7 @@
     </div>
     <!-- /.sidebar -->
   </aside>
-  <section class="col-6 col-lg-10 connectedSortable">
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -334,7 +372,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Aeroport</li>
+              <li class="breadcrumb-item active">Dashboard v1</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -349,7 +387,7 @@
           </section>
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-20 connectedSortable">
+          <section class="col-6 col-lg-10 connectedSortable">
              <!-- Header -->
     <div class="header bg-primary pb-6">
       <div class="container-fluid">
@@ -370,121 +408,152 @@
         </div>
       </div>
     </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <!-- Card header -->
+            <div class="card-header border-0">
+              <h3 class="mb-0">La liste des Voyages :</h3>
+            </div>
+           
+                  </tr>
+                </thead>
+<tbody>
+				
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Display</title>
-   </head>
-    <body>
+				<!-- Three -->
+                <hr>
+        
+       
         <button><a href="afficher_voyage.php">Retour à la liste des voyages</a></button>
         <hr>
         
         <div id="error">
             <?php echo $error; ?>
         </div>
-       
-			
-		<?php
-			if (isset($_POST['id_voyage']))
-      {
-				$voyage = $voyageC->recuperer_voyage($_POST['id_voyage']);
-      }	
-		?>
-        
         <form action="" method="POST">
-        <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                <tr class="col-lg-20 connectedSortable">
+            
+                <p>
+				<tr>
                     <td>
-                        <label for="id_voyage">Id Voyage:
+                        <label for="date_depart">Date de depart :
                         </label>
                     </td>
-                    <td><input type="number" name="id_voyage" id="id_voyage" value="<?php echo $voyage['id_voyage']; ?>" maxlength="20"></td>
+                    <td><input type="date" name="date_depart" id="date_depart" maxlength="20"></td>
                 </tr>
-			          	<tr class="col-lg-20 connectedSortable">
+                        </p>
+
+
+
+                        <p>
+                <tr>
                     <td>
-                        <label for="date_depart">Date Depart:
+                        <label for="date_arrivee">Date d'arrivee :
                         </label>
                     </td>
-                    <td><input type="date" name="date_depart" id="date_depart" value="<?php echo $voyage['date_depart']; ?>" maxlength="20"></td>
+                    <td><input type="date" name="date_arrivee" id="date_arrivee" maxlength="20"></td>
                 </tr>
-                <tr  class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="date_arrivee">Date Arrivee:
-                        </label>
-                    </td>
-                    <td><input type="date" name="date_arrivee" id="date_arrivee" value="<?php echo $voyage['date_arrivee']; ?>" maxlength="20"></td>
-                </tr>
-                <tr  class="col-lg-20 connectedSortable">
+                </p>
+               
+                <p>
+                <tr>
                     <td>
                         <label for="nbr_places">Nombre des Places:
                         </label>
                     </td>
-                    <td><input type="number" name="nbr_places" id="nbr_places" value="<?php echo $voyage['nbr_places']; ?>" maxlength="20"></td>
+                    <td>
+                        <input type="number" name="nbr_places" id="nbr_places">
+                    </td>
                 </tr>
+                </p>
 
-                <tr  class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="id_aeroport">Id Aeroport:
-                        </label>
-                    </td>
-                    <td><input type="number" name="id_aeroport" id="id_aeroport" value="<?php echo $voyage['id_aeroport']; ?>" maxlength="20"></td>
-                </tr>
+                <p>
+                <div class="form-container">
+    <form action="" method ="POST">
+        <div class="row">
+            <div class="col-25">
+                <label>Id Aeroport </label>
+            </div>
+            <div class="col-75">
+                <select name="id_aeroport" id="id_aeroport">
+                    <?php
+                    foreach ($aeroport as $aeroport){
+                        ?>
+                    <option
+                        value="<?= $aeroport['id_aeroport']?>"
+                        <?php } ?>
 
-                <tr  class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="prix">Prix Voyage:
-                        </label>
-                    </td>
-                    <td><input type="number" name="prix" id="prix" value="<?php echo $voyage['prix']; ?>" maxlength="20"></td>
-                </tr>
-                
-                         
-                <tr  class="col-lg-20 connectedSortable">
-                    <td></td>
-                    <td>
-                        <input type="submit" value="Modifier"> 
-                        <input type="reset" value="Annuler" >
-                    </td>
+                    >
+                    <?= $aeroport['id_aeroport'] ?>
+                    </option>
+                    <?php
                     
+                    ?>
+
+                </select>
+            </div>
+        </div>
+        
+    </form>
+</div>
+                </p>
+
+                <p>
+                <tr>
+                    <td>
+                        <label for="prix">Prix Voyage :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="number" name="prix" id="prix">
+                    </td>
                 </tr>
-                </table>
-                        </div>
-        </form>
+                </p>
+                <button type="button" class="form-control" onclick="myFunction2();myFunction();">Verifier les données</button> 
+			  
+              <button type="submit" class="form-control" id="submit-button-rv"  name="submit">Ajouter le voyage</button>
 
 
 
-                <div class="row">
-                <!-- left column -->
-                <div class="col-md-6">
-                  <!-- general form elements -->
-                  <div class="card card-primary">
-                    <div class="card-header">
-                      <h3 class="card-title">modifier voyage</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <form  method="post" name="voyage" onsubmit="return validateForm(event)"> 
-                      <div class="card-body">
-                        <div class="form-group">
-                          <label for="exampleInputnuml">id de voyage</label>
-                          <input onblur="ajout()" onkeyup="ajout()" type="number" class="form-control" id="id_voyage" name="id_voyage" 
-                            placeholder="Enter number">
-                          <p id="errorid" class="card bg-danger"></p>
+<?php
+require_once '../Controller/voyageC.php';
+$voyageC = new voyageC();
+$list = $voyageC->afficher_voyage();
+ if (isset($_POST['search'])){?>
+    <section class="container">
+        <?php foreach ($list as $voyage){
+        ?>
+        <div class="shop-item">
+            <strong class="shop-item-title"><?= $voyage['date_depart'] ?></strong>
+            <strong class="shop-item-title"><?= $voyage['date_arrivee'] ?></strong>
+            <strong class="shop-item-title"><?= $voyage['nbr_places'] ?></strong>
+            <div class="shop-item-details">
+                <span class="shop-item-price"><?= $voyage['prix'] ?> dt. </span>
 
-                        </div>
-                        <!-- /.col (left) -->                         
-                            <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                          </div>
+        </div>
+        </div>
 
 
-                    </form>
-                  </div>
+        <?php 
+        }
+        ?>
+</div>
+    </section>
+    <?php 
+        }
+        ?>
+    
+   
+	<!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
 
-
-           
-	
-    </body>
+	</body>
 </html>

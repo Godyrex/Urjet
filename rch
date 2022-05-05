@@ -1,18 +1,23 @@
 <?php
-include_once "../Controller/voyageC.php";
-include_once '../Model/voyage.php';
-$voyage=new voyageC();
+include "../Controller/produitC.php";
+include_once '../Model/produit.php';
+$produit=new produitC();
 
 
 
 if (isset($_POST['date_depart']))
 {
   $date_depart= $_POST["date_depart"];
-$listevoyage=$voyage->rechercher_voyage($date_depart);
+$listeproduit=$produit->rechercher_voyage($date_depart);
 
 ?>
-
 <!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
 <html>
 	<head>
 		<title>URJET</title>
@@ -55,7 +60,7 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
 				
 
 				<!-- Three -->
-					<section id="three" class="wrapper alt style2">
+        <section id="three" class="wrapper alt style2">
 						<div class="inner">
 							<header class="major">
 								<h2>Choississez votre voyage</h2>
@@ -64,7 +69,7 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
                <!-- Recherche-->
 			  <div class="form-group">
                             <div class="input-group input-group-lg">
-                                <input type="search" class="form-control form-control-lg" placeholder="entrer votre voyage" value="">
+                                <input type="search" class="form-control form-control-lg" placeholder="entrer votre produit" value="">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-lg btn-default">
                                         <i class="fa fa-search"></i>
@@ -73,6 +78,111 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
                             </div>
                         </div>
 
+							<ul class="spotlight">
+								<li class="icon fa-paper-plane">
+                                <tr>
+                    <td>
+                        <label for="id_aeroport"> aeroport depart :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="number" name="id_aeroport" id="id_aeroport">
+                    </td>
+                </tr>
+								</li>
+
+								<li class="icon fa-paper-plane">
+								<tr>
+                    <td>
+                        <label for="id_aeroport"> aeroport arrivee :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="number" name="id_aeroport" id="id_aeroport">
+                    </td>
+                </tr>	
+								</li>
+								
+								<li class="icon fa-paper-plane">
+                                <tr>
+                    <td>
+                        <label for="date_depart">  date depart :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="date" name="date_depart" id="date_depart">
+                    </td>
+                </tr>
+								</li>
+
+								<li class="icon fa-paper-plane">
+                                <tr>
+                    <td>
+                        <label for="date_arrivee">  date arrivee :
+                        </label>
+                    </td>
+                    <td>
+                        <input type="date" name="date_arrivee" id="date_arrivee">
+                    </td>
+                </tr>
+								</li>
+							</ul>
+							<!-- Main -->
+					<article id="main">
+					
+          
+            <div class="inner">
+                          <form action="rechercher_voyage.php" method="post" >
+                  <div class="row gtr-uniform"> 
+                    <div class="col-6 col-12-xsmall"> 
+                      
+                      <input type="submit" name="submit"  value="chercher" />
+                      
+                    </div>  
+                  </div>
+            </form>
+                       
+					</section>
+
+
+			
+			</div>
+			
+							
+	
+									
+								</section>
+							</div>
+						</section>
+					</article>
+
+			
+
+			</div>
+
+	
+
+	</body>
+</html>
+
+			<!-- Three -->
+      <section id="three" class="wrapper alt style2">
+						<div class="inner">
+							<header class="major">
+								<h2>Choississez votre voyage</h2>
+							</header>
+
+<!-- Recherche-->
+<div class="form-group">
+                            <div class="input-group input-group-lg">
+                                <input type="search" class="form-control form-control-lg" placeholder="entrer votre produit" value="">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-lg btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
 							<ul class="spotlight" style="padding-right: 50px;height: 400px;">
 								<li class="icon fa-paper-plane">
@@ -124,7 +234,7 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
 				
 								</li>
 							</ul>
-							<a href="rechercher_voyage.php" class="btn btn-sm btn-neutral" style="padding-left: 200px;">rechercher </a>
+							<a href="recherche_voyage.php" class="btn btn-sm btn-neutral" style="padding-left: 200px;">rechercher </a>
 						
 					</section>
 
@@ -133,9 +243,6 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
 
 			
 			</div>
-<?php
-}
-?>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>

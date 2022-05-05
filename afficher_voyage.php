@@ -118,8 +118,8 @@
         </div>
       </div>
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
+       <!-- Sidebar Menu -->
+       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
@@ -138,7 +138,18 @@
                   <p>Dashboard v1</p>
                 </a>
               </li>
-             
+              <li class="nav-item">
+                <a href="./index2.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v2</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index3.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v3</p>
+                </a>
+              </li>
             </ul>
           </li>
           
@@ -151,7 +162,29 @@
                 
               </p>
             </a>
-           
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="pages/layout/top-nav.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Top Navigation</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Top Navigation + Sidebar</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/layout/boxed.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Boxed</p>
+                </a>
+              </li>
+             
+             
+        
+            </ul>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -167,7 +200,13 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>ChartJS</p>
                 </a>
-             
+              </li>
+              <li class="nav-item">
+                <a href="pages/charts/flot.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Flot</p>
+                </a>
+              </li>
              
             </ul>
           </li>
@@ -181,7 +220,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="afficher_voyages" class="nav-link">
+                <a href="afficher_voyage.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Voyages</p>
                 </a>
@@ -323,6 +362,14 @@
                 </ol>
               </nav>
             </div>
+            <div class="col-lg-6 col-5 text-right" >
+              <a href="ajouter_voyage.php" class="btn btn-sm btn-neutral">New</a>
+              <a href="trier_voyage.php" class="btn btn-sm btn-neutral">Trier par prix</a>
+              <a href = "mailto:  " class="btn btn-sm btn-neutral">Innovators@urjet.com</a>
+              <a href="pdf.php" class="btn btn-sm btn-neutral">Importer Fichier PDF</a>
+              <button type="submit" class="btn btn-success" onClick="window.print()">Imprimer</button>
+             
+            </div>
            
           </div>
         </div>
@@ -339,22 +386,25 @@
             </div>
             <!-- Light table -->
             
-              <div class="card-body table-responsive p-0" style="height: 300px;">
+              <div class="card-body table-responsive p-0" style="height: 900px;width: 900px;" >
                 <table class="table table-head-fixed text-nowrap">
                 <thead class="thead-light">
                   <tr>
-                    <th>id voyage</th>
-                    <th>date de depart</th>
-                    <th>date d'arrivee</th>
-					          <th>heure de depart</th>
-					          <th>heure d'arrivee</th>
-                    <th>id d'aeroport</th>
+                    <th>Id Voyage</th>
+                    <th>Date Depart</th>
+                    <th>Date Arrivee</th>
+					          <th>Nombre des Places</th>
+                    <th>Id Aeroport</th>
+                    <th>Prix</th>
                    
                     <th scope="col"></th>
                   </tr>
                 </thead>
 <tbody>
-<?php //on inclut notre fichier de connection $pdo = Database::connect(); //on se connecte à la base $sql = 'SELECT * FROM user ORDER BY id DESC'; //on formule notre requete foreach ($pdo->query($sql) as $row) { //on cree les lignes du tableau avec chaque valeur retournée
+<?php //on inclut notre fichier de connection $pdo = Database::connect(); 
+//on se connecte à la base $sql = 'SELECT * FROM user ORDER BY id DESC'; 
+//on formule notre requete foreach ($pdo->query($sql) as $row) { 
+  //on cree les lignes du tableau avec chaque valeur retournée
     include "../Controller/voyageC.php";
       $voyage = new voyageC();
     $resultat=$voyage->afficher_voyage();
@@ -379,18 +429,17 @@ echo'
                             
     <td>' . $row['date_arrivee'] . '</td>
         <p>';
-            echo'
+             echo'
                             
-      <td>' . $row['heure_depart'] . '</td>
-       <p>';
-
-        echo'
-                            
-        <td>' . $row['heure_arrivee'] . '</td>
+        <td>' . $row['nbr_places'] . '</td>
         <p> ';
 
         echo'
         <td>' . $row['id_aeroport'] . '</td>
+        <p> ';
+
+        echo'
+        <td>' . $row['prix'] . '</td>
         <p> ';
 
 
@@ -404,6 +453,8 @@ echo'
        echo '</tr>
        <p>
           ';
+          
+                                                   
 }     
   ?>  
 </tbody>

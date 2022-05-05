@@ -1,18 +1,12 @@
-<?php
-include_once "../Controller/voyageC.php";
-include_once '../Model/voyage.php';
-$voyage=new voyageC();
-
-
-
-if (isset($_POST['date_depart']))
-{
-  $date_depart= $_POST["date_depart"];
-$listevoyage=$voyage->rechercher_voyage($date_depart);
-
-?>
-
 <!DOCTYPE HTML>
+<?php
+require_once '../Controller/aeroportC.php';
+$aeroportC = new aeroportC();
+$aeroport = $aeroportC->afficher_aeroport();
+if (isset($_POST['aeroport'])&& isset($_POST['search'])){
+    $list = $aeroportC->afficher_aeroport($_POST['aeroport']);
+}
+?>
 <html>
 	<head>
 		<title>URJET</title>
@@ -60,29 +54,15 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
 							<header class="major">
 								<h2>Choississez votre voyage</h2>
 							</header>
-
-               <!-- Recherche-->
-			  <div class="form-group">
-                            <div class="input-group input-group-lg">
-                                <input type="search" class="form-control form-control-lg" placeholder="entrer votre voyage" value="">
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-lg btn-default">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-
-							<ul class="spotlight" style="padding-right: 50px;height: 400px;">
+							<ul class="spotlight">
 								<li class="icon fa-paper-plane">
                                 <tr>
                     <td>
-                        <label for="id_aeroport"> aeroport depart :
+                        <label for="depart"> aeroport depart :
                         </label>
                     </td>
                     <td>
-                        <input type="number" name="id_aeroport" id="id_aeroport">
+                        <input type="text" name="depart" id="depart">
                     </td>
                 </tr>
 								</li>
@@ -90,11 +70,11 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
 								<li class="icon fa-paper-plane">
 								<tr>
                     <td>
-                        <label for="id_aeroport"> aeroport arrivee :
+                        <label for="arrivee"> aeroport arrivee :
                         </label>
                     </td>
                     <td>
-                        <input type="number" name="id_aeroport" id="id_aeroport">
+                        <input type="text" name="arrivee" id="arrivee">
                     </td>
                 </tr>	
 								</li>
@@ -121,24 +101,102 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
                         <input type="date" name="date_arrivee" id="date_arrivee">
                     </td>
                 </tr>
-				
 								</li>
 							</ul>
-							<a href="rechercher_voyage.php" class="btn btn-sm btn-neutral" style="padding-left: 200px;">rechercher </a>
 						
 					</section>
-
-					
 
 
 			
 			</div>
-<?php
-}
-?>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
+	
+<div class="form-container">
+    <form action="" method ="POST">
+        <div class="row">
+            <div class="col-25" style="padding-left: 200px;">
+                <label>Search: </label>
+            </div>
+            <div class="col-75" style="padding-left: 200px;">
+                <select name="aeroport" id="aeroport">
+                    <?php
+                    foreach ($aeroport as $aeroport){
+                        ?>
+                    <option
+                        value="<?= $aeroport['id_aeroport']?>"
+                        <?php } ?>
+
+                    >
+                    <?= $aeroport['id_aeroport'] ?>
+                    </option>
+                    <?php
+                    
+                    ?>
+
+                </select>
+            </div>
+        </div>
+        <br>
+        <div class="row" style="padding-left: 200px;">
+            <input type="submit" value="Search" name= "search">
+        </div>
+    </form>
+</div>
+
+
+<?php
+require_once '../Controller/voyageC.php';
+$voyageC = new voyageC();
+$list = $voyageC->afficher_voyage();
+ if (isset($_POST['search'])){?>
+    <section class="container">
+        <?php foreach ($list as $voyage){
+        ?>
+        <div class="shop-item">
+            <strong class="shop-item-title" style="padding-left: 200px;"><?= $voyage['date_depart'] ?> => </strong>
+            <strong class="shop-item-title" style="padding-left: 200px;"><?= $voyage['date_arrivee'] ?></strong>
+            <?php
+require_once '../Controller/aeroportC.php';
+$aeroportC = new aeroportC();
+$list = $aeroportC->afficher_aeroport();
+ if (isset($_POST['search'])){?>
+    <section class="container">
+        <?php foreach ($list as $aeroport){
+        ?>
+        <div class="shop-item">
+        <strong class="shop-item-title" style="padding-left: 400px;"><?= $aeroport['depart'] ?> => </strong>
+            <strong class="shop-item-title" style="padding-left: 400px;"><?= $aeroport['arrivee'] ?></strong>
+        </div>
+
+
+        <?php 
+        }
+        ?>
+</div>
+    </section>
+    <?php 
+        }
+        ?>
+            
+            
+            <div class="shop-item-details">
+                <span class="shop-item-price" style="padding-left: 200px;"><?= $voyage['prix'] ?> dt. </span>
+
+        </div>
+        </div>
+
+
+        <?php 
+        }
+        ?>
+</div>
+    </section>
+
+    
+    
+   
+	<!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
@@ -147,4 +205,7 @@ $listevoyage=$voyage->rechercher_voyage($date_depart);
 			<script src="assets/js/main.js"></script>
 
 	</body>
+    <?php 
+        }
+        ?>
 </html>

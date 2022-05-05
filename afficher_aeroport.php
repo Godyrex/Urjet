@@ -181,7 +181,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="afficher_voyages" class="nav-link">
+                <a href="afficher_voyage.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Voyages</p>
                 </a>
@@ -344,9 +344,9 @@
                 <thead class="thead-light">
                   <tr>
                   <th>Id Aeroport</th>
-				          <th>Nom de l'Aeroport</th>
-				           <th>Ville de l'Aeroport</th>
-				           <th>Pays de l'Aeroport</th>
+				          <th>Aeroport de Depart</th>
+				           <th>Aeroport d'Arrivee</th>
+				           
                    
                     <th scope="col"></th>
                   </tr>
@@ -370,17 +370,14 @@ echo'
 ';
       echo'
 	  
-	  <td>' . $row['nom'] . '</td>
+	  <td>' . $row['depart'] . '</td>
 	  <p>
 	  ';
 								  echo'
                             
-    <td>' . $row['ville'] . '</td>
+    <td>' . $row['arrivee'] . '</td>
         <p>';
-            echo'
-                            
-      <td>' . $row['pays'] . '</td>
-       <p>';
+     
 
         
 

@@ -11,19 +11,19 @@
     $aeroportC = new aeroportC();
     if (
        
-        isset($_POST["nom"]) &&		
-        isset($_POST["ville"]) &&
-	    	isset($_POST["pays"])  
+        isset($_POST["depart"]) &&		
+        isset($_POST["arrivee"]) 
+        
     ) {
         if (
-            !empty($_POST["nom"]) &&		
-            !empty($_POST["ville"]) &&
-            !empty($_POST["pays"])  
+            !empty($_POST["depart"]) &&		
+            !empty($_POST["arrivee"]) 
+             
         ) {
             $aeroport = new aeroport(
-                $_POST["nom"] ,		
-                $_POST["ville"] ,
-                $_POST["pays"] 
+                $_POST["depart"] ,		
+                $_POST["arrivee"] 
+                
             );
             $aeroportC->modifier_aeroport($aeroport, $_POST["id_aeroport"]);
             header('Location:afficher_aeroport.php');
@@ -391,34 +391,26 @@
                    <table class="table table-hover text-nowrap">
                 <tr class="col-lg-20 connectedSortable">
                     <td>
-                        <label for="id_aeroport">Id du aeroport:
+                        <label for="id_aeroport">Id Aeroport:
                         </label>
                     </td>
                     <td><input type="number" name="id_aeroport" id="id_aeroport" value="<?php echo $aeroport['id_aeroport']; ?>" maxlength="20"></td>
                 </tr>
 				<tr class="col-lg-20 connectedSortable">
                     <td>
-                        <label for="nom">Nom de l'Aeroport:
+                        <label for="depart">Aeroport de Depart:
                         </label>
                     </td>
-                    <td><input type="number" name="nom" id="nom" value="<?php echo $aeroport['nom']; ?>" maxlength="20"></td>
+                    <td><input type="text" name="depart" id="depart"  maxlength="20"></td>
                 </tr>
                 <tr class="col-lg-20 connectedSortable">
                     <td>
-                        <label for="ville">Ville de l'Aeroport:
+                        <label for="arrivee">Aeroport d'Arrivee:
                         </label>
                     </td>
-                    <td><input type="number" name="ville" id="ville" value="<?php echo $aeroport['ville']; ?>" maxlength="20"></td>
+                    <td><input type="text" name="arrivee" id="arrivee"  maxlength="20"></td>
                 </tr>
-                <tr class="col-lg-20 connectedSortable">
-                    <td>
-                        <label for="pays">Pays de l'Aeroport:
-                        </label>
-                    </td>
-                    <td>
-                        <input type="number" name="pays" value="<?php echo $aeroport['pays']; ?>" id="pays">
-                    </td>
-                </tr>
+                
                 
                          
                 <tr class="col-lg-20 connectedSortable">
@@ -441,14 +433,14 @@
                   <!-- general form elements -->
                   <div class="card card-primary">
                     <div class="card-header">
-                      <h3 class="card-title">modifier aeroport</h3>
+                      <h3 class="card-title">modifier Aeroport</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form  method="post" name="aeroport" onsubmit="return validateForm(event)"> 
                       <div class="card-body">
                         <div class="form-group">
-                          <label for="exampleInputnuml">id de aeroport</label>
+                          <label for="exampleInputnuml">Id Aeroport</label>
                           <input onblur="ajout()" onkeyup="ajout()" type="number" class="form-control" id="id_aeroport" name="id_aeroport" 
                             placeholder="Enter number">
                           <p id="errorid" class="card bg-danger"></p>
