@@ -6,6 +6,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] && !isset($_SESSION["
   header("location: index.php");
   exit;
 }
+$con = config::getConnexion();
 $prix = 0;
 $nom ="";
 $photo="";
@@ -252,7 +253,7 @@ if (isset($_POST["recherche"])) {
                 <form method="post">
                   <input class="btn btn-primary" type="submit" name="submit" value="Export csv" />
                 </form>
-                <form action="pdf.php" method="post">
+                <form action="pdfr.php" method="post">
                   <input class="btn btn-primary" type="submit" name="submit" value="Export pdf" />
                 </form>
               </div>

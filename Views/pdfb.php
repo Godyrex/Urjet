@@ -2,11 +2,14 @@
 if($_POST){
     require('fpdf/fpdf.php');
     
+    $idrec = $_POST['idrec'];
+    $objetrec = $_POST['objetrec'];
+    $sujet = $_POST['sujet'];
+    $contenurec = $_POST['contenurec'];
+    $daterec = $_POST['daterec'];
+    $etatrec = $_POST['etatrec'];
     $idclient = $_POST['idclient'];
-    $ideven = $_POST['ideven'];
-    $dateres = $_POST['dateres'];
-    $etatres = $_POST['etatres'];
-    $title = 'Liste des reservations';
+    $title = 'Liste des reclamation';
 
     $pdf = new FPDF();
     $pdf -> AddPage();
@@ -31,20 +34,34 @@ if($_POST){
     $pdf->SetTextColor(0,0,0,1);
     $w = $pdf->GetStringWidth($nbr_places)+100;
     $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'idclient:', 1, 0, 'C');
+    $pdf->Cell(40, 10, 'idrec:', 1, 0, 'C');
     $pdf->Cell($w, 10, $idclient, 1, 1, 'C');
 
     $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'ideven:', 1, 0, 'C');
+    $pdf->Cell(40, 10, 'objetrec:', 1, 0, 'C');
     $pdf->Cell($w, 10, $ideven, 1, 1, 'C');
 
     $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'dateres:', 1, 0, 'C');
+    $pdf->Cell(40, 10, 'sujet:', 1, 0, 'C');
     $pdf->Cell($w, 10, $dateres, 1, 1, 'C');
 
     $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'etatres:', 1, 0, 'C');
+    $pdf->Cell(40, 10, 'contenurec :', 1, 0, 'C');
     $pdf->Cell($w, 10, $etatres, 1, 1, 'C');
+
+    $pdf->SetX((170-$w)/2);
+    $pdf->Cell(40, 10, 'daterec :', 1, 0, 'C');
+    $pdf->Cell($w, 10, $etatres, 1, 1, 'C');
+     
+    $pdf->SetX((170-$w)/2);
+    $pdf->Cell(40, 10, 'etatrec :', 1, 0, 'C');
+    $pdf->Cell($w, 10, $etatres, 1, 1, 'C');
+
+    $pdf->SetX((170-$w)/2);
+    $pdf->Cell(40, 10, 'idclient :', 1, 0, 'C');
+    $pdf->Cell($w, 10, $etatres, 1, 1, 'C');
+
+
 
     $pdf->Output();
 }
@@ -52,30 +69,34 @@ if($_POST){
 
 
 <?php
-    include_once '../Model/reservation.php';
-    include_once '../Controller/reservationC.php';
+    include_once '../Model/reclamation.php';
+    include_once '../Controller/reclamationC.php';
 
     $error = "";
     $success = 0;
     // create user
-    $reservation = null;
+    $reclamation = null;
 
     // create an instance of the controller
-    $reservationC = new reservationC();
-    if (isset($_POST["idres"])&& isset($_POST["idclient"]) && isset($_POST["ideven"])&& isset($_POST["dateres"]) && isset($_POST["etatres"]))
+    $reclamationC = new reclamationC();
+    if (isset($_POST["idrec"])&& isset($_POST["objetrec"]) && isset($_POST["sujet"])&& isset($_POST["contenurec"]) && isset($_POST["daterec"]) && isset($_POST["etatrec"])&& isset($_POST["idclient"]))
     
     {
-        if (!empty($_POST["idres"])  && !empty($_POST["idclient"])  && !empty($_POST["ideven"]) && !empty($_POST["dateres"])  && !empty($_POST["etatres"])  )
+        if (!empty($_POST["idrec"])  && !empty($_POST["objetrec"])  && !empty($_POST["sujet"]) && !empty($_POST["contenurec"])  && !empty($_POST["daterec"]) && !empty($_POST["etatrec"])&& !empty($_POST["idclient"])  )
          {
-            $reservation = new reservation(
-                $_POST['idres'],
+            $reclamation = new reclamation(
+                $_POST['idrec'],
+                $_POST['objetrec'],
+                $_POST['sujet'],
+                $_POST['contenurec'],
+                $_POST['daterec'],
+                $_POST['etatrec'],
                 $_POST['idclient'],
-                $_POST['ideven'],
-                $_POST['dateres'],
-                $_POST['etares'],
+
+
 
             );
-            $reservationC->ajouter_reservation($idres); 
+            $reclamationC->ajouterreclamation($idrec); 
             $success = 1;
         } else {
             $error = "Missing information";
@@ -390,7 +411,7 @@ if($_POST){
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/tables/reclamation.php" class="nav-link">
+                <a href="pages/tables/afficherListereclamation.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Reclamation</p>
                 </a>

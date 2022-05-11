@@ -2,11 +2,12 @@
 if($_POST){
     require('fpdf/fpdf.php');
     
-    $idclient = $_POST['idclient'];
-    $ideven = $_POST['ideven'];
-    $dateres = $_POST['dateres'];
-    $etatres = $_POST['etatres'];
-    $title = 'Liste des reservations';
+    $date_depart = $_POST['date_depart'];
+    $date_arrivee = $_POST['date_arrivee'];
+    $nbr_places = $_POST['nbr_places'];
+    $id_aeroport = $_POST['id_aeroport'];
+    $prix = $_POST['prix'];
+    $title = 'Liste des voyages';
 
     $pdf = new FPDF();
     $pdf -> AddPage();
@@ -31,51 +32,54 @@ if($_POST){
     $pdf->SetTextColor(0,0,0,1);
     $w = $pdf->GetStringWidth($nbr_places)+100;
     $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'idclient:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $idclient, 1, 1, 'C');
+    $pdf->Cell(40, 10, 'date_depart_Etudiant:', 1, 0, 'C');
+    $pdf->Cell($w, 10, $date_depart, 1, 1, 'C');
 
     $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'ideven:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $ideven, 1, 1, 'C');
+    $pdf->Cell(40, 10, 'date_arrivee:', 1, 0, 'C');
+    $pdf->Cell($w, 10, $date_arrivee, 1, 1, 'C');
 
     $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'dateres:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $dateres, 1, 1, 'C');
+    $pdf->Cell(40, 10, 'nbr_places:', 1, 0, 'C');
+    $pdf->Cell($w, 10, $nbr_places, 1, 1, 'C');
 
     $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'etatres:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $etatres, 1, 1, 'C');
+    $pdf->Cell(40, 10, 'id_aeroport:', 1, 0, 'C');
+    $pdf->Cell($w, 10, $id_aeroport, 1, 1, 'C');
 
+    $pdf->SetX((170-$w)/2);
+    $pdf->Cell(40, 10, 'prix:', 1, 0, 'C');
+    $pdf->Cell($w, 10, $prix, 1, 1, 'C');
     $pdf->Output();
 }
 ?>
 
 
 <?php
-    include_once '../Model/reservation.php';
-    include_once '../Controller/reservationC.php';
+    include_once '../Model/voyage.php';
+    include_once '../Controller/voyageC.php';
 
     $error = "";
     $success = 0;
     // create user
-    $reservation = null;
+    $voyage = null;
 
     // create an instance of the controller
-    $reservationC = new reservationC();
-    if (isset($_POST["idres"])&& isset($_POST["idclient"]) && isset($_POST["ideven"])&& isset($_POST["dateres"]) && isset($_POST["etatres"]))
+    $voyageC = new voyageC();
+    if (isset($_POST["date_depart"])&& isset($_POST["date_arrivee"]) && isset($_POST["nbr_places"])&& isset($_POST["id_aeroport"]) && isset($_POST["prix"]))
     
     {
-        if (!empty($_POST["idres"])  && !empty($_POST["idclient"])  && !empty($_POST["ideven"]) && !empty($_POST["dateres"])  && !empty($_POST["etatres"])  )
+        if (!empty($_POST["date_depart"])  && !empty($_POST["date_arrivee"])  && !empty($_POST["nbr_places"]) && !empty($_POST["id_aeroport"])  && !empty($_POST["prix"])  )
          {
-            $reservation = new reservation(
-                $_POST['idres'],
-                $_POST['idclient'],
-                $_POST['ideven'],
-                $_POST['dateres'],
-                $_POST['etares'],
+            $voyage = new voyage(
+                $_POST['date_depart'],
+                $_POST['date_arrivee'],
+                $_POST['nbr_places'],
+                $_POST['id_aeroport'],
+                $_POST['prix'],
 
             );
-            $reservationC->ajouter_reservation($idres); 
+            $voyageC->ajouter_voyage($rendez_vous); 
             $success = 1;
         } else {
             $error = "Missing information";
@@ -197,7 +201,7 @@ if($_POST){
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Ghada Mejri</a>
+          <a href="#" class="d-block">Salma Gannouni</a>
         </div>
       </div>
 
@@ -309,7 +313,7 @@ if($_POST){
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                Gestion des reservations
+                Gestion des Voyages
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -317,13 +321,13 @@ if($_POST){
               <li class="nav-item">
                 <a href="afficher_voyage.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>reservations</p>
+                  <p>Voyages</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="afficher_aeroport.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Evenement</p>
+                  <p>Aeroport</p>
                 </a>
               </li>
               

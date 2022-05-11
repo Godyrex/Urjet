@@ -1,5 +1,6 @@
 
  <?php
+ session_start();
 	include '../Controller/DemandeC.php';
 	$demandeC=new DemandeC();
 	$listeDemandes=$demandeC->facturation(); 
@@ -91,11 +92,11 @@
                     <div class="col-sm-6">
                         <h6 class="mb-3">À:</h6>
                         <div>
-                            <strong>NOUR SAIDI</strong>
+                            <strong><?php echo htmlspecialchars($_SESSION["name"]);   echo htmlspecialchars($_SESSION["lastname"])  ?></strong>
                         </div>
                         <div>Attn: </div>
                         <div>16 rue salema, La Manouba</div>
-                        <div>Email: nour.saidi@esprit.tn</div>
+                        <div>Email: <?php echo htmlspecialchars($_SESSION["email"]); ?></div>
                         <div>Phone: +216 59682349</div>
                     </div>
                 </div>

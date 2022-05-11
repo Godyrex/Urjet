@@ -1,98 +1,9 @@
-<?php
-if($_POST){
-    require('fpdf/fpdf.php');
-    
-    $idclient = $_POST['idclient'];
-    $ideven = $_POST['ideven'];
-    $dateres = $_POST['dateres'];
-    $etatres = $_POST['etatres'];
-    $title = 'Liste des reservations';
-
-    $pdf = new FPDF();
-    $pdf -> AddPage();
-    $pdf->SetTitle($title);
-    // Arial bold 15
-    $pdf->SetFont('Arial','B',15);
-    // Calculate width of title and position
-    $w = $pdf->GetStringWidth($title)+6;
-    $pdf->SetX((210-$w)/2);
-    // Colors of frame, background and text
-    $pdf->SetDrawColor(221,221,221,1);
-    $pdf->SetFillColor(10,158,0,1);
-    $pdf->SetTextColor(255,255,255,1);
-    // Thickness of frame (1 mm)
-    $pdf->SetLineWidth(1);
-    // Title
-    // Cell(width, height, content, border, nextline parametters, alignement[c - center], fill)
-    $pdf->Cell($w, 9, $title, 1, 1, 'C', true);
-    // Line break
-    $pdf->Ln(10);
-
-    $pdf->SetTextColor(0,0,0,1);
-    $w = $pdf->GetStringWidth($nbr_places)+100;
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'idclient:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $idclient, 1, 1, 'C');
-
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'ideven:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $ideven, 1, 1, 'C');
-
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'dateres:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $dateres, 1, 1, 'C');
-
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'etatres:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $etatres, 1, 1, 'C');
-
-    $pdf->Output();
-}
-?>
-
-
-<?php
-    include_once '../Model/reservation.php';
-    include_once '../Controller/reservationC.php';
-
-    $error = "";
-    $success = 0;
-    // create user
-    $reservation = null;
-
-    // create an instance of the controller
-    $reservationC = new reservationC();
-    if (isset($_POST["idres"])&& isset($_POST["idclient"]) && isset($_POST["ideven"])&& isset($_POST["dateres"]) && isset($_POST["etatres"]))
-    
-    {
-        if (!empty($_POST["idres"])  && !empty($_POST["idclient"])  && !empty($_POST["ideven"]) && !empty($_POST["dateres"])  && !empty($_POST["etatres"])  )
-         {
-            $reservation = new reservation(
-                $_POST['idres'],
-                $_POST['idclient'],
-                $_POST['ideven'],
-                $_POST['dateres'],
-                $_POST['etares'],
-
-            );
-            $reservationC->ajouter_reservation($idres); 
-            $success = 1;
-        } else {
-            $error = "Missing information";
-        }
-    }
-?>
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>URJET | Dashboard</title>
+  <meta name="Viewsport" content="width=device-width, initial-scale=1">
+  <title>Liste des Reservations</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -160,13 +71,7 @@ if($_POST){
       </li>
 
       <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-       
-      </li>
+   
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -233,18 +138,7 @@ if($_POST){
                   <p>Dashboard v1</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
+             
             </ul>
           </li>
           
@@ -257,29 +151,7 @@ if($_POST){
                 
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation + Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Boxed</p>
-                </a>
-              </li>
-             
-             
-        
-            </ul>
+           
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -295,13 +167,7 @@ if($_POST){
                   <i class="far fa-circle nav-icon"></i>
                   <p>ChartJS</p>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Flot</p>
-                </a>
-              </li>
+             
              
             </ul>
           </li>
@@ -309,21 +175,21 @@ if($_POST){
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                Gestion des reservations
+                Gestion des Reservations
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="afficher_voyage.php" class="nav-link">
+                <a href="afficher_reservation" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>reservations</p>
+                  <p>Reservations</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="afficher_aeroport.php" class="nav-link">
+                <a href="afficher_evenement.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Evenement</p>
+                  <p>evenement</p>
                 </a>
               </li>
               
@@ -413,7 +279,7 @@ if($_POST){
     </div>
     <!-- /.sidebar -->
   </aside>
-
+  <section class="col-6 col-lg-10 connectedSortable">
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -426,9 +292,13 @@ if($_POST){
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
+              <li class="breadcrumb-item active">Reservations</li>
             </ol>
           </div><!-- /.col -->
+          <div class="col-lg-6 col-5 text-right">
+              <a href="#" class="btn btn-sm btn-neutral">New</a>
+              <a href="afficher_reservation.php" class="btn btn-sm btn-neutral">Retourner sans tri</a>
+            </div>
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
@@ -437,20 +307,83 @@ if($_POST){
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
         <div class="row">
-     
-        </div>
-        
-          </section>
-          
-          <section class="col-lg-5 connectedSortable">
+          <div class="col-12">
 
-      </div><!-- /.container-fluid -->
-    
-    <!-- /.content -->
+            <!-- Card header -->
+            <div class="card-header border-0">
+              <h3 class="mb-0">La liste des Reservations :</h3>
+            </div>
+            <!-- Light table -->
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col" class="sort" data-sort="name">id res</th>
+                    <th scope="col" class="sort" data-sort="budget">id client</th>
+                    <th scope="col" class="sort" data-sort="status">ideven</th>
+                    <th scope="col" class="sort" data-sort="completion">dateres</th>
+                    <th scope="col" class="sort" data-sort="completion">etatres</th>
+                   
+                     <th scope="col"></th>
+                  </tr>
+                </thead>
+<tbody>
+<?php //on inclut notre fichier de connection $pdo = Database::connect(); //on se connecte à la base $sql = 'SELECT * FROM user ORDER BY id DESC'; //on formule notre requete foreach ($pdo->query($sql) as $row) { //on cree les lignes du tableau avec chaque valeur retournée
+                           include "../Controller/reservationC.php";
+                           $reservation = new reservationC();
+                           $resultat=$reservation->trier_reservation();
+
+                           echo '
+<br />
+<tr>';
+foreach($resultat as $row) {                         
+echo'
+
+<td>' . $row['idres'] . '</td>
+<p>
+';
+      echo'
+	  
+	  <td>' . $row['idclient'] . '</td>
+	  <p>
+	  ';
+								  echo'
+                            
+    <td>' . $row['ideven'] . '</td>
+        <p>';
+            echo'
+                            
+      <td>' . $row['dateres'] . '</td>
+       <p>';
+
+        echo'
+                            
+        <td>' . $row['etatres'] . '</td>
+        <p> ';
+
+      
+
+
+          echo '<td>';
+         echo '<a class="btn btn-success" href="modifier_reservation.php?idres=' . $row['idres'] . '">Update</a>';// un autre td pour le bouton d'update
+       
+                      echo '<a class="btn btn-primary" href="Supprimer_reservation.php?idres=' . $row['idres'] . ' ">Delete</a>';// un autre td pour le bouton de suppression
+     
+         echo '</td>
+        <p>';
+       echo '</tr>
+       <p>
+       ';
+          
+}
+      
+                                                    ?>  
+</tbody>
+
+        </div>
   </div>
-  <!-- /.content-wrapper -->
+ 
   
 
   <!-- Control Sidebar -->
@@ -461,39 +394,6 @@ if($_POST){
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
+
 </body>
-</html>
+</html>           

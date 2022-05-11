@@ -1,98 +1,9 @@
-<?php
-if($_POST){
-    require('fpdf/fpdf.php');
-    
-    $idclient = $_POST['idclient'];
-    $ideven = $_POST['ideven'];
-    $dateres = $_POST['dateres'];
-    $etatres = $_POST['etatres'];
-    $title = 'Liste des reservations';
-
-    $pdf = new FPDF();
-    $pdf -> AddPage();
-    $pdf->SetTitle($title);
-    // Arial bold 15
-    $pdf->SetFont('Arial','B',15);
-    // Calculate width of title and position
-    $w = $pdf->GetStringWidth($title)+6;
-    $pdf->SetX((210-$w)/2);
-    // Colors of frame, background and text
-    $pdf->SetDrawColor(221,221,221,1);
-    $pdf->SetFillColor(10,158,0,1);
-    $pdf->SetTextColor(255,255,255,1);
-    // Thickness of frame (1 mm)
-    $pdf->SetLineWidth(1);
-    // Title
-    // Cell(width, height, content, border, nextline parametters, alignement[c - center], fill)
-    $pdf->Cell($w, 9, $title, 1, 1, 'C', true);
-    // Line break
-    $pdf->Ln(10);
-
-    $pdf->SetTextColor(0,0,0,1);
-    $w = $pdf->GetStringWidth($nbr_places)+100;
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'idclient:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $idclient, 1, 1, 'C');
-
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'ideven:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $ideven, 1, 1, 'C');
-
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'dateres:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $dateres, 1, 1, 'C');
-
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'etatres:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $etatres, 1, 1, 'C');
-
-    $pdf->Output();
-}
-?>
-
-
-<?php
-    include_once '../Model/reservation.php';
-    include_once '../Controller/reservationC.php';
-
-    $error = "";
-    $success = 0;
-    // create user
-    $reservation = null;
-
-    // create an instance of the controller
-    $reservationC = new reservationC();
-    if (isset($_POST["idres"])&& isset($_POST["idclient"]) && isset($_POST["ideven"])&& isset($_POST["dateres"]) && isset($_POST["etatres"]))
-    
-    {
-        if (!empty($_POST["idres"])  && !empty($_POST["idclient"])  && !empty($_POST["ideven"]) && !empty($_POST["dateres"])  && !empty($_POST["etatres"])  )
-         {
-            $reservation = new reservation(
-                $_POST['idres'],
-                $_POST['idclient'],
-                $_POST['ideven'],
-                $_POST['dateres'],
-                $_POST['etares'],
-
-            );
-            $reservationC->ajouter_reservation($idres); 
-            $success = 1;
-        } else {
-            $error = "Missing information";
-        }
-    }
-?>
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>URJET | Dashboard</title>
+  <title>Liste des voyages</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -160,13 +71,7 @@ if($_POST){
       </li>
 
       <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-       
-      </li>
+   
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -197,7 +102,7 @@ if($_POST){
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Ghada Mejri</a>
+          <a href="#" class="d-block">Salma Gannouni</a>
         </div>
       </div>
 
@@ -213,8 +118,8 @@ if($_POST){
         </div>
       </div>
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
+       <!-- Sidebar Menu -->
+       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
@@ -309,7 +214,7 @@ if($_POST){
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                Gestion des reservations
+                Gestion des Voyages
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -317,13 +222,13 @@ if($_POST){
               <li class="nav-item">
                 <a href="afficher_voyage.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>reservations</p>
+                  <p>Voyages</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="afficher_aeroport.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Evenement</p>
+                  <p>Aeroport</p>
                 </a>
               </li>
               
@@ -437,15 +342,149 @@ if($_POST){
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-     
-        </div>
         
           </section>
-          
-          <section class="col-lg-5 connectedSortable">
+          <!-- /.Left col -->
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
+          <section class="col-6 col-lg-10 connectedSortable">
+             <!-- Header -->
+    <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <h6 class="h2 text-white d-inline-block mb-0">Les Voyages</h6>
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item"><a href="#">Les  Voyages</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Liste</li>
+                </ol>
+              </nav>
+              
+            </div>
+            <div class="col-lg-6 col-5 text-right" >
+              <a href="ajouter_voyage.php" class="btn btn-sm btn-neutral">New</a>
+              <a href="trier_voyage.php" class="btn btn-sm btn-neutral">Trier par prix</a>
+              <a href = "mailto:  " class="btn btn-sm btn-neutral">Innovators@urjet.com</a>
+              <a href="pdf.php" class="btn btn-sm btn-neutral">Exporter Fichier PDF</a>
+              <button type="submit" class="btn btn-success" onClick="window.print()">Imprimer</button>
+             
+            </div>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <!-- Card header -->
+            <div class="card-header border-0">
+              <h3 class="mb-0">La liste des Voyages :</h3>
+            </div>
+            <!-- Light table -->
+            
+              <div class="card-body table-responsive p-0" style="height: 900px;width: 900px;" >
+                <table class="table table-head-fixed text-nowrap">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Id Voyage</th>
+                    <th>Date Depart</th>
+                    <th>Date Arrivee</th>
+                    <th>Depart</th>
+                    <th>Arrivee</th>
+                    <th>Prix</th>
+					          <th>Nombre des Places</th>
+                    <th>Id Aeroport</th>
+                   
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+<tbody>
+<?php //on inclut notre fichier de connection $pdo = Database::connect(); 
+//on se connecte à la base $sql = 'SELECT * FROM user ORDER BY id DESC'; 
+//on formule notre requete foreach ($pdo->query($sql) as $row) { 
+  //on cree les lignes du tableau avec chaque valeur retournée
+    include "../Controller/voyageC.php";
+      $voyage = new voyageC();
+    $resultat=$voyage->afficher_voyage();
+    
+   
+  echo '
+<br />
+<tr>';
+                           
+foreach($resultat as $row) {
+echo'
 
+<td>' . $row['id_voyage'] . '</td>
+<p>
+';
+      echo'
+	  
+	  <td>' . $row['date_depart'] . '</td>
+	  <p>
+	  ';
+								  echo'
+                            
+    <td>' . $row['date_arrivee'] . '</td>
+        <p>';
+            
+
+        echo'
+        <td>' . $row['depart'] . '</td>
+        <p> ';
+
+        echo'
+        <td>' . $row['arrivee'] . '</td>
+        <p> ';
+
+
+        echo'
+        <td>' . $row['prix'] . '</td>
+        <p> ';
+
+        echo'
+                            
+        <td>' . $row['nbr_places'] . '</td>
+        <p> ';
+
+        echo'
+                            
+        <td>' . $row['id_aeroport'] . '</td>
+        <p> ';
+
+
+          echo '<td>';
+         echo '<a class="btn btn-success" href="modifier_voyage.php?id_voyage=' . $row['id_voyage'] . '">Update</a>';// un autre td pour le bouton d'update
+       
+                      echo '<a class="btn btn-primary" href="Supprimer_voyage.php?id_voyage=' . $row['id_voyage'] . ' ">Delete</a>';// un autre td pour le bouton de suppression
+     
+         echo '</td>
+        <p>';
+       echo '</tr>
+       <p>
+          ';
+          
+                                                   
+}     
+  ?>  
+</tbody>
+              
+              <!-- /.card-footer -->
+            
+            <!-- /.card -->
+
+            <!-- Calendar -->
+            
+            <!-- /.card -->
+          
+          <!-- right col -->
+        
+        <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     
     <!-- /.content -->
@@ -466,9 +505,7 @@ if($_POST){
 <!-- jQuery UI 1.11.4 -->
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
+
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
@@ -497,3 +534,5 @@ if($_POST){
 <script src="dist/js/pages/dashboard.js"></script>
 </body>
 </html>
+
+		

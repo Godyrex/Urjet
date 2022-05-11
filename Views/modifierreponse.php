@@ -1,98 +1,48 @@
 <?php
-if($_POST){
-    require('fpdf/fpdf.php');
-    
-    $idclient = $_POST['idclient'];
-    $ideven = $_POST['ideven'];
-    $dateres = $_POST['dateres'];
-    $etatres = $_POST['etatres'];
-    $title = 'Liste des reservations';
-
-    $pdf = new FPDF();
-    $pdf -> AddPage();
-    $pdf->SetTitle($title);
-    // Arial bold 15
-    $pdf->SetFont('Arial','B',15);
-    // Calculate width of title and position
-    $w = $pdf->GetStringWidth($title)+6;
-    $pdf->SetX((210-$w)/2);
-    // Colors of frame, background and text
-    $pdf->SetDrawColor(221,221,221,1);
-    $pdf->SetFillColor(10,158,0,1);
-    $pdf->SetTextColor(255,255,255,1);
-    // Thickness of frame (1 mm)
-    $pdf->SetLineWidth(1);
-    // Title
-    // Cell(width, height, content, border, nextline parametters, alignement[c - center], fill)
-    $pdf->Cell($w, 9, $title, 1, 1, 'C', true);
-    // Line break
-    $pdf->Ln(10);
-
-    $pdf->SetTextColor(0,0,0,1);
-    $w = $pdf->GetStringWidth($nbr_places)+100;
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'idclient:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $idclient, 1, 1, 'C');
-
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'ideven:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $ideven, 1, 1, 'C');
-
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'dateres:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $dateres, 1, 1, 'C');
-
-    $pdf->SetX((170-$w)/2);
-    $pdf->Cell(40, 10, 'etatres:', 1, 0, 'C');
-    $pdf->Cell($w, 10, $etatres, 1, 1, 'C');
-
-    $pdf->Output();
-}
-?>
-
-
-<?php
-    include_once '../Model/reservation.php';
-    include_once '../Controller/reservationC.php';
+ session_start();
+    include_once '../Model/reponse.php';
+    include_once '../Controller/reponseC.php';
 
     $error = "";
-    $success = 0;
-    // create user
-    $reservation = null;
+
+    // create aeroport
+    $reponse = null;
 
     // create an instance of the controller
-    $reservationC = new reservationC();
-    if (isset($_POST["idres"])&& isset($_POST["idclient"]) && isset($_POST["ideven"])&& isset($_POST["dateres"]) && isset($_POST["etatres"]))
-    
-    {
-        if (!empty($_POST["idres"])  && !empty($_POST["idclient"])  && !empty($_POST["ideven"]) && !empty($_POST["dateres"])  && !empty($_POST["etatres"])  )
-         {
-            $reservation = new reservation(
-                $_POST['idres'],
-                $_POST['idclient'],
-                $_POST['ideven'],
-                $_POST['dateres'],
-                $_POST['etares'],
-
+    $reponseC = new reponseC();
+    if (
+       
+        isset($_POST["contenurep"]) &&		
+        isset($_POST["daterep"]) &&
+        isset($_POST["idRec"]) 
+		  
+    ) {
+        if (
+            !empty($_POST["contenurep"]) &&		
+            
+            !empty($_POST["daterep"])  &&	
+            !empty($_POST["idRec"])
+        ) {
+            $reponse = new reponse(
+                $_POST["contenurep"] ,		
+                
+                $_POST["daterep"] ,
+                $_POST["idRec"] 
             );
-            $reservationC->ajouter_reservation($idres); 
-            $success = 1;
-        } else {
-            $error = "Missing information";
+            $reponseC->modifierreponse($reponse, $_POST["idrep"]);
+            header('Location:afficherreponse.php');
         }
-    }
+        else
+            $error = "Missing information";
+    }    
 ?>
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>URJET | Dashboard</title>
+  <title>Liste des reclamation</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -160,13 +110,7 @@ if($_POST){
       </li>
 
       <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-       
-      </li>
+   
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -197,7 +141,7 @@ if($_POST){
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Ghada Mejri</a>
+          <a href="#" class="d-block">Bochra Allagui</a>
         </div>
       </div>
 
@@ -233,18 +177,7 @@ if($_POST){
                   <p>Dashboard v1</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
+             
             </ul>
           </li>
           
@@ -257,29 +190,7 @@ if($_POST){
                 
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation + Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Boxed</p>
-                </a>
-              </li>
-             
-             
-        
-            </ul>
+           
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -295,13 +206,7 @@ if($_POST){
                   <i class="far fa-circle nav-icon"></i>
                   <p>ChartJS</p>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Flot</p>
-                </a>
-              </li>
+             
              
             </ul>
           </li>
@@ -309,21 +214,21 @@ if($_POST){
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                Gestion des reservations
+                Gestion des Voyages
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="afficher_voyage.php" class="nav-link">
+                <a href="afficher_voyages" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>reservations</p>
+                  <p>Voyages</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="afficher_aeroport.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Evenement</p>
+                  <p>Aeroport</p>
                 </a>
               </li>
               
@@ -390,13 +295,13 @@ if($_POST){
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/tables/reclamation.php" class="nav-link">
+                <a href="afficherListereclamation.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Reclamation</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
+                <a href="afficherreclamation.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Reponse</p>
                 </a>
@@ -437,63 +342,97 @@ if($_POST){
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-     
-        </div>
         
           </section>
-          
+          <!-- /.Left col -->
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-5 connectedSortable">
+             <!-- Header -->
+    <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <h6 class="h2 text-white d-inline-block mb-0">reponse</h6>
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item"><a href="#">reponse</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Liste</li>
+                </ol>
+              </nav>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+    </div>
 
-      </div><!-- /.container-fluid -->
-    
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
-
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Display</title>
+   </head>
+    <body>
+        <button><a href="afficherreponse.php">Retour à la liste des reclamation</a></button>
+        <hr>
+        
+        <div id="error">
+            <?php echo $error; ?>
+        </div>
+			
+		<?php
+			if (isset($_POST['idrep'])){
+				$reponse = $reponseC->recupererreponse($_POST['idrep']);
+				
+		?>
+        
+        <form action="modifierreponse.php" method="POST">
+            <table border="1" align="center">
+                <tr>
+                    <td>
+                        <label for="idrep">idrep:
+                        </label>
+                    </td>
+                    <td><input type=" number " name="idrep" id="idrep" value="<?php echo $reponse['idrep']; ?>" maxlength="20"></td>
+                </tr>
+				<tr>
+                    <td>
+                        <label for="contenurep">contenurep:
+                        </label>
+                    </td>
+                    <td><input type="texte" name="contenurep" id="contenurep" value="<?php echo $reponse['contenurep']; ?>" maxlength="20"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="daterep">daterep:
+                        </label>
+                    </td>
+                    <td><input type="date" name="daterep" id="daterep" value="<?php echo $reponse['daterep']; ?>" maxlength="20"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="idRec">id de la reclamation:
+                        </label>
+                    </td>
+                    <td><input type="number" name="idRec" id="idRec" value="<?php echo $reponse['idRec']; ?>" maxlength="20"></td>
+                </tr>
+                
+                
+                         
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Modifier"> 
+                    </td>
+                    <td>
+                        <input type="reset" value="Annuler" >
+                    </td>
+                </tr>
+            </table>
+        </form>
+		<?php
+		}
+		?>
+    </body>
 </html>
