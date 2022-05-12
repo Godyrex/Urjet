@@ -130,24 +130,21 @@
       <!-- Main content -->
 
       <section class="content">
-     
+      <form action="rechercherdemande.php" method="post" >
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-
-                <h3 class="card-title">List</h3>
+              <h3 class="card-title">Listes des demandes </h3>
+           
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" id="myInput" onkeyup="myFunction()" class="form-control float-right" placeholder="Search">
 
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
-                      </button>
-                    </div>
+				          <input type="text" name="key"  placeholder="Recherche.." />
+			          	<input type="submit" name="submit"  value="chercher" />
                   </div>
                 </div>
               </div>
+       </form>
               <!-- /.card-header -->
               <section>
 			  <div class="card-body table-responsive p-0" style="height: 300px ">				

@@ -31,6 +31,7 @@ session_start();
 					<section id="banner">
 						<div class="inner">
 							<h2>URJET</h2>
+							<h3>Chère cliente, cher client, Vous êtes les bienvenus !</h3>
 							<ul class="actions special">
 							</ul>
 						</div>

@@ -37,13 +37,9 @@ $con = config::getConnexion();
         <section id="banner">
             <div class="inner">
                 <h2>URJET</h2>
-                <p>Just a test<br />
-                    site template<br /></p>
-                <ul class="actions special">
-                    <li><a href="#" class="button primary">Activate</a></li>
                 </ul>
             </div>
-            <a href="#one" class="more scrolly">Learn More</a>
+         
         </section>
 
         <!-- One -->
@@ -53,7 +49,7 @@ $con = config::getConnexion();
             <form>
                 <div class="form-group">
                     <select id="filtre" name="filtre" class="form-select">
-                        <option>Choose an option</option>
+                        <option>Choisir une Option</option>
                         <?php
                         $con = config::getConnexion();
                         $sql = "SELECT type From aviontypes";
@@ -93,7 +89,7 @@ $con = config::getConnexion();
             </ul>
             <ul class="copyright">
                 <li>&copy; Untitled</li>
-                <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                <li>Design: <a href="http://html5up.net">URJET</a></li>
             </ul>
         </footer>
 

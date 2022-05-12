@@ -5,36 +5,37 @@
 									<div id="menu">
 										<ul>
 										<li><a href="index.php">Accueil </a></li>
-											<li><a href="cata.php">Airplanes catalog</a></li>
+											<li><a href="cata.php">catalogue des avions</a></li>
 											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
 											<li><a href="avion.php">Avion</a></li>
 											<?php }?>
-											<li><a href="Reservation.php"></a>Réservation</li>
 											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]  === true) { ?>
-											<li><a href="ajouterreclamation.php">Add Reclamation</a></li>
-											<li><a href="ajouterreponse.php">Add Response</a></li>
-											<li><a href="recherchereclamation.php">Find Reclamation</a></li>
+											<li><a href="ajouterreclamation.php">Ajouter une Reclamation</a></li>
+											<li><a href="ajouterreponse.php">Ajouter une Response</a></li>
+											<li><a href="recherchereclamation.php">Chercher une Reclamation</a></li>
 											<?php }?>
                                             <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]  === true) { ?>
-											<li><a href="ajouter_evenement.php">Add Event</a></li>
-											<li><a href="ajouter_reservation.php">Add Reservation</a></li>
+											<li><a href="ajouter_evenement.php">Ajouter un Evenement</a></li>
+											<li><a href="ajouter_reservation.php">Reserver un Jet Privé</a></li>
                                             <?php }?>
 											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]  === true) { ?>
-											<li><a href="afficherListeDemandes.php">Afficher la liste des demandes</a></li>
-											<li><a href="ajouterdemande.php">Demande de maintenance</a></li>
-                                            <li><a href="modifierdemande.php">modifier de maintenance</a></li>
+											<li><a href="ajouterdemande.php">Demander de Maintenance</a></li>
+											<li><a href="afficherListeDemandes.php">Afficher votre Demande</a></li>
+											<li><a href="modifierdemande.php">Modifier votre Demande </a></li>
+											<li><a href="ajoutermaintenace.php">Afficher l'ETAT DE VOTRE Maintenance</a></li>
+                                        
                                             <?php }?>
 											<li><a href="Voyage.php">Voyage</a></li>
                                             <?php if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) { ?>
-                                            <li><a href="signup.php">Sign Up</a></li>
-											<li><a href="login.php">Log In</a></li>
+                                            <li><a href="signup.php">S'inscrire</a></li>
+											<li><a href="login.php">Se connecter</a></li>
                                             <?php }?>
 											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
                                                 <li><a href="AdminPanel.php">Admin Panel</a></li>
                                                 <?php }?>
                                             <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) { ?>
-                                            <li><a href="settings.php">Settings</a></li>
-											<li><a href="logout.php">Log out</a></li>
+                                            <li><a href="settings.php">Réglages</a></li>
+											<li><a href="logout.php">Se Deconnecter</a></li>
                                             <?php }?>
 										</ul>
 									</div>

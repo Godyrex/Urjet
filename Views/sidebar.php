@@ -35,7 +35,8 @@
               <i class="nav-icon fas fa-user"></i>
               <p>
                 
-                User Panel
+              Panneau d'utilisateur
+
                 <i class="fas fa-angle-left right"></i>
                 
               </p>
@@ -48,7 +49,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Admin Panel</p>
+                  <p>Panneau de l'admin</p>
                 </a>
               </li>
               <?php } ?>
@@ -58,7 +59,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Settings</p>
+                  <p>Réglages</p>
                 </a>
               </li>
 
@@ -72,7 +73,7 @@
                 }?>">
               <i class="nav-icon fas fa-plane"></i>
               <p>
-              Airplanes Management
+              Gestion des avions
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -83,7 +84,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add/Update</p>
+                  <p>Ajout/Modification</p>
                 </a>
               </li>
              
@@ -97,7 +98,7 @@
                 }?>">
               <i class="nav-icon fas fa-tree"></i>
               <p>
-              Travel Management
+              Gestion des Voyages
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -108,7 +109,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Airport List</p>
+                  <p>Listes des aéroports</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -117,7 +118,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add Airport</p>
+                  <p>Ajouter un aéroport</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -126,7 +127,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Update Airport</p>
+                  <p>Modifier un aéroport</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -135,7 +136,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Trips List</p>
+                  <p>Listes des voyages</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -144,7 +145,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add Trip</p>
+                  <p>Ajouter un voyage</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -153,7 +154,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Update Trip</p>
+                  <p>Modifier un voyage</p>
                 </a>
               </li>
               
@@ -168,7 +169,7 @@
                 }?>">
               <i class="nav-icon fas fa-edit"></i>
               <p>
-              Reservation Management
+              Gestion des Resersations
 
                 <i class="fas fa-angle-left right"></i>
               </p>
@@ -180,7 +181,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Events List</p>
+                  <p>Listes des Evenements</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -189,7 +190,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Reservation List</p>
+                  <p>Listes des Reservations</p>
                 </a>
               </li>
               
@@ -204,7 +205,7 @@
                 }?>">
               <i class="nav-icon fas fa-table"></i>
               <p>
-              Demandes management
+              Gestion des demandes de Maintenances
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -216,7 +217,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Liste Demandes (Admins)</p>
+                  <p>Liste des Demandes</p>
                 </a>
               </li>
               <?php } ?>
@@ -241,7 +242,7 @@
                 }?>">
               <i class="nav-icon fas fa-table"></i>
               <p>
-              Reclamation Management
+              Gestion des Reclamations
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -252,7 +253,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Reclamations List</p>
+                  <p>Liste des Reclamations </p>
                 </a>
               </li>
               
@@ -262,7 +263,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Update Reclamation</p>
+                  <p>Modifier une Reclamation</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -271,7 +272,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add Response</p>
+                  <p>Ajouter une Response</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -280,7 +281,7 @@
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Response List</p>
+                  <p>Lites des Response</p>
                 </a>
               </li>
               <?php } ?>

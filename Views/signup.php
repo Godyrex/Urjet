@@ -43,7 +43,7 @@ $userc->signup($param_username,$username,$email,$password);
       <a href="index.php" class="h1"><b>UR</b>JET</a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Register a new Account</p>
+      <p class="login-box-msg">Enregistrer un nouveau compte</p>
 
       <form name="signup" onsubmit="return validateForm(event)" method="post">
         <div class="input-group mb-3">
@@ -85,14 +85,14 @@ $userc->signup($param_username,$username,$email,$password);
         <div class="row">
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+            <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
           </div>
           <!-- /.col -->
         </div>
       </form>
 
 
-      <a href="login.php" class="text-center float-right">I already have an account</a>
+      <a href="login.php" class="text-center float-right">J'ai déjà un compte</a>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->

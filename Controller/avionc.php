@@ -214,7 +214,7 @@ function list(){
             </h2>
             <h2>Price: <?php echo $row['prix'] ?>DT<br />
             </h2>
-            <a href="reservation.php" class="button primary">Reserve</a>
+           
         </div>
     </section>
     <?php
@@ -242,7 +242,7 @@ function listfiltre($key){
             </h2>
             <h2>Price: <?php echo $row['prix'] ?>DT<br />
             </h2>
-            <a href="reservation.php" class="button primary">Reserve</a>
+           
         </div>
     </section>
     <?php

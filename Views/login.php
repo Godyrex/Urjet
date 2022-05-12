@@ -86,7 +86,7 @@ if(isset($_POST['g-recaptcha-response'])) {
       <a href="index.php" class="h1"><b>UR</b>JET</a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Connectez-vous pour démarrer votre session</p>
 
       <form name="login" onsubmit="return validateForm(event)" method="post">
         <div class="input-group mb-3">
@@ -114,12 +114,12 @@ if(isset($_POST['g-recaptcha-response'])) {
             <div class="icheck-primary">
               <input name="remember" value="checked" type="checkbox" id="remember">
               <label for="remember">
-                Remember Me
+                Se Souvenir de moi
               </label>
             </div>
           </div>
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">Se Connecter</button>
           </div>
         </div>
       </form>
@@ -127,8 +127,8 @@ if(isset($_POST['g-recaptcha-response'])) {
 
       <p class="mt-3 mb-1">
         
-      <a  href="reset.php">Reset password</a>
-        <a class=" float-right" href="signup.php" class="text-center">Sign Up</a>
+      <a  href="reset.php">Réinitialiser le mot de passe</a>
+        <a class=" float-right" href="signup.php" class="text-center">S'inscrire</a>
       </p>
     </div>
     <!-- /.card-body -->
