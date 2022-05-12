@@ -32,9 +32,9 @@ function Footer()
 }
  
 $con = config::getConnexion();
-$display_heading = array('IDdemande'=>'IDdemande', 'diagnostic'=> 'diagnostic', 'urgence'=> 'urgence','type'=> 'type','descriptionpanne'=> 'descriptionpanne','id_avion'=> 'id_avion',);
+$display_heading = array('IDdemande'=>'IDdemande', 'diagnostic'=> 'diagnostic', 'urgence'=> 'urgence','type'=> 'type','descriptionpanne'=> 'descriptionpanne','id_avion'=> 'id_avion','id_user'=> 'id_user',);
  
-$sql =  "SELECT IDdemande,diagnostic,urgence,type,descriptionpanne,id_avion From demande ";
+$sql =  "SELECT IDdemande,diagnostic,urgence,type,descriptionpanne,id_avion,id_user From demande ";
 $result=$con->prepare($sql);
 $result->execute();
 $sqll = "SHOW columns FROM demande";

@@ -1,11 +1,15 @@
 <?php
+session_start();
+include '../config.php';
+include "../Controller/voyageC.php";
+$voyagec = new voyageC();
+$rows=0;
+?>
+<?php
 require_once '../Controller/aeroportC.php';
 $aeroportC = new aeroportC();
 $aeroport = $aeroportC->afficher_aeroport();
-if (isset($_POST['id_aeroport'])&& isset($_POST['search']))
-{
-    $list = $aeroportC->afficher_aeroport($_POST['id_aeroport']);
-}
+
 ?>
 <!DOCTYPE HTML>
 <!--
@@ -24,36 +28,7 @@ if (isset($_POST['id_aeroport'])&& isset($_POST['search']))
 
     // create an instance of the controller
     $voyageC = new voyageC();
-    if (
-		isset($_POST["date_depart"]) &&		
-        isset($_POST["date_arrivee"]) && 
-        isset($_POST["nbr_places"])&&
-        isset($_POST["id_aeroport"])&&
-        isset($_POST["prix"])
-		
-   )
-         { if (
-			!empty($_POST["date_depart"]) &&		
-            !empty($_POST["date_arrivee"]) &&
-            !empty($_POST["nbr_places"]) &&
-            !empty($_POST["id_aeroport"])&&
-            !empty($_POST["prix"])  
-	    )     {
-            $voyage = new voyage(
-				$_POST["date_depart"] ,		
-                $_POST["date_arrivee"] ,
-                $_POST["nbr_places"] ,
-                $_POST["prix"],
-                $_POST["id_aeroport"] 
-
-            );
-            $voyageC->ajouter_voyage($voyage); 
-            $success = 1;
-         } else 
-		  {
-            $error = "Missing information";
-          }
-    }
+ 
 ?>
 <html>
 	<head>
@@ -69,105 +44,104 @@ if (isset($_POST['id_aeroport'])&& isset($_POST['search']))
 			<div id="page-wrapper">
 
 				<!-- Header -->
-					<header id="header" class="alt">
-						<h1><a href="index.php">Transport company</a></h1>
-						<nav id="nav">
-							<ul>
-								<li class="special">
-									<a href="#menu" class="menuToggle"><span>Menu</span></a>
-									<div id="menu">
-										<ul>
-											<li><a href="index.php">Accueil (avion1 cataloge)</a></li>
-											<li><a href="Avion2.php">Avion2</a></li>
-											<li><a href="Resersation.php"></a>Réservation</li>
-											<li><a href="Reclamation.php">Réclamation</a></li>
-											<li><a href="Reponse.php">Réponse</a></li>
-											<li><a href="Maintenance.php"></a>Maitenance</li>
-											<li><a href="Demande.php">Demande de maitenance</a></li>
-											<li><a href="ajouter_voyage.php">Voyage</a></li>
-											<li><a href="Signup.php">S'inscrire</a></li>
-											<li><a href="Login.php">Se Connecter</a></li>
-										</ul>
-									</div>
-								</li>
-							</ul>
-						</nav>
+                <header id="header" class="alt">
+						<h1><a href="index.php">URJET</a></h1>
+						<?php require 'sidebarfront.php' ?>
 					</header>
 
 				
 
 				<!-- Three -->
-					<section id="three" class="wrapper alt style2">
-						<div class="inner">
-							<header class="major">
-								<h2>Choississez votre voyage</h2>
-							</header>
-							<ul class="spotlight" style="padding-right: 50px;height: 400px;">
-							<li class="icon fa-paper-plane">
-                <tr>
-                <td>
-                  <label for="depart" style="padding-left: 20px;"> Aeroprt Depart :</label>
-                </td>
-                 <select name="depart" id="depart">
-                <?php
-                foreach ($aeroport as $aeroport){
-                ?>
-               <option value="<?= $aeroport['pays']?>"    >
-                 <?= $aeroport['pays'] ?>
-               </option>
-               <?php    }  ?>
-                </select>
-                </tr>
-				</li>
+                <div class="col-md-5">
+                            <!-- general form elements -->
 
-								<li class="icon fa-paper-plane">
-								<tr>
-                    <td>
-                        <label for="id_aeroport"> aeroport arrivee :
-                        </label>
-                    </td>
-                    <td>
-                        <input type="number" name="id_aeroport" id="id_aeroport">
-                    </td>
-                </tr>	
-								</li>
-								
-								<li class="icon fa-paper-plane">
-                                <tr>
-                    <td>
-                        <label for="date_depart">  date arrivee :
-                        </label>
-                    </td>
-                    <td>
-                        <input type="date" name="date_depart" id="date_depart">
-                    </td>
-                </tr>
-								</li>
+                            <div class="card card-primary ">
+                                <div class="card-header">
+                                    <h3 class="card-title">recherche</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                <form name="search"  method="post" enctype="multipart/form-data">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                <label id="imagelabel" class="custom-file-label" >Depart :</label>
+                                                <select id="depart" name="depart" class="form-select">
+                        <option>Choose an option</option>
+                        <?php
+                        $con = config::getConnexion();
+                        $sql = "SELECT pays From aeroport";
+                        $stmt = $con->prepare($sql);
+                        $stmt->execute();
+                        while ($row = $stmt->fetch()) { ?>
+                            <option><?php echo htmlspecialchars($row['pays']) ?></option>
+                        <?php } ?>
+                    </select>
+                                                    <label id="imagelabel" class="custom-file-label" >Arrivee :</label>
+                                                    <select id="arrivee" name="arrivee" class="form-select">
+                        <option>Choose an option</option>
+                        <?php
+                        $con = config::getConnexion();
+                        $sql = "SELECT pays From aeroport";
+                        $stmt = $con->prepare($sql);
+                        $stmt->execute();
+                        while ($row = $stmt->fetch()) { ?>
+                            <option><?php echo htmlspecialchars($row['pays']) ?></option>
+                        <?php } ?>
+                    </select>
+                                                    <label id="imagelabel" class="custom-file-label" >Date Depart :</label>
+                                                    <input  id="ddepart" name="ddepart" type="date" >
+                                                    <label id="imagelabel" class="custom-file-label" >Date Arrivee :</label>
+                                                    <input  id="darrivee" name="darrivee" type="date" >
+                                                    
+                                                </div>
+                                            </div>
+                                            <br>
 
-								<li class="icon fa-paper-plane">
-                                <tr>
-                    <td>
-                        <label for="date_arrivee">  date depart :
-                        </label>
-                    </td>
-                    <td>
-                        <input type="date" name="date_arrivee" id="date_arrivee">
-                    </td>
-                </tr>
-				
-								
-		                  </li>
-						  <a href="rchboch_voyage.php" class="btn btn-sm btn-neutral" style="padding-left: 0px;margin-top: 300px;">rechercher </a>
-							</ul>
-							
-						
-					</section>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+
+                                    <div class="card-footer">
+                                        <button name="searchc"  type="submit" class="btn btn-primary">Recherche</button>
+                                    </div>
+                                    
+                                </form>
+                            </div>
+                            <div class="card-body table-responsive p-0" style="height: 300px ">
+                <table id="myTable" class="table table-head-fixed text-nowrap">
+                  <thead>
+                    <tr>
+                    <th>Date Depart</th>
+                    <th>Date Arrivee</th>
+                    <th>Depart</th>
+                    <th>Arrivee</th>
+                    <th>Prix</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                    if (isset($_POST["searchc"]))
+                    {
+                        $depart = $_POST['depart'];
+                        $arrivee = $_POST['arrivee'];
+                        $ddepart = $_POST['ddepart'];
+                        $darrivee = $_POST['darrivee'];
+                        $voyagec->rechercher_voyage($ddepart,$darrivee,$arrivee,$depart);
+                    }
+
+                    ?>
+                  </tbody>
+
+                </table>
+              </div>
 
 					
 
 
 			
-			</div>
+			
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>

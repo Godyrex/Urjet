@@ -200,7 +200,7 @@
           
           <li class="nav-item">
             <a href="#" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
-                if( $currentpage=="afficherListeDemandes.php" || $currentpage=="affichagedemandes.php"){
+                if( $currentpage=="afficherListeDemandes.php" || $currentpage=="affichagedemandes.php" || $currentpage=="ajoutermaintenance.php"){
                 echo "active"; 
                 }?>">
               <i class="nav-icon fas fa-table"></i>
@@ -220,18 +220,21 @@
                   <p>Liste des Demandes</p>
                 </a>
               </li>
-              <?php } ?>
               <li class="nav-item">
-                <a href="affichagedemandes.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
-                if( $currentpage=="affichagedemandes.php" ){
+                <a href="ajoutermaintenance.php" class="nav-link <?php $currentpage = basename($_SERVER['SCRIPT_NAME']); 
+                if( $currentpage=="ajoutermaintenance.php" ){
                 echo "active"; 
                 }?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Liste Demandes</p>
+                  <p>Ajouter maintenance</p>
                 </a>
               </li>
+              <?php } ?>
               
             </ul>
+
+            
+
           </li>
           
           <?php if (isset($_SESSION["Admin"]) && $_SESSION["Admin"] == true) { ?>

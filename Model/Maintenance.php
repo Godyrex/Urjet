@@ -26,7 +26,7 @@
 		/*function setIDdemande(string $IDdemande){
 			$this->IDdemande=$IDdemande;
 		}*/
-		function setprix(double $prix){
+		function setprix(int $prix){
 			$this->prix=$prix;
 		}
 		function setetat(string $etat){

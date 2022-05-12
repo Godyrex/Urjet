@@ -1,6 +1,5 @@
-<?php 
-session_start();
-?>
+
+
 <!DOCTYPE HTML>
 <!--
 	Spectral by HTML5 UP
@@ -8,6 +7,7 @@ session_start();
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <?php
+session_start();
     include_once '../Model/voyage.php';
     include_once '../Controller/voyageC.php';
 
@@ -160,6 +160,7 @@ session_start();
       <!-- /.sidebar -->
     </aside>
 
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -260,8 +261,10 @@ session_start();
                 <p>
                 <tr>
                 <td>
-                  <label for="id_aeroport" style="padding-left: 20px;">Depart :</label>
+                  <label for="depart" style="padding-left: 20px;">Depart :</label>
                 </td>
+               
+               
                 <select id="depart" name="depart" class="form-select">
                         <option>Choose an option</option>
                         <?php
@@ -272,16 +275,17 @@ session_start();
                         while ($row = $stmt->fetch()) { ?>
                             <option><?php echo htmlspecialchars($row['pays']) ?></option>
                         <?php } ?>
-                    </select>
+                    </select>      
                     </tr>
                 </p>
    
                 <p>
                 <tr>
                 <td>
-                  <label for="id_aeroport" style="padding-left: 20px;">Arrivee :</label>
+                  <label for="arrivee" style="padding-left: 20px;">Arrivee :</label>
                 </td>
-                <select id="depart" name="depart" class="form-select">
+               
+                <select id="arrivee" name="arrivee" class="form-select">
                         <option>Choose an option</option>
                         <?php
                         $con = config::getConnexion();
@@ -291,7 +295,7 @@ session_start();
                         while ($row = $stmt->fetch()) { ?>
                             <option><?php echo htmlspecialchars($row['pays']) ?></option>
                         <?php } ?>
-                    </select>
+                    </select>    
                     </tr>
                 </p>
                
@@ -323,7 +327,7 @@ session_start();
                 <p>
                 <tr>
                 <td>
-                  <label for="id_aeroport" style="padding-left: 20px;">Arrivee :</label>
+                  <label for="id_aeroport" style="padding-left: 20px;">Id Aeroport :</label>
                 </td>
                 <select id="id_aeroport" name="id_aeroport" class="form-select">
                         <option>Choose an option</option>

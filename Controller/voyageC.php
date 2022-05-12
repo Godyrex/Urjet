@@ -153,25 +153,30 @@
 			}
 		}*/
 
-		function rechercher_voyage($search_value)
+		function rechercher_voyage($ddepart,$darrivee,$arrivee,$depart)
         {
 			//or idC like '$search_value'
 			//id_voyage like '$search_value'  or
-            $sql="SELECT * FROM voyage where  date_depart like '%$search_value%' or date_arrivee like '%$search_value%' or id_aeroport like '%$search_value%'  ";
-    
-            //global $db;
-            $db =Config::getConnexion();
-    
-            try{
-                $result=$db->query($sql);
-    
-                return $result;
-    
-            }
-            catch (Exception $e){
-                die('Erreur: '.$e->getMessage());
-            }
+			$sql="SELECT *FROM voyage WHERE date_depart LIKE :ddepart AND date_arrivee LIKE :darrivee And depart LIKE :depart And arrivee LIKE :arrivee ORDER BY id_voyage";
+			$pdo = config::getConnexion();
+			$query = $pdo->prepare($sql);
+			$query->bindValue(':ddepart', '%'.$ddepart.'%');
+			$query->bindValue(':darrivee', '%'.$darrivee.'%');
+			$query->bindValue(':arrivee', '%'.$arrivee.'%', PDO::PARAM_STR);
+			$query->bindValue(':depart', '%'.$depart.'%', PDO::PARAM_STR);
+			$query->execute();
+			while ($row = $query->fetch()) { ?>
+				<tr>
+				<td><?php echo $row['date_depart']; ?></td>
+						 <td><?php echo $row['date_arrivee']; ?></td>
+						 <td><?php echo $row['depart']; ?></td>
+						 <td><?php echo $row['arrivee']; ?></td>
+						 <td><?php echo $row['prix']; ?></td>
+				   </tr>
+				   <?php
+				 }
         }
+	
 
 
 

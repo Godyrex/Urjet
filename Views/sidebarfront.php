@@ -20,12 +20,12 @@
                                             <?php }?>
 											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]  === true) { ?>
 											<li><a href="ajouterdemande.php">Demander de Maintenance</a></li>
-											<li><a href="afficherListeDemandes.php">Afficher votre Demande</a></li>
+											<li><a href="affichagedemandes.php">Afficher votre Demande</a></li>
 											<li><a href="modifierdemande.php">Modifier votre Demande </a></li>
-											<li><a href="ajoutermaintenace.php">Afficher l'ETAT DE VOTRE Maintenance</a></li>
+											<li><a href="etatmaintenance.php">Afficher l'ETAT DE VOTRE Maintenance</a></li>
                                         
                                             <?php }?>
-											<li><a href="Voyage.php">Voyage</a></li>
+											<li><a href="vols.php">Voyage</a></li>
                                             <?php if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) { ?>
                                             <li><a href="signup.php">S'inscrire</a></li>
 											<li><a href="login.php">Se connecter</a></li>

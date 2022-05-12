@@ -188,9 +188,15 @@
 		</table>
 			</div>
 			<div class="card-footer">
+      <?php
+                $demandeC->numero();
+                ?>
 								<form method="POST" action="" >		
 						<input type="submit" name="Export" value="Export " class="btn btn-primary">
 					             </form>
+                       <form action="pdfdemande.php" method="post">
+                  <input class="btn btn-primary" type="submit" name="submit" value="Export pdf" />
+                </form>
 						
 						</section>
               <!-- /.card-body -->

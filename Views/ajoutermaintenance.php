@@ -1,4 +1,5 @@
 <?php
+session_start();
     include_once '../Model/Maintenance.php';
     include_once '../Controller/MaintenanceC.php';
 

@@ -3,7 +3,7 @@
  session_start();
 	include '../Controller/DemandeC.php';
 	$demandeC=new DemandeC();
-	$listeDemandes=$demandeC->facturation(); 
+
 	
 ?>
 <!DOCTYPE HTML>
@@ -23,41 +23,9 @@
 			<div id="page-wrapper">
 
 				<!-- Header -->
-					<header id="header">
-						<h1><a href="index.html">Urjet</a></h1>
-						<nav id="nav">
-							<ul>
-								<li class="special">
-									<a href="#menu" class="menuToggle"><span>Menu</span></a>
-									<div id="menu">
-										<ul>
-										<li><a href="index.php">Accueil (airplanes catalog)</a></li>
-											<li><a href="cata.php">Airplanes catalog</a></li>
-											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
-											<li><a href="add.php">Avion</a></li>
-											<?php }?>
-											<li><a href="Resersation.php"></a>Réservation</li>
-											<li><a href="Reclamation.php">Réclamation</a></li>
-											<li><a href="Reponse.php">Réponse</a></li>
-											<li><a href="afficherListeDemandes.php"></a>Afficher la liste des demandes</li>
-											<li><a href="ajouterdemande.php">Demande de maintenance</a></li>
-											<li><a href="Voyage.php">Voyage</a></li>
-                                            <?php if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) { ?>
-                                            <li><a href="signup.php">Sign Up</a></li>
-											<li><a href="login.php">Log In</a></li>
-                                            <?php }?>
-											<?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] && isset($_SESSION["Admin"]) && $_SESSION["Admin"] === true) { ?>
-                                                <li><a href="AdminPanel.php">Admin Panel</a></li>
-                                                <?php }?>
-                                            <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) { ?>
-                                            <li><a href="settings.php">Settings</a></li>
-											<li><a href="logout.php">Log out</a></li>
-                                            <?php }?>
-										</ul>
-									</div>
-								</li>
-							</ul>
-						</nav>
+                <header id="header" class="alt">
+						<h1><a href="index.php">URJET</a></h1>
+						<?php require 'sidebarfront.php' ?>
 					</header>
 
 				<!-- Main -->
@@ -113,38 +81,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="center">1</td>
-                                <td class="left strong">Origin License</td>
-                                <td class="left">Extended License</td>
-                                <td class="right">$999,00</td>
-                                <td class="center">1</td>
-                                <td class="right">$999,00</td>
-                            </tr>
-                            <tr>
-                                <td class="center">2</td>
-                                <td class="left">Custom Services</td>
-                                <td class="left">Instalation and Customization (cost per hour)</td>
-                                <td class="right">$150,00</td>
-                                <td class="center">20</td>
-                                <td class="right">$3.000,00</td>
-                            </tr>
-                            <tr>
-                                <td class="center">3</td>
-                                <td class="left">Hosting</td>
-                                <td class="left">1 year subcription</td>
-                                <td class="right">$499,00</td>
-                                <td class="center">1</td>
-                                <td class="right">$499,00</td>
-                            </tr>
-                            <tr>
-                                <td class="center">4</td>
-                                <td class="left">Platinum Support</td>
-                                <td class="left">1 year subcription 24/7</td>
-                                <td class="right">$3.999,00</td>
-                                <td class="center">1</td>
-                                <td class="right">$3.999,00</td>
-                            </tr>
+                 
                         </tbody>
                     </table>
                 </div>
@@ -154,30 +91,25 @@
                     <div class="col-lg-4 col-sm-5 ml-auto">
                         <table class="table table-clear">
                             <tbody>
+                                
                                 <tr>
                                     <td class="left">
-                                        <strong>Subtotal</strong>
+                                        <strong>PRIX</strong>
                                     </td>
-                                    <td class="right">$8.497,00</td>
+                                    <td class="right"><?php echo $demandeC->prix(); ?></td>
                                 </tr>
                                 <tr>
                                     <td class="left">
-                                        <strong>Discount (20%)</strong>
+                                        <strong>TVA (10%)</strong>
                                     </td>
-                                    <td class="right">$1,699,40</td>
-                                </tr>
-                                <tr>
-                                    <td class="left">
-                                        <strong>VAT (10%)</strong>
-                                    </td>
-                                    <td class="right">$679,76</td>
+                                    <td class="right"><?php echo $demandeC->tva(); ?></td>
                                 </tr>
                                 <tr>
                                     <td class="left">
                                         <strong>Total</strong>
                                     </td>
                                     <td class="right">
-                                        <strong>$7.477,36</strong>
+                                        <strong><?php echo $demandeC->total() ; ?></strong>
                                     </td>
                                 </tr>
                             </tbody>

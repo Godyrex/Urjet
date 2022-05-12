@@ -57,9 +57,9 @@ function pagination(){
   }
   function paginationrecherche($key){
     $con = config::getConnexion();
-    $sql = "SELECT count(*) FROM `avion` WHERE id LIKE :keyword";
+    $sql = "SELECT count(*) FROM `avion` WHERE id LIKE :keyword  OR nom LIKE :keyword";
     $stmt = $con->prepare($sql);
-    $stmt->bindValue(':keyword',  $key , PDO::PARAM_INT);
+    $stmt->bindValue(':keyword',  $key );
     $stmt->execute();
     $count = $stmt->fetchColumn();
     $pagination = new \yidas\data\Pagination([
@@ -79,9 +79,9 @@ function pagination(){
 function recherche($key){
     
     $con = config::getConnexion();
-    $sql = "SELECT count(*) FROM `avion` WHERE id LIKE :keyword";
+    $sql = "SELECT count(*) FROM `avion` WHERE id LIKE :keyword OR nom LIKE :keyword";
     $stmt = $con->prepare($sql);
-    $stmt->bindValue(':keyword',  $key , PDO::PARAM_INT);
+    $stmt->bindValue(':keyword',   '%' . $key . '%', PDO::PARAM_STR);
     $stmt->execute();
     $count = $stmt->fetchColumn();
 
@@ -91,9 +91,9 @@ function recherche($key){
     $sql = "SELECT avion.id,avion.nom,avion.prix,avion.photo,avion.idtype,typeavion.categorie 
                     From avion 
                     INNER JOIN typeavion 
-                    ON avion.idtype = typeavion.id WHERE avion.id LIKE :keyword LIMIT {$pagination->offset}, {$pagination->limit}";
+                    ON avion.idtype = typeavion.id WHERE avion.id LIKE :keyword OR avion.nom LIKE :keyword LIMIT {$pagination->offset}, {$pagination->limit}";
                           $stmt = $con->prepare($sql);
-                          $stmt->bindValue(':keyword',  $key , PDO::PARAM_INT);
+                          $stmt->bindValue(':keyword',  '%' . $key . '%', PDO::PARAM_STR);
                           $stmt->execute();
                           while ($row = $stmt->fetch()) {
                           ?>
